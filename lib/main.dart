@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:moftahak/features/splash/splash_view.dart';
+import 'package:moftahak/core/routes/app_routes.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,6 +10,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: SplashView());
+    return MaterialApp.router(
+      routerConfig: appRouter,
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(scaffoldBackgroundColor: Colors.white),
+    );
   }
 }

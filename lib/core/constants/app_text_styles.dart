@@ -10,7 +10,7 @@ class AppTextStyles {
 
   static final lato600style20 = TextStyle(
     fontSize: 20,
-    fontWeight: FontWeight.w400,
+    fontWeight: FontWeight.w600,
     color: Colors.black,
     fontFamily: "Lato",
   );

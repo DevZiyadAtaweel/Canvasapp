@@ -2,9 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:moftahak/core/constants/app_colors.dart';
 import 'package:moftahak/core/constants/app_strings.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
+import 'package:moftahak/core/constants/navigation.dart';
 
-class SplashView extends StatelessWidget {
+class SplashView extends StatefulWidget {
   const SplashView({super.key});
+
+  @override
+  State<SplashView> createState() => _SplashViewState();
+}
+
+class _SplashViewState extends State<SplashView> {
+  @override
+  void initState() {
+    super.initState();
+
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        customNavigate(context, '/onBoarding');
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

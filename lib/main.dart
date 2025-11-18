@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moftahak/features/splash/splash_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -9,8 +10,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(body: Center(child: Text('Hello, World!'))),
-    );
+    return MaterialApp(home: SplashView());
   }
 }

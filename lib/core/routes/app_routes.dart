@@ -11,7 +11,7 @@ final GoRouter appRouter = GoRouter(
     GoRoute(path: '/onBoarding', builder: (context, state) => OnBoardingView()),
 
     GoRoute(path: '/home', builder: (context, state) => const HomeView()),
-    GoRoute(path: '/login', builder: (context, state) => const LoginView()),
-    GoRoute(path: '/signUp', builder: (context, state) => const SignUpView()),
+    GoRoute(path: '/login', builder: (context, state) => LoginView()),
+    GoRoute(path: '/signUp', builder: (context, state) => SignUpView()),
   ],
 );

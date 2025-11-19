@@ -7,11 +7,15 @@ class AuthTextField extends StatefulWidget {
     required this.hint,
     this.keyboardType,
     this.isPassword = false,
+    required this.controller,
+    required this.showError,
   });
 
+  final TextEditingController controller;
   final String hint;
   final TextInputType? keyboardType;
   final bool isPassword;
+  final bool showError; // 👈 إضافة مهمة
 
   @override
   State<AuthTextField> createState() => AuthTextFieldState();
@@ -23,9 +27,12 @@ class AuthTextFieldState extends State<AuthTextField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: widget.controller,
       obscureText: widget.isPassword ? _isObscured : false,
       keyboardType: widget.keyboardType,
       decoration: InputDecoration(
+        errorText: widget.showError ? '' : null, // 👈 يفعّل إطار أحمر بدون نص
+
         filled: true,
         fillColor: AppColors.lightGreen,
         hintText: widget.hint,

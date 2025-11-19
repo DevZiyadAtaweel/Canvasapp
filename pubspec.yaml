@@ -28,7 +28,9 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  bloc: ^9.1.0
   cupertino_icons: ^1.0.8
+  firebase_auth: ^6.1.2
   firebase_core: ^4.2.1
   flutter:
     sdk: flutter

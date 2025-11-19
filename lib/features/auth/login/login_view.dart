@@ -7,7 +7,10 @@ import 'package:moftahak/features/auth/widgets/auth_text_filed.dart';
 import 'package:moftahak/features/auth/widgets/auth_toggle_tabs.dart';
 
 class LoginView extends StatelessWidget {
-  const LoginView({super.key});
+  LoginView({super.key});
+
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +101,9 @@ class LoginView extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(height: 8),
-                                const AuthTextField(
+                                AuthTextField(
+                                  showError: false,
+                                  controller: emailController,
                                   hint: 'example@gmail.com',
                                   keyboardType: TextInputType.emailAddress,
                                 ),
@@ -113,7 +118,9 @@ class LoginView extends StatelessWidget {
                                   ),
                                 ),
                                 const SizedBox(height: 8),
-                                const AuthTextField(
+                                AuthTextField(
+                                  showError: false,
+                                  controller: passController,
                                   hint: '********',
                                   isPassword: true,
                                 ),

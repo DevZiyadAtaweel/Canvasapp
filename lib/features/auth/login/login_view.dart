@@ -84,7 +84,7 @@ class LoginView extends StatelessWidget {
                             Text(
                               'تسجيل الدخول',
                               style: AppTextStyles.lato600style20.copyWith(
-                                fontSize: 24,
+                                fontSize: 32,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -93,7 +93,7 @@ class LoginView extends StatelessWidget {
                               'مرحبا بعودتك! يرجى تسجيل الدخول للمتابعة',
                               textAlign: TextAlign.center,
                               style: AppTextStyles.lato600style20.copyWith(
-                                fontSize: 14,
+                                fontSize: 22,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),

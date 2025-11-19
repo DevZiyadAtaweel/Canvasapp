@@ -73,7 +73,7 @@ class SignUpView extends StatelessWidget {
                             Text(
                               'إنشاء حساب',
                               style: AppTextStyles.lato600style20.copyWith(
-                                fontSize: 24,
+                                fontSize: 32,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
@@ -82,7 +82,7 @@ class SignUpView extends StatelessWidget {
                               'سجل بياناتك للبدء باستخدام التطبيق',
                               textAlign: TextAlign.center,
                               style: AppTextStyles.lato600style20.copyWith(
-                                fontSize: 14,
+                                fontSize: 22,
                                 fontWeight: FontWeight.w400,
                               ),
                             ),

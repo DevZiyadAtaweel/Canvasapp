@@ -6,7 +6,7 @@ import 'package:moftahak/core/constants/navigation.dart';
 import 'package:moftahak/features/auth/cubit/auth_cubit.dart';
 import 'package:moftahak/features/auth/widgets/auth_text_filed.dart';
 import 'package:moftahak/features/auth/widgets/auth_toggle_tabs.dart';
-import 'package:moftahak/features/auth/widgets/register_validator.dart';
+import 'package:moftahak/features/auth/widgets/auth_validator.dart';
 
 class SignUpView extends StatelessWidget {
   SignUpView({super.key});

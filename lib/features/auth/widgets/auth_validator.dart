@@ -20,4 +20,15 @@ class AuthValidator {
     if (pass != confirm) return "كلمتا المرور غير متطابقتين";
     return null;
   }
+
+  //  دوال خاصة بالـ Login
+  static String? validateLoginEmail(String email) {
+    if (email.isEmpty) return "البريد الإلكتروني مطلوب";
+    return null;
+  }
+
+  static String? validateLoginPassword(String pass) {
+    if (pass.isEmpty) return "كلمة المرور مطلوبة";
+    return null;
+  }
 }

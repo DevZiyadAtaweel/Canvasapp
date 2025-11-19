@@ -4,12 +4,20 @@ import 'package:moftahak/core/constants/app_colors.dart';
 import 'package:moftahak/core/constants/app_strings.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/constants/navigation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class OnBoardingView extends StatelessWidget {
-  OnBoardingView({super.key});
+class OnBoardingView extends StatefulWidget {
+  const OnBoardingView({super.key});
 
+  @override
+  State<OnBoardingView> createState() => _OnBoardingViewState();
+}
+
+class _OnBoardingViewState extends State<OnBoardingView> {
   final PageController pageController = PageController();
+
+  int currentPage = 0;
 
   final List<String> images = [
     AppAssets.onBoarding1,
@@ -24,6 +32,21 @@ class OnBoardingView extends StatelessWidget {
     AppStrings.onBoarding2,
     AppStrings.onBoarding3,
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    pageController.addListener(() {
+      setState(() {
+        currentPage = pageController.page!.round();
+      });
+    });
+  }
+
+  Future<void> _setNotFirstOpen() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('is_first_open', false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,8 +100,6 @@ class OnBoardingView extends StatelessWidget {
                           ),
                         ),
                       ),
-
-                      const SizedBox(height: 10),
                     ],
                   ),
                 ),
@@ -101,26 +122,25 @@ class OnBoardingView extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: InkWell(
                   onTap: () {
-                    int current = pageController.page!.round();
-                    if (current < 2) {
+                    if (currentPage < 2) {
                       pageController.nextPage(
                         duration: const Duration(milliseconds: 400),
                         curve: Curves.easeInOut,
                       );
                     } else {
+                      _setNotFirstOpen();
                       customNavigate(context, "/login");
                     }
                   },
                   child: Container(
                     height: 48,
-                    width: 400,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: AppColors.green,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
-                      "التالي",
+                      currentPage == 2 ? "ابدأ" : "التالي",
                       style: AppTextStyles.lato600style20.copyWith(
                         color: Colors.white,
                       ),
@@ -131,15 +151,21 @@ class OnBoardingView extends StatelessWidget {
 
               const SizedBox(height: 10),
 
-              TextButton(
-                onPressed: () => customNavigate(context, "/login"),
-                child: Text(
-                  "تخطي",
-                  style: AppTextStyles.lato600style20.copyWith(
-                    color: Colors.black,
+              if (currentPage < 2)
+                TextButton(
+                  onPressed: () {
+                    _setNotFirstOpen();
+                    customNavigate(context, "/login");
+                  },
+                  child: Text(
+                    "تخطي",
+                    style: AppTextStyles.lato600style20.copyWith(
+                      color: Colors.black,
+                    ),
                   ),
-                ),
-              ),
+                )
+              else
+                const SizedBox(height: 48),
 
               const SizedBox(height: 80),
             ],

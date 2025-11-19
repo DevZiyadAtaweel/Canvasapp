@@ -46,6 +46,12 @@ class LoginView extends StatelessWidget {
                     ),
                   ),
                 );
+              } else if (state is GmailAuthLoading) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text("جاري تسجيل الدخول باستخدام جوجل..."),
+                  ),
+                );
               }
             },
             builder: (context, state) {
@@ -330,11 +336,15 @@ class LoginView extends StatelessWidget {
 
                                       const SizedBox(height: 16),
 
-                                      // Google Login
+                                      // زر تسجيل الدخول باستخدام جوجل
                                       GestureDetector(
-                                        onTap: () {
-                                          //  TODO: Handle Google login logic here
-                                        },
+                                        onTap: state is GmailAuthLoading
+                                            ? null
+                                            : () {
+                                                context
+                                                    .read<AuthCubit>()
+                                                    .signInWithGoogle();
+                                              },
                                         child: Container(
                                           height: 48,
                                           padding: const EdgeInsets.symmetric(
@@ -353,22 +363,33 @@ class LoginView extends StatelessWidget {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
                                             children: [
-                                              Image.asset(
-                                                AppAssets.googleIcon,
-                                                width: 24,
-                                                height: 24,
-                                              ),
-                                              const SizedBox(width: 12),
-                                              Text(
-                                                'تسجيل الدخول باستخدام جوجل',
-                                                style: AppTextStyles
-                                                    .lato600style20
-                                                    .copyWith(
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.w500,
-                                                    ),
-                                              ),
+                                              if (state is GmailAuthLoading)
+                                                const SizedBox(
+                                                  height: 20,
+                                                  width: 20,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                        strokeWidth: 2,
+                                                      ),
+                                                )
+                                              else ...[
+                                                Image.asset(
+                                                  AppAssets.googleIcon,
+                                                  width: 24,
+                                                  height: 24,
+                                                ),
+                                                const SizedBox(width: 12),
+                                                Text(
+                                                  'تسجيل الدخول باستخدام جوجل',
+                                                  style: AppTextStyles
+                                                      .lato600style20
+                                                      .copyWith(
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                      ),
+                                                ),
+                                              ],
                                             ],
                                           ),
                                         ),

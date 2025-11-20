@@ -31,8 +31,9 @@ class AuthTextFieldState extends State<AuthTextField> {
       obscureText: widget.isPassword ? _isObscured : false,
       keyboardType: widget.keyboardType,
       decoration: InputDecoration(
-        errorText: widget.showError ? '' : null, // 👈 يفعّل إطار أحمر بدون نص
+        errorText: widget.showError ? '' : null,
 
+        // 👈 يفعّل إطار أحمر بدون نص
         filled: true,
         fillColor: AppColors.lightGreen,
         hintText: widget.hint,

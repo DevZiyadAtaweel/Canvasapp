@@ -51,16 +51,12 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     return Scaffold(
       body: Stack(
         children: [
-          // 🔹 الخلفية اللي تتغير حسب الصفحة
           SizedBox.expand(
-            child: Image.asset(
-              images[currentPage], // <-- هنا التعديل
-              fit: BoxFit.cover,
-            ),
+            child: Image.asset(images[currentPage], fit: BoxFit.cover),
           ),
 
           // طبقة شفافة فوق الصورة (اختياري عشان النص يبان أوضح)
-          Container(color: Colors.black.withOpacity(0.35)),
+          Container(color: Colors.black.withOpacity(0.1)),
 
           // المحتوى
           Column(
@@ -72,17 +68,38 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                   itemBuilder: (context, index) => Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      Spacer(flex: currentPage == 2 ? 1 : 3),
+
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: Text(
                           descriptions[index],
                           textAlign: TextAlign.center,
-                          style: AppTextStyles.lato600style20.copyWith(
-                            fontWeight: FontWeight.w300,
-                            color: Colors.white,
-                          ),
+                          style: AppTextStyles.lato700style28,
                         ),
                       ),
+                      Spacer(flex: 3),
+
+                      // (currentPage == 2)
+                      //      Padding(
+                      //         padding: const EdgeInsets.symmetric(
+                      //           horizontal: 30,
+                      //         ),
+                      //         child: Text(
+                      //           descriptions[index],
+                      //           textAlign: TextAlign.center,
+                      //           style: AppTextStyles.lato700style28,
+                      //         ),
+                      //       )
+                      //     : const SizedBox(height: 200),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(horizontal: 30),
+                      //   child: Text(
+                      //     descriptions[index],
+                      //     textAlign: TextAlign.center,
+                      //     style: AppTextStyles.lato700style28,
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),

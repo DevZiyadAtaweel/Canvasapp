@@ -59,6 +59,7 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: <String>['email']);
+
   Future<void> signInWithGoogle() async {
     emit(GmailAuthLoading());
 

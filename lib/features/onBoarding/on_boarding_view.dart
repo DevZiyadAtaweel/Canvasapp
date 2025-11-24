@@ -25,8 +25,6 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     AppAssets.onBoarding3,
   ];
 
-  final List<String> titles = ["MOFTAHAK", "MOFTAHAK", "MOFTAHAK"];
-
   final List<String> descriptions = [
     AppStrings.onBoarding1,
     AppStrings.onBoarding2,
@@ -51,45 +49,29 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backGroundColor,
       body: Stack(
         children: [
-          Positioned(
-            top: -61,
-            left: -44,
-            child: Container(
-              width: 122,
-              height: 164,
-              decoration: BoxDecoration(
-                color: AppColors.yellow,
-                borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(80),
-                ),
-              ),
+          // 🔹 الخلفية اللي تتغير حسب الصفحة
+          SizedBox.expand(
+            child: Image.asset(
+              images[currentPage], // <-- هنا التعديل
+              fit: BoxFit.cover,
             ),
           ),
 
+          // طبقة شفافة فوق الصورة (اختياري عشان النص يبان أوضح)
+          Container(color: Colors.black.withOpacity(0.35)),
+
+          // المحتوى
           Column(
             children: [
               Expanded(
                 child: PageView.builder(
                   controller: pageController,
-                  itemCount: 3,
+                  itemCount: images.length,
                   itemBuilder: (context, index) => Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(images[index]),
-                      const SizedBox(height: 30),
-
-                      Text(
-                        titles[index],
-                        style: AppTextStyles.pacifico400style40.copyWith(
-                          fontSize: 30,
-                        ),
-                      ),
-
-                      const SizedBox(height: 10),
-
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: Text(
@@ -97,6 +79,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                           textAlign: TextAlign.center,
                           style: AppTextStyles.lato600style20.copyWith(
                             fontWeight: FontWeight.w300,
+                            color: Colors.white,
                           ),
                         ),
                       ),
@@ -107,9 +90,10 @@ class _OnBoardingViewState extends State<OnBoardingView> {
 
               SmoothPageIndicator(
                 controller: pageController,
-                count: 3,
+                count: images.length,
+
                 effect: WormEffect(
-                  dotColor: Colors.white,
+                  dotColor: Colors.white.withOpacity(0.6),
                   activeDotColor: AppColors.green,
                   dotHeight: 12,
                   dotWidth: 12,
@@ -121,14 +105,14 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: InkWell(
-                  onTap: () {
-                    if (currentPage < 2) {
+                  onTap: () async {
+                    if (currentPage < images.length - 1) {
                       pageController.nextPage(
                         duration: const Duration(milliseconds: 400),
                         curve: Curves.easeInOut,
                       );
                     } else {
-                      _setNotFirstOpen();
+                      await _setNotFirstOpen();
                       customNavigate(context, "/login");
                     }
                   },
@@ -140,7 +124,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
-                      currentPage == 2 ? "ابدأ" : "التالي",
+                      currentPage == images.length - 1 ? "ابدأ" : "التالي",
                       style: AppTextStyles.lato600style20.copyWith(
                         color: Colors.white,
                       ),
@@ -151,23 +135,23 @@ class _OnBoardingViewState extends State<OnBoardingView> {
 
               const SizedBox(height: 10),
 
-              if (currentPage < 2)
+              if (currentPage < images.length - 1)
                 TextButton(
-                  onPressed: () {
-                    _setNotFirstOpen();
+                  onPressed: () async {
+                    await _setNotFirstOpen();
                     customNavigate(context, "/login");
                   },
                   child: Text(
                     "تخطي",
                     style: AppTextStyles.lato600style20.copyWith(
-                      color: Colors.black,
+                      color: Colors.white,
                     ),
                   ),
                 )
               else
                 const SizedBox(height: 48),
 
-              const SizedBox(height: 80),
+              const SizedBox(height: 40),
             ],
           ),
         ],

@@ -130,7 +130,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                       );
                     } else {
                       await _setNotFirstOpen();
-                      customNavigate(context, "/login");
+                      customNavigatePushReplacement(context, "/login");
                     }
                   },
                   child: Container(
@@ -156,7 +156,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                 TextButton(
                   onPressed: () async {
                     await _setNotFirstOpen();
-                    customNavigate(context, "/login");
+                    customNavigatePushReplacement(context, "/login");
                   },
                   child: Text(
                     "تخطي",

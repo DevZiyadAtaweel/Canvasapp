@@ -6,4 +6,5 @@ class AppColors {
   static Color green = const Color(0xFF216499);
   static Color lightGrey = Colors.grey.shade100;
   static Color textColor = const Color(0xFFC8BDAD);
+  static Color textField = const Color(0xFFE8FCEC);
 }

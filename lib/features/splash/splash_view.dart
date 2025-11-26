@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moftahak/core/constants/app_assets.dart';
-import 'package:moftahak/core/constants/app_colors.dart';
 import 'package:moftahak/core/constants/app_strings.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/constants/navigation.dart';
@@ -18,7 +17,6 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
-    // أول ما تفتح الشاشة، نطلب من الكيوبت يشيّك
     context.read<SplashCubit>().checkAppStart();
   }
 
@@ -38,16 +36,13 @@ class _SplashViewState extends State<SplashView> {
           // BlocListener عشان نسمع للتغييرات وننقل الشاشات
           BlocListener<SplashCubit, SplashState>(
             listener: (context, state) {
-              customNavigate(context, '/onBoarding');
-
-              // if (state is SplashToOnBoarding) {
-              // customNavigate(context, '/onBoarding');
-              // }
-              // } else if (state is SplashToAuth) {
-              //   customNavigate(context, '/login');
-              // } else if (state is SplashToHome) {
-              //   customNavigate(context, '/home');
-              // }
+              if (state is SplashToOnBoarding) {
+                customNavigatePushReplacement(context, '/onBoarding');
+              } else if (state is SplashToAuth) {
+                customNavigatePushReplacement(context, '/login');
+              } else if (state is SplashToHome) {
+                customNavigatePushReplacement(context, '/home');
+              }
             },
             child: Center(
               child: Column(

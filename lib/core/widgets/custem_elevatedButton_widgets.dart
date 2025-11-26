@@ -37,19 +37,19 @@ import '../../core/constants/app_colors.dart';
 //   }
 // }
 
-
-
 class CustemElevatedbuttonWidgets extends StatelessWidget {
   const CustemElevatedbuttonWidgets({
     super.key,
     required this.textButton,
     required this.width,
     this.icon,
+    required this.onPressed,
   });
 
   final String textButton;
   final double width;
   final Widget? icon; // ⬅ أيقونة اختيارية
+  final VoidCallback onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -57,7 +57,7 @@ class CustemElevatedbuttonWidgets extends StatelessWidget {
       height: 55,
       width: width,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.yellow,
           foregroundColor: Colors.black,
@@ -70,26 +70,26 @@ class CustemElevatedbuttonWidgets extends StatelessWidget {
         // 👇 هنا المنطق الجديد
         child: icon == null
             ? Text(
-          textButton,
-          style: const TextStyle(
-            fontSize: 25,
-            fontWeight: FontWeight.bold,
-          ),
-        )
+                textButton,
+                style: const TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.bold,
+                ),
+              )
             : Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            icon!,
-            const SizedBox(width: 10),
-            Text(
-              textButton,
-              style: const TextStyle(
-                fontSize: 25,
-                fontWeight: FontWeight.bold,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  icon!,
+                  const SizedBox(width: 10),
+                  Text(
+                    textButton,
+                    style: const TextStyle(
+                      fontSize: 25,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
       ),
     );
   }

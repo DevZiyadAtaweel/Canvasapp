@@ -3,6 +3,7 @@ import 'package:moftahak/features/add%20son/add_child_view.dart';
 import 'package:moftahak/features/auth/cubit/auth_cubit.dart';
 import 'package:moftahak/features/auth/login/login_view.dart';
 import 'package:moftahak/features/auth/signup/sign_up_view.dart';
+import 'package:moftahak/features/drawing/drawing_screen.dart';
 import 'package:moftahak/features/home/home_screen.dart';
 import 'package:moftahak/features/onBoarding/on_boarding_view.dart';
 import 'package:moftahak/features/settings/settings_view.dart';
@@ -40,5 +41,6 @@ final GoRouter appRouter = GoRouter(
       },
     ),
     GoRoute(path: '/support', builder: (context, state) => SupportView()),
+    GoRoute(path: '/drawing', builder: (context, state) => DrawingScreen()),
   ],
 );

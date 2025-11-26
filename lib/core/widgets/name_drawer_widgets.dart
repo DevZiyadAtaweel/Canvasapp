@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
 import '../../core/constants/app_colors.dart';
+
 class NameDrawerWidgets extends StatelessWidget {
   const NameDrawerWidgets({super.key, required this.TextName});
-final String TextName;
+  final String TextName;
   @override
   Widget build(BuildContext context) {
-    return   Row(
-
-mainAxisAlignment: MainAxisAlignment.center,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-         Text(
+        Text(
           TextName,
           style: TextStyle(
-            color: Colors.black,
+            color: Colors.white,
             fontSize: 32,
             fontWeight: FontWeight.bold,
             fontFamily: 'Arial',

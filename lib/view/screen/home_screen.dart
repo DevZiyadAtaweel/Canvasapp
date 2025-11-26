@@ -5,6 +5,7 @@ import '../widgets/custem_drawing_widgets.dart';
 import '../widgets/custem_elevatedButton_widgets.dart';
 import '../widgets/custem_image_icon_widgets.dart';
 import '../widgets/name_drawer_widgets.dart';
+import 'drawing_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -20,23 +21,28 @@ class HomeScreen extends StatelessWidget {
           child: ListView(
             children: [
               Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   const SizedBox(height: 20),
 
                   // مسافة علوية إضافية
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      NameDrawerWidgets(
-                        TextName: 'الأبناء',
+
+                      NameDrawerWidgets(),
+                      SizedBox(
+                        width: 70,
                       ),
-                      CustemImageIconWidgets(
-                        width: 60,
-                        height: 60,
-                        imagepath: 'assets/images/on_boarding_new.png',
-                      ),
+
+                          CustemImageIconWidgets(
+                            width: 60,
+                            height: 60,
+                            imagepath: 'assets/images/on_boarding_new.png',
+                          ),
+
                     ],
                   ),
                   // *******************
@@ -52,7 +58,14 @@ class HomeScreen extends StatelessWidget {
                   // زر رسمة جديدة
                   // *******************
                   const SizedBox(height: 25),
-                  CustemElevatedbuttonWidgets(width:double.infinity,textButton: 'رسمة جديدة'),
+                  CustemElevatedbuttonWidgets(
+                    onPressed:()
+                    {
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>DrawingScreen()));
+                    },
+                    width: double.infinity,
+                    textButton: 'رسمة جديدة',
+                  ),
                   SizedBox(height: 15),
                   // *******************
                   // نظرة على رسومات طفلك

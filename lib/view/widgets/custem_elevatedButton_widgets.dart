@@ -44,9 +44,9 @@ class CustemElevatedbuttonWidgets extends StatelessWidget {
     super.key,
     required this.textButton,
     required this.width,
-    this.icon,
+    this.icon, required this.onPressed,
   });
-
+  final VoidCallback onPressed;
   final String textButton;
   final double width;
   final Widget? icon; // ⬅ أيقونة اختيارية
@@ -57,7 +57,7 @@ class CustemElevatedbuttonWidgets extends StatelessWidget {
       height: 55,
       width: width,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.yellow,
           foregroundColor: Colors.black,

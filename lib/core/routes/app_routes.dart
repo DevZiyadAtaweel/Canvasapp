@@ -3,7 +3,7 @@ import 'package:moftahak/features/add%20son/add_child_view.dart';
 import 'package:moftahak/features/auth/cubit/auth_cubit.dart';
 import 'package:moftahak/features/auth/login/login_view.dart';
 import 'package:moftahak/features/auth/signup/sign_up_view.dart';
-import 'package:moftahak/features/home/home_view.dart';
+import 'package:moftahak/features/home/home_screen.dart';
 import 'package:moftahak/features/onBoarding/on_boarding_view.dart';
 import 'package:moftahak/features/settings/settings_view.dart';
 import 'package:moftahak/features/splash/splash_view.dart';
@@ -25,7 +25,7 @@ final GoRouter appRouter = GoRouter(
 
     GoRoute(path: '/onBoarding', builder: (context, state) => OnBoardingView()),
 
-    GoRoute(path: '/home', builder: (context, state) => HomeView()),
+    GoRoute(path: '/home', builder: (context, state) => HomeScreen()),
 
     GoRoute(path: '/login', builder: (context, state) => LoginView()),
     GoRoute(path: '/signUp', builder: (context, state) => SignUpView()),

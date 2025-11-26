@@ -34,6 +34,7 @@ class AddChildView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(height: kToolbarHeight + 20),
+
                     CustomTextField(text: "الاسم"),
                     CustomTextField(text: "تاريخ الميلاد"),
                     CustomTextField(text: "الجنس"),

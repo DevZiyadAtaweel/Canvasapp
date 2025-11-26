@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moftahak/core/constants/navigation.dart';
 import 'package:moftahak/core/widgets/custem_drawing_widgets.dart';
 import 'package:moftahak/core/widgets/custem_elevatedButton_widgets.dart';
 import 'package:moftahak/core/widgets/custem_image_icon_widgets.dart';
@@ -51,6 +52,9 @@ class HomeScreen extends StatelessWidget {
                   // *******************
                   const SizedBox(height: 25),
                   CustemElevatedbuttonWidgets(
+                    onPressed: () {
+                      customNavigatePush(context, "/settings");
+                    },
                     width: double.infinity,
                     textButton: 'رسمة جديدة',
                   ),

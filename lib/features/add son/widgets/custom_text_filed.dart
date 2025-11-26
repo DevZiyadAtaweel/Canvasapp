@@ -17,13 +17,16 @@ class CustomTextField extends StatelessWidget {
             style: AppTextStyles.lato700style28.copyWith(fontSize: 20),
           ),
           SizedBox(height: 8),
-          TextField(
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(8.0),
+          SizedBox(
+            width: 350,
+            child: TextField(
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8.0),
+                ),
+                fillColor: AppColors.textField,
+                filled: true,
               ),
-              fillColor: AppColors.textField,
-              filled: true,
             ),
           ),
         ],

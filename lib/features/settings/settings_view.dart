@@ -41,7 +41,6 @@ class SettingsView extends StatelessWidget {
           body: Stack(
             children: [
               Container(
-                width: double.infinity,
                 padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 24.0),
                 decoration: BoxDecoration(gradient: AppGradients.mainGradient),
                 child: Column(

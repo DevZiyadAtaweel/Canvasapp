@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:moftahak/core/constants/navigation.dart';
 import 'package:moftahak/core/widgets/custem_drawing_widgets.dart';
 import 'package:moftahak/core/widgets/custem_elevatedButton_widgets.dart';
 import 'package:moftahak/core/widgets/custem_image_icon_widgets.dart';
 import 'package:moftahak/core/widgets/name_drawer_widgets.dart';
+import 'package:moftahak/features/drawing/drawing_screen.dart';
 
 import '../../core/constants/app_colors.dart';
 
@@ -21,16 +21,19 @@ class HomeScreen extends StatelessWidget {
           child: ListView(
             children: [
               Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   const SizedBox(height: 20),
 
                   // مسافة علوية إضافية
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      NameDrawerWidgets(TextName: 'الأبناء'),
+                      NameDrawerWidgets(),
+                      SizedBox(width: 70),
+
                       CustemImageIconWidgets(
                         width: 60,
                         height: 60,
@@ -53,7 +56,12 @@ class HomeScreen extends StatelessWidget {
                   const SizedBox(height: 25),
                   CustemElevatedbuttonWidgets(
                     onPressed: () {
-                      customNavigatePush(context, "/settings");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DrawingScreen(),
+                        ),
+                      );
                     },
                     width: double.infinity,
                     textButton: 'رسمة جديدة',

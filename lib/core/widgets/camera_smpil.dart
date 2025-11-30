@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class CameraScreen extends StatefulWidget {
-  CameraScreen({super.key});
+  const CameraScreen({super.key});
 
   @override
   State<CameraScreen> createState() => _CameraScreenState();
@@ -23,36 +23,23 @@ class _CameraScreenState extends State<CameraScreen> {
           'التصوير',
           style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        leading: IconButton(
-          iconSize: 35.0,
-          onPressed: () {},
-          icon: Icon(Icons.menu),
-        ),
+        leading: IconButton(iconSize: 35.0, onPressed: () {}, icon: Icon(Icons.menu)),
       ),
 
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-
-          (_mediaFileList??[]).isNotEmpty?
-          Center(
-            child: SizedBox(
-              height: 250,
-              width: 250,
-              child:  _previewImages(),
-            ),
-          ):
-          Center(
-            child: IconButton(
-              iconSize: 110.0,
-              onPressed: ()
-              {
-                _onImageButtonPressed(ImageSource.camera, context: context);
-              },
-              icon:
-              Icon(Icons.camera_alt_outlined),
-            ),
-          ),
+          (_mediaFileList ?? []).isNotEmpty
+              ? Center(child: SizedBox(height: 250, width: 250, child: _previewImages()))
+              : Center(
+                  child: IconButton(
+                    iconSize: 110.0,
+                    onPressed: () {
+                      _onImageButtonPressed(ImageSource.camera);
+                    },
+                    icon: Icon(Icons.camera_alt_outlined),
+                  ),
+                ),
           Text(
             'أرفق الصورة',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
@@ -62,12 +49,7 @@ class _CameraScreenState extends State<CameraScreen> {
     );
   }
 
-  Future<void> _onImageButtonPressed(
-      ImageSource source, {
-        required BuildContext context,
-        bool allowMultiple = false,
-        bool isMedia = false,
-      }) async {
+  Future<void> _onImageButtonPressed(ImageSource source) async {
     try {
       final XFile? pickedFile = await _picker.pickImage(source: source);
       setState(() {
@@ -81,13 +63,10 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   void _setImageFileListFromFile(XFile? value) {
-
     _mediaFileList = value == null ? null : <XFile>[value];
   }
 
-
   Widget _previewImages() {
-
     if (_mediaFileList != null) {
       return Semantics(
         label: 'image_picker_example_picked_images',
@@ -100,10 +79,10 @@ class _CameraScreenState extends State<CameraScreen> {
                 File(_mediaFileList![index].path),
                 errorBuilder:
                     (BuildContext context, Object error, StackTrace? stackTrace) {
-                  return const Center(
-                    child: Text('This image type is not supported'),
-                  );
-                },
+                      return const Center(
+                        child: Text('This image type is not supported'),
+                      );
+                    },
               ),
             );
           },
@@ -116,8 +95,4 @@ class _CameraScreenState extends State<CameraScreen> {
       return const Text('You have not yet picked an image.', textAlign: TextAlign.center);
     }
   }
-
-
-
-
 }

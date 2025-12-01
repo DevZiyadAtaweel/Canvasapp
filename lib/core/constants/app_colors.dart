@@ -4,5 +4,7 @@ class AppColors {
   static Color backGroundColor = const Color(0xFF116cb7);
   static Color yellow = const Color(0xFFFFE606);
   static Color green = const Color(0xFF216499);
-  static Color lightGreen = const Color(0xFFE8FCEC);
+  static Color lightGrey = Colors.grey.shade100;
+  static Color textColor = const Color(0xFFC8BDAD);
+  static Color textField = const Color(0xFFE8FCEC);
 }

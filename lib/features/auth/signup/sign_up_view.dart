@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moftahak/core/constants/app_colors.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/constants/navigation.dart';
+import 'package:moftahak/core/widgets/corner_decoration.dart';
 import 'package:moftahak/features/auth/cubit/auth_cubit.dart';
 import 'package:moftahak/features/auth/widgets/auth_text_filed.dart';
 import 'package:moftahak/features/auth/widgets/auth_toggle_tabs.dart';
@@ -35,7 +36,7 @@ class SignUpView extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text("تم إنشاء الحساب بنجاح")),
                 );
-                customNavigate(context, "/home");
+                customNavigatePushReplacement(context, "/home");
               } else if (state is AuthFailure) {
                 ScaffoldMessenger.of(
                   context,
@@ -46,20 +47,7 @@ class SignUpView extends StatelessWidget {
             builder: (context, state) {
               return Stack(
                 children: [
-                  Positioned(
-                    top: -61,
-                    left: -44,
-                    child: Container(
-                      width: 122,
-                      height: 164,
-                      decoration: BoxDecoration(
-                        color: AppColors.yellow,
-                        borderRadius: const BorderRadius.only(
-                          bottomRight: Radius.circular(80),
-                        ),
-                      ),
-                    ),
-                  ),
+                  CornerDecoration(),
 
                   Column(
                     children: [
@@ -109,7 +97,7 @@ class SignUpView extends StatelessWidget {
                                 AuthToggleTabs(
                                   isLoginSelected: false,
                                   onLoginTap: () =>
-                                      customNavigate(context, "/login"),
+                                      customNavigatePush(context, "/login"),
                                   onSignupTap: () {},
                                 ),
 
@@ -229,7 +217,7 @@ class SignUpView extends StatelessWidget {
                                                 ),
                                           ),
                                           GestureDetector(
-                                            onTap: () => customNavigate(
+                                            onTap: () => customNavigatePush(
                                               context,
                                               "/login",
                                             ),

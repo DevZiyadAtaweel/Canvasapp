@@ -73,6 +73,10 @@ flutter:
         - asset: assets/fonts/Lato-Light.ttf
         - asset: assets/fonts/Lato-Bold.ttf
           weight: 700
+    - family: Sen
+      fonts:
+        - asset: assets/fonts/Sen-Regular.ttf
+          weight: 700
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf

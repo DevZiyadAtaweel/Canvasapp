@@ -23,24 +23,35 @@ class CustomDropdownField<T> extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            label,
-            style: AppTextStyles.lato700style28.copyWith(fontSize: 20),
-          ),
+          Text(label, style: AppTextStyles.sen700style20),
           const SizedBox(height: 8),
-
           SizedBox(
-            width: 350, // 👈 العرض المطلوب
+            width: 350,
             child: DropdownButtonFormField<T>(
+              // 👈 نحمي أنفسنا من القيم الغلط
+              value: (value != null && items.contains(value)) ? value : null,
+
+              hint: const Text(
+                "انقر للاختيار",
+                style: TextStyle(color: Colors.grey, fontFamily: "Sen"),
+              ),
+
               items: items
                   .map(
                     (e) => DropdownMenuItem<T>(
                       value: e,
-                      child: Text(e.toString()),
+                      child: Text(
+                        e.toString(),
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontFamily: "Sen",
+                        ),
+                      ),
                     ),
                   )
                   .toList(),
               onChanged: onChanged,
+              style: const TextStyle(color: Colors.black, fontFamily: "Sen"),
               decoration: InputDecoration(
                 filled: true,
                 fillColor: AppColors.textField,

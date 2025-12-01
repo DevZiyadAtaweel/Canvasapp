@@ -72,7 +72,7 @@ class CustemElevatedbuttonWidgets extends StatelessWidget {
             ? Text(
                 textButton,
                 style: const TextStyle(
-                  fontSize: 25,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               )

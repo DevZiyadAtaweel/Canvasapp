@@ -1,17 +1,15 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:moftahak/firebase_options.dart';
-// يجب عليك استيراد AppRouter و HomeScreen يدوياً إذا لم يكونا موجودين في الملف الأصلي
-// يجب استبدال السطرين التاليين بالاستيراد الصحيح لمشروعك:
-// import 'package:moftahak/core/router/app_router.dart'; // افترضت مسار AppRouter
-// import 'package:moftahak/features/home/home_screen.dart'; // افترضت مسار HomeScreen
 
-// ملاحظة: بما أن التعارض لم يوضح مكان تعريف 'appRouter' أو 'HomeScreen'،
-// سأفترض أن 'HomeScreen' هو للتجربة و 'appRouter' هو التوجيه الفعلي.
+import 'features/ai_logic/faierbase_ai_logic.dart';
+// يجب عليك التأكد من استيراد 'appRouter' من المسار الصحيح في مشروعك
+// إذا كان 'appRouter' غير مُعرّف بعد، فستحتاج لإضافته يدوياً
+// (مثال: import 'package:moftahak/core/router/app_router.dart';)
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // تأكد من أن DefaultFirebaseOptions متوفرة في ملف firebase_options.dart
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -24,7 +22,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    // تم حل التعارض: تم اعتماد بنية MaterialApp.router مرة واحدة
+    // مع دمج جميع إعدادات الـ Theme والـ routerConfig.
     return MaterialApp.router(
+      // تأكد أن 'appRouter' معرف ومتوفر للاستخدام
+      // routerConfig: appRouter,
 
       debugShowCheckedModeBanner: false,
 
@@ -45,10 +47,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-
-
 
 
 

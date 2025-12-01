@@ -4,20 +4,26 @@ import 'package:moftahak/core/constants/app_colors.dart';
 import 'package:moftahak/core/constants/app_strings.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/constants/navigation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-class OnBoardingView extends StatelessWidget {
-  OnBoardingView({super.key});
+class OnBoardingView extends StatefulWidget {
+  const OnBoardingView({super.key});
 
+  @override
+  State<OnBoardingView> createState() => _OnBoardingViewState();
+}
+
+class _OnBoardingViewState extends State<OnBoardingView> {
   final PageController pageController = PageController();
+
+  int currentPage = 0;
 
   final List<String> images = [
     AppAssets.onBoarding1,
     AppAssets.onBoarding2,
     AppAssets.onBoarding3,
   ];
-
-  final List<String> titles = ["MOFTAHAK", "MOFTAHAK", "MOFTAHAK"];
 
   final List<String> descriptions = [
     AppStrings.onBoarding1,
@@ -26,59 +32,74 @@ class OnBoardingView extends StatelessWidget {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    pageController.addListener(() {
+      setState(() {
+        currentPage = pageController.page!.round();
+      });
+    });
+  }
+
+  Future<void> _setNotFirstOpen() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('is_first_open', false);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backGroundColor,
       body: Stack(
         children: [
-          Positioned(
-            top: -61,
-            left: -44,
-            child: Container(
-              width: 122,
-              height: 164,
-              decoration: BoxDecoration(
-                color: AppColors.yellow,
-                borderRadius: BorderRadius.only(
-                  bottomRight: Radius.circular(80),
-                ),
-              ),
-            ),
+          SizedBox.expand(
+            child: Image.asset(images[currentPage], fit: BoxFit.cover),
           ),
 
+          // طبقة شفافة فوق الصورة (اختياري عشان النص يبان أوضح)
+          Container(color: Colors.black.withOpacity(0.1)),
+
+          // المحتوى
           Column(
             children: [
               Expanded(
                 child: PageView.builder(
                   controller: pageController,
-                  itemCount: 3,
+                  itemCount: images.length,
                   itemBuilder: (context, index) => Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Image.asset(images[index]),
-                      const SizedBox(height: 30),
-
-                      Text(
-                        titles[index],
-                        style: AppTextStyles.pacifico400style40.copyWith(
-                          fontSize: 30,
-                        ),
-                      ),
-
-                      const SizedBox(height: 10),
+                      Spacer(flex: currentPage == 2 ? 1 : 3),
 
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: Text(
                           descriptions[index],
                           textAlign: TextAlign.center,
-                          style: AppTextStyles.lato600style20.copyWith(
-                            fontWeight: FontWeight.w300,
-                          ),
+                          style: AppTextStyles.lato700style28,
                         ),
                       ),
+                      Spacer(flex: 3),
 
-                      const SizedBox(height: 10),
+                      // (currentPage == 2)
+                      //      Padding(
+                      //         padding: const EdgeInsets.symmetric(
+                      //           horizontal: 30,
+                      //         ),
+                      //         child: Text(
+                      //           descriptions[index],
+                      //           textAlign: TextAlign.center,
+                      //           style: AppTextStyles.lato700style28,
+                      //         ),
+                      //       )
+                      //     : const SizedBox(height: 200),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(horizontal: 30),
+                      //   child: Text(
+                      //     descriptions[index],
+                      //     textAlign: TextAlign.center,
+                      //     style: AppTextStyles.lato700style28,
+                      //   ),
+                      // ),
                     ],
                   ),
                 ),
@@ -86,9 +107,10 @@ class OnBoardingView extends StatelessWidget {
 
               SmoothPageIndicator(
                 controller: pageController,
-                count: 3,
+                count: images.length,
+
                 effect: WormEffect(
-                  dotColor: Colors.white,
+                  dotColor: Colors.white.withOpacity(0.6),
                   activeDotColor: AppColors.green,
                   dotHeight: 12,
                   dotWidth: 12,
@@ -100,27 +122,26 @@ class OnBoardingView extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 30),
                 child: InkWell(
-                  onTap: () {
-                    int current = pageController.page!.round();
-                    if (current < 2) {
+                  onTap: () async {
+                    if (currentPage < images.length - 1) {
                       pageController.nextPage(
                         duration: const Duration(milliseconds: 400),
                         curve: Curves.easeInOut,
                       );
                     } else {
-                      customNavigate(context, "/login");
+                      await _setNotFirstOpen();
+                      customNavigatePushReplacement(context, "/login");
                     }
                   },
                   child: Container(
                     height: 48,
-                    width: 400,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       color: AppColors.green,
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Text(
-                      "التالي",
+                      currentPage == images.length - 1 ? "ابدأ" : "التالي",
                       style: AppTextStyles.lato600style20.copyWith(
                         color: Colors.white,
                       ),
@@ -131,17 +152,23 @@ class OnBoardingView extends StatelessWidget {
 
               const SizedBox(height: 10),
 
-              TextButton(
-                onPressed: () => customNavigate(context, "/login"),
-                child: Text(
-                  "تخطي",
-                  style: AppTextStyles.lato600style20.copyWith(
-                    color: Colors.black,
+              if (currentPage < images.length - 1)
+                TextButton(
+                  onPressed: () async {
+                    await _setNotFirstOpen();
+                    customNavigatePushReplacement(context, "/login");
+                  },
+                  child: Text(
+                    "تخطي",
+                    style: AppTextStyles.lato600style20.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-              ),
+                )
+              else
+                const SizedBox(height: 48),
 
-              const SizedBox(height: 80),
+              const SizedBox(height: 40),
             ],
           ),
         ],

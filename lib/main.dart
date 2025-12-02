@@ -3,10 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:moftahak/core/routes/app_routes.dart';
 import 'package:moftahak/firebase_options.dart';
 
+// استيراد شاشة البداية لتشغيل التطبيق بشكل مؤقت
+import 'package:moftahak/features/home/home_screen.dart'; // افتراض مسار الشاشة الرئيسية
+import 'package:moftahak/view/screen/analysi_imageby_ai_screen.dart';
+
 import 'features/ai_logic/faierbase_ai_logic.dart';
-// يجب عليك التأكد من استيراد 'appRouter' من المسار الصحيح في مشروعك
-// إذا كان 'appRouter' غير مُعرّف بعد، فستحتاج لإضافته يدوياً
-// (مثال: import 'package:moftahak/core/router/app_router.dart';)
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,6 +45,47 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:flutter/material.dart';

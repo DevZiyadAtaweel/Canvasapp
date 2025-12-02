@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:moftahak/core/widgets/camera_smpil.dart';
 import 'package:moftahak/core/widgets/custem_elevatedButton_widgets.dart';
 import 'package:moftahak/core/widgets/name_drawer_widgets.dart';
 import 'package:moftahak/features/home/home_screen.dart';
@@ -59,11 +58,15 @@ class _DrawingScreenState extends State<DrawingScreen> {
                   child: Image.file(
                     File(_mediaFileList!.first.path),
                     errorBuilder:
-                        (BuildContext context, Object error, StackTrace? stackTrace) {
-                      return const Center(
-                        child: Text('This image type is not supported'),
-                      );
-                    },
+                        (
+                          BuildContext context,
+                          Object error,
+                          StackTrace? stackTrace,
+                        ) {
+                          return const Center(
+                            child: Text('This image type is not supported'),
+                          );
+                        },
                   ),
                 )
               else
@@ -125,7 +128,10 @@ class _DrawingScreenState extends State<DrawingScreen> {
                     ],
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 28, horizontal: 22),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 28,
+                      horizontal: 22,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
@@ -206,7 +212,11 @@ class _DrawingScreenState extends State<DrawingScreen> {
               child: Image.file(
                 File(_mediaFileList![index].path),
                 errorBuilder:
-                    (BuildContext context, Object error, StackTrace? stackTrace) {
+                    (
+                      BuildContext context,
+                      Object error,
+                      StackTrace? stackTrace,
+                    ) {
                       return const Center(
                         child: Text('This image type is not supported'),
                       );
@@ -218,9 +228,15 @@ class _DrawingScreenState extends State<DrawingScreen> {
         ),
       );
     } else if (_pickImageError != null) {
-      return Text('Pick image error: $_pickImageError', textAlign: TextAlign.center);
+      return Text(
+        'Pick image error: $_pickImageError',
+        textAlign: TextAlign.center,
+      );
     } else {
-      return const Text('You have not yet picked an image.', textAlign: TextAlign.center);
+      return const Text(
+        'You have not yet picked an image.',
+        textAlign: TextAlign.center,
+      );
     }
   }
 }

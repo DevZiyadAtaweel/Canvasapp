@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:moftahak/core/routes/app_routes.dart';
 import 'package:moftahak/firebase_options.dart';
 
 import 'features/ai_logic/faierbase_ai_logic.dart';
@@ -7,12 +8,9 @@ import 'features/ai_logic/faierbase_ai_logic.dart';
 // إذا كان 'appRouter' غير مُعرّف بعد، فستحتاج لإضافته يدوياً
 // (مثال: import 'package:moftahak/core/router/app_router.dart';)
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -21,12 +19,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     // تم حل التعارض: تم اعتماد بنية MaterialApp.router مرة واحدة
     // مع دمج جميع إعدادات الـ Theme والـ routerConfig.
     return MaterialApp.router(
       // تأكد أن 'appRouter' معرف ومتوفر للاستخدام
-      // routerConfig: appRouter,
+      routerConfig: appRouter,
 
       debugShowCheckedModeBanner: false,
 
@@ -47,55 +44,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:flutter/material.dart';

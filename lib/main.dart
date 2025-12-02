@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:moftahak/core/routes/app_routes.dart';
 import 'package:moftahak/firebase_options.dart';
 
 // استيراد شاشة البداية لتشغيل التطبيق بشكل مؤقت
@@ -8,12 +9,9 @@ import 'package:moftahak/view/screen/analysi_imageby_ai_screen.dart';
 
 import 'features/ai_logic/faierbase_ai_logic.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -22,11 +20,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    // تم التعديل لحل خطأ "routerConfig is null" عبر العودة إلى MaterialApp العادي
-    return MaterialApp(
-      // تم تعيين الشاشة الرئيسية مباشرةً (Home)
-      home: const HomeScreen(),
+    // تم حل التعارض: تم اعتماد بنية MaterialApp.router مرة واحدة
+    // مع دمج جميع إعدادات الـ Theme والـ routerConfig.
+    return MaterialApp.router(
+      // تأكد أن 'appRouter' معرف ومتوفر للاستخدام
+      routerConfig: appRouter,
 
       debugShowCheckedModeBanner: false,
 

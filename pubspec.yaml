@@ -29,19 +29,20 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   bloc: ^9.1.0
+  camera: ^0.11.2+1
   cupertino_icons: ^1.0.8
+  firebase_ai: ^3.6.0
   firebase_auth: ^6.1.2
   firebase_core: ^4.2.1
-  image_picker: ^1.2.1
-  camera: ^0.11.2+1
-  path_provider: ^2.1.5
-  path: ^1.9.1
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.1
   flutter_native_splash: ^2.4.7
   go_router: ^17.0.0
   google_sign_in: ^6.1.4
+  image_picker: ^1.2.1
+  path: ^1.9.1
+  path_provider: ^2.1.5
   shared_preferences: ^2.5.3
   smooth_page_indicator: ^1.2.1
   firebase_ai: ^3.6.0

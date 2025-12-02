@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moftahak/core/constants/navigation.dart';
 import 'package:moftahak/core/widgets/custem_drawing_widgets.dart';
 import 'package:moftahak/core/widgets/custem_elevatedButton_widgets.dart';
 import 'package:moftahak/core/widgets/custem_image_icon_widgets.dart';
@@ -36,6 +37,9 @@ class HomeScreen extends StatelessWidget {
                       const SizedBox(width: 70),
 
                       CustemImageIconWidgets(
+                        onTap: () {
+                          customNavigatePush(context, "/settings");
+                        },
                         width: 60,
                         height: 60,
                         imagepath: 'assets/images/on_boarding_new.png',
@@ -116,6 +120,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 15),
 
                   // *******************
@@ -145,6 +150,7 @@ class HomeScreen extends StatelessWidget {
                         const SizedBox(height: 40),
 
                         CustemImageIconWidgets(
+                          onTap: () {},
                           width: 135,
                           height: 135,
                           imagepath: 'assets/images/on_boarding_new.png',

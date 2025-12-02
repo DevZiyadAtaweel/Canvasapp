@@ -23,10 +23,12 @@ class SettingsView extends StatelessWidget {
         }
       },
       child: SafeArea(
+        bottom: true,
+        top: false,
         child: Scaffold(
           appBar: AppBar(
             title: Text("اعداداتي", style: AppTextStyles.lato700style28),
-            toolbarHeight: 100,
+            toolbarHeight: 80,
             leading: IconButton(
               onPressed: () {
                 customNavigatePop(context);
@@ -45,94 +47,78 @@ class SettingsView extends StatelessWidget {
                 decoration: BoxDecoration(gradient: AppGradients.mainGradient),
                 child: Column(
                   children: [
-                    SizedBox(height: kToolbarHeight),
+                    SizedBox(height: kToolbarHeight + 20),
                     Divider(color: Colors.white),
-
-                    CircleAvatar(
-                      radius: 40,
-                      backgroundImage: const NetworkImage(
-                        'https://i.pravatar.cc/150?img=47', // غيّريها لـ AssetImage لو عندك صورة محلية
-                      ),
-                    ),
-                    const SizedBox(height: 5),
-                    const Text(
-                      'هالة علي',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    const Text(
-                      'haal123@gmail.com',
-                      style: TextStyle(color: Colors.white70, fontSize: 12),
-                    ),
-
-                    const SizedBox(height: 16),
-
-                    // زر تعديل الملف الشخصي
-                    SizedBox(
-                      width: 180,
-                      height: 40,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFFFFD400),
-                          foregroundColor: Colors.black,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: const Text(
-                          'تعديل الملف الشخصي',
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 24),
-
                     Expanded(
                       child: Directionality(
                         textDirection: TextDirection.rtl,
                         child: SingleChildScrollView(
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              CircleAvatar(
+                                radius: 50,
+                                backgroundImage: const NetworkImage(
+                                  'https://i.pravatar.cc/150?img=47', // غيّريها لـ AssetImage لو عندك صورة محلية
+                                ),
+                              ),
+                              SizedBox(height: 5),
                               const Text(
-                                'الحساب',
+                                'هالة علي',
                                 style: TextStyle(
                                   color: Colors.white,
+                                  fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              const SizedBox(height: 8),
+                              const SizedBox(height: 4),
+                              const Text(
+                                'haal123@gmail.com',
+                                style: TextStyle(
+                                  color: Colors.white70,
+                                  fontSize: 12,
+                                ),
+                              ),
+
+                              //   const SizedBox(height: 16),
+
+                              // // زر تعديل الملف الشخصي
+                              // SizedBox(
+                              //   width: 180,
+                              //   height: 40,
+                              //   child: ElevatedButton(
+                              //     onPressed: () {},
+                              //     style: ElevatedButton.styleFrom(
+                              //       backgroundColor: const Color(0xFFFFD400),
+                              //       foregroundColor: Colors.black,
+                              //       shape: RoundedRectangleBorder(
+                              //         borderRadius: BorderRadius.circular(12),
+                              //       ),
+                              //     ),
+                              //     child: const Text(
+                              //       'تعديل الملف الشخصي',
+                              //       style: TextStyle(
+                              //         fontWeight: FontWeight.bold,
+                              //       ),
+                              //     ),
+                              //   ),
+                              // ),
+                              const SizedBox(height: 24),
+
                               _SettingsCard(
+                                title: 'الحساب',
                                 items: [
                                   _SettingsItem(
                                     title: 'تغيير كلمة المرور',
                                     onTap: () {},
                                   ), // TODO
-                                  _SettingsItem(
-                                    title: 'تحديث البريد الالكتروني',
-                                    onTap: () {},
-                                  ),
                                 ],
                               ),
 
                               const SizedBox(height: 16),
 
                               // قسم الأبناء
-                              const Text(
-                                'الأبناء',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
                               _SettingsCard(
+                                title: 'الأبناء',
                                 items: [
                                   _SettingsItem(title: 'عمر', onTap: () {}),
                                   _SettingsItem(
@@ -147,15 +133,8 @@ class SettingsView extends StatelessWidget {
                               const SizedBox(height: 16),
 
                               // قسم الرسومات
-                              const Text(
-                                'الرسومات',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 8),
                               _SettingsCard(
+                                title: 'الرسومات',
                                 items: [
                                   _SettingsItem(
                                     title: 'تحليل الرسومات',
@@ -203,6 +182,7 @@ class SettingsView extends StatelessWidget {
                   ],
                 ),
               ),
+
               CornerDecoration(),
             ],
           ),
@@ -214,36 +194,49 @@ class SettingsView extends StatelessWidget {
 
 class _SettingsCard extends StatelessWidget {
   final List<_SettingsItem> items;
+  final String title;
 
-  const _SettingsCard({required this.items});
+  const _SettingsCard({required this.items, required this.title});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.9),
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        children: items
-            .map(
-              (item) => Column(
-                children: [
-                  ListTile(
-                    title: Text(
-                      item.title,
-                      style: const TextStyle(fontWeight: FontWeight.w500),
-                    ),
-                    trailing: const Icon(Icons.arrow_forward_ios, size: 18),
-                    onTap: item.onTap,
+    return Column(
+      children: [
+        Container(
+          alignment: Alignment.topRight,
+          child: Text(
+            title,
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.9),
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            children: items
+                .map(
+                  (item) => Column(
+                    children: [
+                      ListTile(
+                        title: Text(
+                          item.title,
+                          style: const TextStyle(fontWeight: FontWeight.w500),
+                        ),
+                        trailing: const Icon(Icons.arrow_forward_ios, size: 18),
+                        onTap: item.onTap,
+                      ),
+                      if (item != items.last)
+                        const Divider(height: 1, thickness: 0.5),
+                    ],
                   ),
-                  if (item != items.last)
-                    const Divider(height: 1, thickness: 0.5),
-                ],
-              ),
-            )
-            .toList(),
-      ),
+                )
+                .toList(),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -80,7 +80,7 @@ class _CustemElevatedbuttonWidgetsState extends State<CustemElevatedbuttonWidget
             ? Text(
                 widget.textButton,
                 style: const TextStyle(
-                  fontSize: 25,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               )

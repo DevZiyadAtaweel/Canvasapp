@@ -3,8 +3,16 @@ import 'package:moftahak/core/constants/app_colors.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
 
 class CustomTextField extends StatelessWidget {
-  const CustomTextField({super.key, required this.text});
+  const CustomTextField({
+    super.key,
+    required this.text,
+    required this.controller,
+    required this.validator,
+  });
   final String text;
+  final TextEditingController controller;
+  final String? Function(String?)? validator;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -16,7 +24,10 @@ class CustomTextField extends StatelessWidget {
           SizedBox(height: 8),
           SizedBox(
             width: 350,
-            child: TextField(
+            child: TextFormField(
+              validator: validator,
+
+              controller: controller,
               style: TextStyle(color: Colors.black, fontFamily: "Sen"),
               decoration: InputDecoration(
                 border: OutlineInputBorder(

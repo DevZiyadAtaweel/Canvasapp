@@ -7,12 +7,18 @@ import 'package:moftahak/firebase_options.dart';
 // استيراد شاشة البداية لتشغيل التطبيق بشكل مؤقت
 import 'package:moftahak/features/home/home_screen.dart'; // افتراض مسار الشاشة الرئيسية
 import 'package:moftahak/view/screen/analysi_imageby_ai_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'features/ai_logic/faierbase_ai_logic.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Supabase.initialize(
+    url: 'https://sroqjsnknejpmddoblfj.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyb3Fqc25rbmVqcG1kZG9ibGZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ2NzY4MTcsImV4cCI6MjA4MDI1MjgxN30.fMI3ICfZelFWXdRe8K3MoqVbIQ2Z5kjLW_bhDBpgfHY',
+  );
   runApp(const MyApp());
 }
 
@@ -46,47 +52,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:flutter/material.dart';

@@ -62,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         // لو حابب تمرر الاسم لـ ChildrenDropdown عدّل الويجت يستقبل اسم
-                        SizedBox(width: 150, child: ChildrenDropdown()),
+                        SizedBox(width: 100, child: ChildrenDropdown()),
 
                         const SizedBox(width: 70),
 

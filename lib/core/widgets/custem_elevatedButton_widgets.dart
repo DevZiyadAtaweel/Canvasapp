@@ -42,22 +42,24 @@ class CustemElevatedbuttonWidgets extends StatefulWidget {
     super.key,
     required this.textButton,
     required this.width,
- required this.onPressed,
+    required this.onPressed,
     this.icon,
-  // <<<<< HEAD:lib/view/widgets/custem_elevatedButton_widgets.dart
-// =======
-// >>>>>>> 8c98d7b106ddb0927500bed0785b77d66099d337:lib/core/widgets/custem_elevatedButton_widgets.dart
+    // <<<<< HEAD:lib/view/widgets/custem_elevatedButton_widgets.dart
+    // =======
+    // >>>>>>> 8c98d7b106ddb0927500bed0785b77d66099d337:lib/core/widgets/custem_elevatedButton_widgets.dart
   });
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final String textButton;
   final double width;
   final Widget? icon;
   @override
-  State<CustemElevatedbuttonWidgets> createState() => _CustemElevatedbuttonWidgetsState();
+  State<CustemElevatedbuttonWidgets> createState() =>
+      _CustemElevatedbuttonWidgetsState();
 }
 
-class _CustemElevatedbuttonWidgetsState extends State<CustemElevatedbuttonWidgets> {
- // ⬅ أيقونة اختيارية
+class _CustemElevatedbuttonWidgetsState
+    extends State<CustemElevatedbuttonWidgets> {
+  // ⬅ أيقونة اختيارية
 
   @override
   Widget build(BuildContext context) {

@@ -82,7 +82,7 @@ class _CustemElevatedbuttonWidgetsState
             ? Text(
                 widget.textButton,
                 style: const TextStyle(
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),
               )
@@ -90,11 +90,10 @@ class _CustemElevatedbuttonWidgetsState
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   widget.icon!,
-                  const SizedBox(width: 10),
                   Text(
                     widget.textButton,
                     style: const TextStyle(
-                      fontSize: 25,
+                      fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

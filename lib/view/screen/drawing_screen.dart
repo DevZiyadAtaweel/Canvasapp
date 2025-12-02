@@ -4,15 +4,12 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:typed_data';
 import '../../core/constants/app_colors.dart';
 import '../../core/widgets/custem_elevatedButton_widgets.dart';
 import '../../features/home/home_screen.dart';
 import '../widgets/name_drawer_widgets.dart';
 import 'analysi_imageby_ai_screen.dart' as picker;
 import 'display_image.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
 
 class DrawingScreen extends StatefulWidget {
   const DrawingScreen({super.key});
@@ -125,6 +122,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: AppColors.backGroundColor,
       appBar: AppBar(

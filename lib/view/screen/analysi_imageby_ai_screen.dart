@@ -22,9 +22,22 @@ class AnalysiImagebyAiScreen extends StatelessWidget {
      final content = [
        Content.multi([
          TextPart(
-           "Analyze the emotional state of the child in this image. "
-               "Return the result as JSON with fields {emotion, confidence, description}. "
-               "Be accurate and consider facial expression, eyes, posture.",
+             'As a child psychology expert analyzing drawings of children (3-12 years) with psychological disorders or autism:'
+
+                 '🔍 Immediate Observations:'
+                 '1. Color usage and symbolism'
+                 '2. Organization and detail level'
+                 ' 3. Element relationships'
+                 '💡 Initial Assessment:'
+                 ' - [Potential disorder 1]'
+                 '  - [Potential disorder 2]'
+
+                 '  ✨ Practical Parent Recommendations: '
+                 '• [Suggestion 1 - short & direct] '
+                 '• [Suggestion 2 - daily implementable] '
+                 '• [Suggestion 3 - emotional support]'
+
+                 ' ⚠️ Note: This is preliminary analysis only. Consult a professionalfor accurate diagnosis'
          ),
          DataPart("image/jpeg", imageBytes),
        ])
@@ -117,10 +130,23 @@ Future<String> analyzeChildEmotion(Uint8List imageBytes) async {
   final content = [
     Content.multi([
       TextPart(
-        "Analyze the emotional state of the child in this image. "
-            "Return the result as JSON with fields {emotion, confidence, description}. "
-            "Be accurate and consider facial expression, eyes, posture.",
-      ),
+        "As a child psychology expert analyzing drawings of children (3-12 years) with psychological disorders or autism:"
+
+        '🔍 Immediate Observations:'
+            '1. Color usage and symbolism'
+            '2. Organization and detail level'
+            ' 3. Element relationships'
+            '💡 Initial Assessment:'
+            ' - [Potential disorder 1]'
+            '  - [Potential disorder 2]'
+
+            '  ✨ Practical Parent Recommendations: '
+            '• [Suggestion 1 - short & direct] '
+            '• [Suggestion 2 - daily implementable] '
+            '• [Suggestion 3 - emotional support]'
+
+            ' ⚠️ Note: This is preliminary analysis only. Consult a professionalfor accurate diagnosis"'
+                  ),
       DataPart("image/jpeg", imageBytes),
     ])
   ];

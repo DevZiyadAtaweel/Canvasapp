@@ -29,7 +29,7 @@ class CustomDropdownField<T> extends StatelessWidget {
             width: 350,
             child: DropdownButtonFormField<T>(
               // 👈 نحمي أنفسنا من القيم الغلط
-              value: (value != null && items.contains(value)) ? value : null,
+              initialValue: (value != null && items.contains(value)) ? value : null,
 
               hint: const Text(
                 "انقر للاختيار",

@@ -1,15 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:moftahak/core/constants/app_gradients.dart';
 import 'package:moftahak/core/routes/app_routes.dart';
 import 'package:moftahak/firebase_options.dart';
 
 // استيراد شاشة البداية لتشغيل التطبيق بشكل مؤقت
-import 'package:moftahak/features/home/home_screen.dart'; // افتراض مسار الشاشة الرئيسية
-import 'package:moftahak/view/screen/analysi_imageby_ai_screen.dart';
+// افتراض مسار الشاشة الرئيسية
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'features/ai_logic/faierbase_ai_logic.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

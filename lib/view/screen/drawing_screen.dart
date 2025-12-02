@@ -48,8 +48,9 @@ class _DrawingScreenState extends State<DrawingScreen> {
       final XFile? file =
       (await picker.pickImage(source: ImageSource.gallery)) as XFile?;
 
-        if(file==null)
+        if(file==null) {
           return;
+        }
 
       final bytes = await file.readAsBytes();
 

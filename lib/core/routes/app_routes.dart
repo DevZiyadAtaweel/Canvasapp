@@ -1,5 +1,6 @@
 import 'package:go_router/go_router.dart';
-import 'package:moftahak/features/add%20son/add_child_view.dart';
+import 'package:moftahak/features/add%20child/add_child_view.dart';
+import 'package:moftahak/features/add%20child/cubit/add_child_cubit.dart';
 import 'package:moftahak/features/auth/cubit/auth_cubit.dart';
 import 'package:moftahak/features/auth/login/login_view.dart';
 import 'package:moftahak/features/auth/signup/sign_up_view.dart';
@@ -36,7 +37,15 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(path: '/login', builder: (context, state) => LoginView()),
     GoRoute(path: '/signUp', builder: (context, state) => SignUpView()),
-    GoRoute(path: '/addChild', builder: (context, state) => AddChildView()),
+    GoRoute(
+      path: '/addChild',
+      builder: (context, state) {
+        return BlocProvider(
+          create: (_) => AddChildCubit(),
+          child: const AddChildView(), // شاشة UI اللي انت عاملها
+        );
+      },
+    ),
     GoRoute(
       path: '/settings',
       builder: (context, state) {

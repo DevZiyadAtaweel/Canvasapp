@@ -2,10 +2,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:moftahak/firebase_options.dart';
 
+// استيراد شاشة البداية لتشغيل التطبيق بشكل مؤقت
+import 'package:moftahak/features/home/home_screen.dart'; // افتراض مسار الشاشة الرئيسية
+import 'package:moftahak/view/screen/analysi_imageby_ai_screen.dart';
+
 import 'features/ai_logic/faierbase_ai_logic.dart';
-// يجب عليك التأكد من استيراد 'appRouter' من المسار الصحيح في مشروعك
-// إذا كان 'appRouter' غير مُعرّف بعد، فستحتاج لإضافته يدوياً
-// (مثال: import 'package:moftahak/core/router/app_router.dart';)
 
 
 void main() async {
@@ -22,11 +23,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    // تم حل التعارض: تم اعتماد بنية MaterialApp.router مرة واحدة
-    // مع دمج جميع إعدادات الـ Theme والـ routerConfig.
-    return MaterialApp.router(
-      // تأكد أن 'appRouter' معرف ومتوفر للاستخدام
-      // routerConfig: appRouter,
+    // تم التعديل لحل خطأ "routerConfig is null" عبر العودة إلى MaterialApp العادي
+    return MaterialApp(
+      // تم تعيين الشاشة الرئيسية مباشرةً (Home)
+      home: const HomeScreen(),
 
       debugShowCheckedModeBanner: false,
 
@@ -47,14 +47,6 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-
-
-
-
-
-
-
 
 
 

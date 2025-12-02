@@ -21,4 +21,10 @@ class AppTextStyles {
     color: AppColors.textColor,
     fontFamily: "Lato",
   );
+  static final sen700style20 = TextStyle(
+    fontSize: 20,
+    fontWeight: FontWeight.w700,
+    color: AppColors.textColor,
+    fontFamily: "Sen",
+  );
 }

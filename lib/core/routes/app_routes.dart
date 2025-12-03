@@ -4,6 +4,8 @@ import 'package:moftahak/features/add%20child/cubit/add_child_cubit.dart';
 import 'package:moftahak/features/auth/cubit/auth_cubit.dart';
 import 'package:moftahak/features/auth/login/login_view.dart';
 import 'package:moftahak/features/auth/signup/sign_up_view.dart';
+import 'package:moftahak/features/child_details/child_details.dart';
+import 'package:moftahak/features/child_details/cubit/child_details_cubit.dart';
 import 'package:moftahak/features/drawing/drawing_screen.dart';
 import 'package:moftahak/features/home/cubit/home_cubit.dart';
 import 'package:moftahak/features/home/home_screen.dart';
@@ -62,5 +64,16 @@ final GoRouter appRouter = GoRouter(
     ),
     GoRoute(path: '/support', builder: (context, state) => SupportView()),
     GoRoute(path: '/drawing', builder: (context, state) => DrawingScreen()),
+    GoRoute(
+      path: '/childDetails/:id',
+      builder: (context, state) {
+        final childId = state.pathParameters['id']!;
+
+        return BlocProvider(
+          create: (_) => ChildDetailsCubit()..loadChild(childId),
+          child: const ChildDetailsView(),
+        );
+      },
+    ),
   ],
 );

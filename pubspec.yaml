@@ -43,6 +43,7 @@ dependencies:
   google_generative_ai: ^0.4.4
   google_sign_in: ^6.1.4
   image_picker: ^1.2.1
+  intl: ^0.20.2
   path: ^1.9.1
   path_provider: ^2.1.5
   shared_preferences: ^2.5.3

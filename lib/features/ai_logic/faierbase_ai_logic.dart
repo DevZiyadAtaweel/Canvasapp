@@ -32,8 +32,7 @@ class _LogicAiState extends State<LogicAi> {
     }
 
     final selectedImage = _mediaFileList!.first;
-    const myPrompt = 'صف الصورة بالتفصيل وأعطها عنوانًا مناسبًا باللغة العربية.';
-
+    const myPrompt ='';
     setState(() {
       _isLoading = true;
       _generatedTextResult = 'جاري تحليل الصورة...';

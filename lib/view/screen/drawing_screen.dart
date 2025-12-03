@@ -47,6 +47,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: AppColors.backGroundColor,
       appBar: AppBar(

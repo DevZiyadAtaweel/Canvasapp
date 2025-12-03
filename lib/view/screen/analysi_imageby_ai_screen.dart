@@ -3,10 +3,49 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
-class AnalysiImagebyAiScreen extends StatefulWidget {
-  final Uint8List imageFile;
+// شاشة تحليل الصورة بالذكاء الاصطناعي
+class AnalysiImagebyAiScreen extends StatelessWidget {
+  // استقبال ملف الصورة الملتقطة هنا
+   //final XFile? imageFile;
+   Uint8List? imageFile;
 
-  const AnalysiImagebyAiScreen({super.key, required this.imageFile});
+   Future<String> analyzeChildEmotion(Uint8List imageBytes) async {
+     final apiKey = "AIzaSyCGO-IYBzaVIARV-o980oW46WFI7BiTPy8";
+
+     final model = GenerativeModel(
+       model: "gemini-1.5-pro",
+       apiKey: apiKey,
+     );
+//النص الخاص بالذكاء لارساله
+     final content = [
+       Content.multi([
+         TextPart(
+             'As a child psychology expert analyzing drawings of children (3-12 years) with psychological disorders or autism:'
+
+                 '🔍 Immediate Observations:'
+                 '1. Color usage and symbolism'
+                 '2. Organization and detail level'
+                 ' 3. Element relationships'
+                 '💡 Initial Assessment:'
+                 ' - [Potential disorder 1]'
+                 '  - [Potential disorder 2]'
+
+                 '  ✨ Practical Parent Recommendations: '
+                 '• [Suggestion 1 - short & direct] '
+                 '• [Suggestion 2 - daily implementable] '
+                 '• [Suggestion 3 - emotional support]'
+
+                 ' ⚠️ Note: This is preliminary analysis only. Consult a professionalfor accurate diagnosis'
+         ),
+         DataPart("image/jpeg", imageBytes),
+       ])
+     ];
+
+     final response = await model.generateContent(content);
+
+     return response.text ?? "No response";
+   }
+   AnalysiImagebyAiScreen({super.key,  required this.imageFile});
 
   @override
   State<AnalysiImagebyAiScreen> createState() => _AnalysiImagebyAiScreenState();
@@ -212,4 +251,42 @@ Future<Uint8List?> pickImage({required ImageSource source}) async {
   final XFile? file = await picker.pickImage(source: source);
   if (file == null) return null;
   return await file.readAsBytes();
+}
+
+
+Future<String> analyzeChildEmotion(Uint8List imageBytes) async {
+  final apiKey = "YOUR_GOOGLE_API_KEY";
+
+  final model = GenerativeModel(
+    model: "gemini-1.5-pro",
+    apiKey: apiKey,
+  );
+
+  final content = [
+    Content.multi([
+      TextPart(
+        "As a child psychology expert analyzing drawings of children (3-12 years) with psychological disorders or autism:"
+
+        '🔍 Immediate Observations:'
+            '1. Color usage and symbolism'
+            '2. Organization and detail level'
+            ' 3. Element relationships'
+            '💡 Initial Assessment:'
+            ' - [Potential disorder 1]'
+            '  - [Potential disorder 2]'
+
+            '  ✨ Practical Parent Recommendations: '
+            '• [Suggestion 1 - short & direct] '
+            '• [Suggestion 2 - daily implementable] '
+            '• [Suggestion 3 - emotional support]'
+
+            ' ⚠️ Note: This is preliminary analysis only. Consult a professionalfor accurate diagnosis"'
+                  ),
+      DataPart("image/jpeg", imageBytes),
+    ])
+  ];
+
+  final response = await model.generateContent(content);
+
+  return response.text ?? "No response";
 }

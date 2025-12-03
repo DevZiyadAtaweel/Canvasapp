@@ -1,9 +1,13 @@
 import 'package:go_router/go_router.dart';
-import 'package:moftahak/features/add%20son/add_child_view.dart';
+import 'package:moftahak/features/add%20child/add_child_view.dart';
+import 'package:moftahak/features/add%20child/cubit/add_child_cubit.dart';
 import 'package:moftahak/features/auth/cubit/auth_cubit.dart';
 import 'package:moftahak/features/auth/login/login_view.dart';
 import 'package:moftahak/features/auth/signup/sign_up_view.dart';
+import 'package:moftahak/features/child_details/child_details.dart';
+import 'package:moftahak/features/child_details/cubit/child_details_cubit.dart';
 import 'package:moftahak/features/drawing/drawing_screen.dart';
+import 'package:moftahak/features/home/cubit/home_cubit.dart';
 import 'package:moftahak/features/home/home_screen.dart';
 import 'package:moftahak/features/onBoarding/on_boarding_view.dart';
 import 'package:moftahak/features/settings/settings_view.dart';
@@ -26,21 +30,50 @@ final GoRouter appRouter = GoRouter(
 
     GoRoute(path: '/onBoarding', builder: (context, state) => OnBoardingView()),
 
-    GoRoute(path: '/home', builder: (context, state) => HomeScreen()),
-
+    GoRoute(
+      path: '/home',
+      builder: (context, state) => BlocProvider(
+        create: (_) => HomeCubit()..startUserListener(),
+        child: const HomeScreen(),
+      ),
+    ),
     GoRoute(path: '/login', builder: (context, state) => LoginView()),
     GoRoute(path: '/signUp', builder: (context, state) => SignUpView()),
-    GoRoute(path: '/addChild', builder: (context, state) => AddChildView()),
+    GoRoute(
+      path: '/addChild',
+      builder: (context, state) {
+        return BlocProvider(
+          create: (_) => AddChildCubit(),
+          child: const AddChildView(), // شاشة UI اللي انت عاملها
+        );
+      },
+    ),
     GoRoute(
       path: '/settings',
       builder: (context, state) {
-        return BlocProvider(
-          create: (_) => AuthCubit(),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider<AuthCubit>(create: (_) => AuthCubit()),
+            BlocProvider<HomeCubit>(
+              create: (_) => HomeCubit()..startUserListener(),
+            ),
+          ],
           child: const SettingsView(),
         );
       },
     ),
     GoRoute(path: '/support', builder: (context, state) => SupportView()),
     GoRoute(path: '/drawing', builder: (context, state) => DrawingScreen()),
+    GoRoute(
+      path: '/childDetails/:id',
+      builder: (context, state) {
+        final childId = state.pathParameters['id']!;
+
+        return BlocProvider(
+          create: (_) => ChildDetailsCubit()..loadChild(childId),
+          child: const ChildDetailsView(),
+        );
+      },
+    ),
   ],
 );

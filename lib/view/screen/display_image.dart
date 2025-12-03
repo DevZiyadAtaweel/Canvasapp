@@ -11,7 +11,7 @@ class DisplayImageScreen extends StatelessWidget {
 
   final Uint8List imageBytes;
 
-   DisplayImageScreen({super.key, required this.imageBytes});
+   const DisplayImageScreen({super.key, required this.imageBytes});
 
 
   @override
@@ -32,7 +32,7 @@ class DisplayImageScreen extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Image.memory(imageBytes as Uint8List
+                child: Image.memory(imageBytes
                 ),
               ),
             ),

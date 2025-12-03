@@ -9,12 +9,14 @@ class CustomDropdownField<T> extends StatelessWidget {
     required this.items,
     required this.value,
     required this.onChanged,
+    required this.validator,
   });
 
   final String label;
   final List<T> items;
   final T? value;
   final ValueChanged<T?> onChanged;
+  final String? Function(T?) validator;
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +30,11 @@ class CustomDropdownField<T> extends StatelessWidget {
           SizedBox(
             width: 350,
             child: DropdownButtonFormField<T>(
+              validator: validator,
               // 👈 نحمي أنفسنا من القيم الغلط
-              value: (value != null && items.contains(value)) ? value : null,
+              initialValue: (value != null && items.contains(value))
+                  ? value
+                  : null,
 
               hint: const Text(
                 "انقر للاختيار",

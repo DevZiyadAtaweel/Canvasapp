@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:moftahak/core/widgets/children_dropdown.dart';
 import 'package:moftahak/core/widgets/custem_elevatedButton_widgets.dart';
-import 'package:moftahak/core/widgets/name_drawer_widgets.dart';
 import 'package:moftahak/features/home/home_screen.dart';
 
 import '../../core/constants/app_colors.dart';
@@ -46,7 +46,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              NameDrawerWidgets(),
+              ChildrenDropdown(),
               SizedBox(height: 50),
               if (_mediaFileList?.isNotEmpty != null)
                 InkWell(

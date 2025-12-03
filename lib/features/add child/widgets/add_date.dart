@@ -5,11 +5,13 @@ import 'package:moftahak/core/constants/app_text_styles.dart';
 class CustomDatePickerField extends StatefulWidget {
   final String label;
   final Function(DateTime)? onDateSelected;
+  final String? Function(String?) validator;
 
   const CustomDatePickerField({
     super.key,
     required this.label,
     this.onDateSelected,
+    required this.validator,
   });
 
   @override
@@ -58,7 +60,8 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
           const SizedBox(height: 8),
           SizedBox(
             width: 350,
-            child: TextField(
+            child: TextFormField(
+              validator: widget.validator,
               controller: _controller,
               readOnly: true,
               onTap: _pickDate,

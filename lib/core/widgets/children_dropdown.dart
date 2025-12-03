@@ -75,7 +75,7 @@ class ChildrenDropdown extends StatelessWidget {
                   customNavigatePush(context, '/addChild');
                 } else {
                   // اختيار طفل معيّن (للاستخدام داخل الكيوبت)
-                  context.read<HomeCubit>().selectChild(value);
+                  context.read<HomeCubit>().selectChild(context, value);
                 }
               },
             ),

@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:moftahak/core/constants/navigation.dart';
 import 'package:moftahak/features/home/model/child_model.dart';
 import 'package:moftahak/features/home/model/user_model.dart';
 
@@ -37,6 +39,7 @@ class HomeCubit extends Cubit<HomeState> {
     _userSub = docRef.snapshots().listen(
       (snapshot) {
         if (!snapshot.exists) {
+          print("User document does not exist for UID: ${user.uid}");
           emit(HomeError("بيانات المستخدم غير موجودة"));
           return;
         }
@@ -93,8 +96,9 @@ class HomeCubit extends Cubit<HomeState> {
     );
   }
 
-  void selectChild(String childId) {
+  void selectChild(BuildContext context, String childId) {
     _selectedChildId = childId;
+    customNavigatePush(context, '/childDetails/$childId');
     _emitSuccess();
   }
 

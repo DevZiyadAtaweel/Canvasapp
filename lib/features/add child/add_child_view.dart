@@ -143,15 +143,25 @@ class _AddChildViewState extends State<AddChildView> {
                             },
                           ),
                           CustomDatePickerField(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "الرجاء اختيار تاريخ الميلاد";
+                              }
+                              return null;
+                            },
                             label: "تاريخ الميلاد",
                             onDateSelected: (date) {
                               print("Selected DOB: $date");
                               selectedBirthDate = date;
-
-                              // احفظي التاريخ إذا بدك
                             },
                           ),
                           CustomDropdownField<String>(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "الرجاء اختيار الجنس";
+                              }
+                              return null;
+                            },
                             label: "الجنس",
                             value: selectedGender,
                             items: const ["ذكر", "أنثى"],
@@ -162,6 +172,12 @@ class _AddChildViewState extends State<AddChildView> {
                             },
                           ),
                           CustomDropdownField<String>(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "الرجاء اختيار مكان الإقامة";
+                              }
+                              return null;
+                            },
                             label: "مكان الاقامة",
                             value: selectedCity,
                             items: const ["الرياض", "جدة", "الدمام", "غير ذلك"],
@@ -182,6 +198,12 @@ class _AddChildViewState extends State<AddChildView> {
                             },
                           ),
                           CustomDropdownField<String>(
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "الرجاء اختيار اليد المستخدمة في الرسم";
+                              }
+                              return null;
+                            },
                             label: "اليد التي يستعملها الطفل في الرسم ",
                             value: selectedHand,
                             items: const ["اليمين", "اليسار"],
@@ -209,28 +231,13 @@ class _AddChildViewState extends State<AddChildView> {
                                               return;
                                             }
 
-                                            if (selectedBirthDate == null) {
+                                            if (childImage == null) {
                                               ScaffoldMessenger.of(
                                                 context,
                                               ).showSnackBar(
                                                 const SnackBar(
                                                   content: Text(
-                                                    "الرجاء اختيار تاريخ الميلاد",
-                                                  ),
-                                                ),
-                                              );
-                                              return;
-                                            }
-
-                                            if (selectedGender == null ||
-                                                selectedCity == null ||
-                                                selectedHand == null) {
-                                              ScaffoldMessenger.of(
-                                                context,
-                                              ).showSnackBar(
-                                                const SnackBar(
-                                                  content: Text(
-                                                    "الرجاء تعبئة كل الحقول المطلوبة",
+                                                    "الرجاء إضافة صورة شخصية للطفل",
                                                   ),
                                                 ),
                                               );
@@ -249,8 +256,7 @@ class _AddChildViewState extends State<AddChildView> {
                                                       _healthDescController.text
                                                           .trim(),
                                                   drawingHand: selectedHand!,
-                                                  photoFile:
-                                                      childImage, // 👈 هون
+                                                  photoFile: childImage,
                                                 );
                                           },
                                     width: 150,

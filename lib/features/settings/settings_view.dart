@@ -6,6 +6,8 @@ import 'package:moftahak/core/constants/navigation.dart';
 import 'package:moftahak/core/widgets/corner_decoration.dart';
 import 'package:moftahak/features/auth/cubit/auth_cubit.dart';
 
+import 'package:moftahak/features/home/cubit/home_cubit.dart';
+
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
 
@@ -33,7 +35,7 @@ class SettingsView extends StatelessWidget {
               onPressed: () {
                 customNavigatePop(context);
               },
-              icon: Icon(Icons.arrow_back, color: Colors.white),
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
             ),
             backgroundColor: Colors.transparent,
             elevation: 0,
@@ -43,65 +45,83 @@ class SettingsView extends StatelessWidget {
           body: Stack(
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 24.0),
-                decoration: BoxDecoration(gradient: AppGradients.mainGradient),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 30.0,
+                  vertical: 24.0,
+                ),
+                decoration: const BoxDecoration(
+                  gradient: AppGradients.mainGradient,
+                ),
                 child: Column(
                   children: [
-                    SizedBox(height: kToolbarHeight + 20),
-                    Divider(color: Colors.white),
+                    const SizedBox(height: kToolbarHeight + 20),
+                    const Divider(color: Colors.white),
+
+                    // ================== بيانات المستخدم من HomeCubit ==================
+                    BlocBuilder<HomeCubit, HomeState>(
+                      builder: (context, state) {
+                        if (state is HomeLoading || state is HomeInitial) {
+                          return const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 16.0),
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                              ),
+                            ),
+                          );
+                        }
+
+                        if (state is HomeError) {
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: Text(
+                              state.message,
+                              style: const TextStyle(color: Colors.white),
+                            ),
+                          );
+                        }
+
+                        if (state is! HomeSuccess) {
+                          return const SizedBox.shrink();
+                        }
+
+                        final user = state.user; // UserProfile
+
+                        return Column(
+                          children: [
+                            CircleAvatar(
+                              radius: 50,
+                              backgroundImage: NetworkImage(user.imageUrl),
+                            ),
+                            const SizedBox(height: 5),
+                            Text(
+                              user.name, // 👈 الاسم كامل هنا
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              user.email,
+                              style: const TextStyle(
+                                color: Colors.white70,
+                                fontSize: 12,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+
+                    // ================== باقي الصفحة كما هي ==================
                     Expanded(
                       child: Directionality(
                         textDirection: TextDirection.rtl,
                         child: SingleChildScrollView(
                           child: Column(
                             children: [
-                              CircleAvatar(
-                                radius: 50,
-                                backgroundImage: const NetworkImage(
-                                  'https://i.pravatar.cc/150?img=47', // غيّريها لـ AssetImage لو عندك صورة محلية
-                                ),
-                              ),
-                              SizedBox(height: 5),
-                              const Text(
-                                'هالة علي',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              const Text(
-                                'haal123@gmail.com',
-                                style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 12,
-                                ),
-                              ),
-
-                              //   const SizedBox(height: 16),
-
-                              // // زر تعديل الملف الشخصي
-                              // SizedBox(
-                              //   width: 180,
-                              //   height: 40,
-                              //   child: ElevatedButton(
-                              //     onPressed: () {},
-                              //     style: ElevatedButton.styleFrom(
-                              //       backgroundColor: const Color(0xFFFFD400),
-                              //       foregroundColor: Colors.black,
-                              //       shape: RoundedRectangleBorder(
-                              //         borderRadius: BorderRadius.circular(12),
-                              //       ),
-                              //     ),
-                              //     child: const Text(
-                              //       'تعديل الملف الشخصي',
-                              //       style: TextStyle(
-                              //         fontWeight: FontWeight.bold,
-                              //       ),
-                              //     ),
-                              //   ),
-                              // ),
                               const SizedBox(height: 24),
 
                               _SettingsCard(
@@ -110,13 +130,12 @@ class SettingsView extends StatelessWidget {
                                   _SettingsItem(
                                     title: 'تغيير كلمة المرور',
                                     onTap: () {},
-                                  ), // TODO
+                                  ),
                                 ],
                               ),
 
                               const SizedBox(height: 16),
 
-                              // قسم الأبناء
                               _SettingsCard(
                                 title: 'الأبناء',
                                 items: [
@@ -132,7 +151,6 @@ class SettingsView extends StatelessWidget {
 
                               const SizedBox(height: 16),
 
-                              // قسم الرسومات
                               _SettingsCard(
                                 title: 'الرسومات',
                                 items: [
@@ -149,7 +167,6 @@ class SettingsView extends StatelessWidget {
 
                               const SizedBox(height: 24),
 
-                              // الدعم وتسجيل الخروج
                               Center(
                                 child: Column(
                                   children: [
@@ -183,7 +200,7 @@ class SettingsView extends StatelessWidget {
                 ),
               ),
 
-              CornerDecoration(),
+              const CornerDecoration(),
             ],
           ),
         ),

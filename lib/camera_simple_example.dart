@@ -28,8 +28,6 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<void> _onImageButtonPressed(
     ImageSource source, {
     required BuildContext context,
-    bool allowMultiple = false,
-    bool isMedia = false,
   }) async {
     try {
       final XFile? pickedFile = await _picker.pickImage(source: source);

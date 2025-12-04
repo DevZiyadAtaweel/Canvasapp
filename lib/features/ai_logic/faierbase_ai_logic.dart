@@ -1,7 +1,4 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_ai/firebase_ai.dart';
-import 'dart:io';
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -35,8 +32,7 @@ class _LogicAiState extends State<LogicAi> {
     }
 
     final selectedImage = _mediaFileList!.first;
-    const myPrompt = 'صف الصورة بالتفصيل وأعطها عنوانًا مناسبًا باللغة العربية.';
-
+    const myPrompt ='';
     setState(() {
       _isLoading = true;
       _generatedTextResult = 'جاري تحليل الصورة...';

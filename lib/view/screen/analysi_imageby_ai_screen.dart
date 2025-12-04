@@ -1,94 +1,207 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'dart:io';
-
 import 'dart:typed_data';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
-// شاشة تحليل الصورة بالذكاء الاصطناعي
-class AnalysiImagebyAiScreen extends StatelessWidget {
-  // استقبال ملف الصورة الملتقطة هنا
-  //final XFile? imageFile;
-  Uint8List? imageFile;
+class AnalysiImagebyAiScreen extends StatefulWidget {
+  final Uint8List imageFile;
 
-  Future<String> analyzeChildEmotion(Uint8List imageBytes) async {
-    final apiKey = "AIzaSyCGO-IYBzaVIARV-o980oW46WFI7BiTPy8";
+  const AnalysiImagebyAiScreen({super.key, required this.imageFile});
 
-    final model = GenerativeModel(model: "gemini-1.5-pro", apiKey: apiKey);
-    //النص الخاص بالذكاء لارساله
-    final content = [
-      Content.multi([
-        TextPart(
-          "Analyze the emotional state of the child in this image. "
-          "Return the result as JSON with fields {emotion, confidence, description}. "
-          "Be accurate and consider facial expression, eyes, posture.",
-        ),
-        DataPart("image/jpeg", imageBytes),
-      ]),
-    ];
+  @override
+  State<AnalysiImagebyAiScreen> createState() => _AnalysiImagebyAiScreenState();
+}
 
-    final response = await model.generateContent(content);
+class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
+  Map<String, dynamic>? analysis;
+  bool isLoading = false;
+  String? rawText;
 
-    return response.text ?? "No response";
+  @override
+  void initState() {
+    super.initState();
+    analyzeChildEmotion();
   }
 
-  AnalysiImagebyAiScreen({super.key, required this.imageFile});
+  Future<void> analyzeChildEmotion() async {
+    setState(() {
+      isLoading = true;
+      analysis = null;
+      rawText = null;
+    });
+
+    final model = GenerativeModel(
+      model: "gemini-2.5-flash",
+      apiKey: "AIzaSyCGO-IYBzaVIARV-o980oW46WFI7BiTPy8",
+    );
+
+    final prompt = TextPart("""
+حلل حالة الطفل الظاهرة في الصورة.
+
+أرجع فقط JSON التالي:
+
+{
+  "المشاعر": "",
+  "نسبة_الثقة": "",
+  "الوصف": ""
+}
+""");
+
+    try {
+      final response = await model.generateContent([
+        Content.multi([prompt, DataPart("image/jpeg", widget.imageFile)]),
+      ]);
+
+      rawText = response.text;
+      analysis = _extractJson(rawText!);
+    } catch (e) {
+      rawText = "خطأ: $e";
+    }
+
+    setState(() => isLoading = false);
+  }
+
+  Map<String, dynamic>? _extractJson(String text) {
+    final start = text.indexOf('{');
+    final end = text.lastIndexOf('}');
+    if (start == -1 || end == -1) return null;
+
+    final json = text.substring(start, end + 1);
+
+    return {
+      "emotion": RegExp(
+        r'"المشاعر"\s*:\s*"([^"]+)"',
+      ).firstMatch(json)?.group(1),
+      "confidence": RegExp(
+        r'"نسبة_الثقة"\s*:\s*"([^"]+)"',
+      ).firstMatch(json)?.group(1),
+      "description": RegExp(
+        r'"الوصف"\s*:\s*"([^"]+)"',
+      ).firstMatch(json)?.group(1),
+    };
+  }
 
   @override
   Widget build(BuildContext context) {
-    // التحقق من وجود ملف الصورة
-    if (imageFile == null) {
-      return Scaffold(
-        appBar: AppBar(title: const Text('تحليل الصورة بالذكاء الاصطناعي')),
-        body: const Center(child: Text('خطأ: لم يتم تمرير ملف صورة.')),
-      );
-    }
+    return Directionality(
+      // 🔥 هنا الاتجاه من اليمين لليسار
+      textDirection: TextDirection.rtl,
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('تحليل الصورة بالذكاء الاصطناعي'),
-        centerTitle: true,
-        backgroundColor: Colors.indigo,
-      ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
+      child: Scaffold(
+        backgroundColor: Colors.white,
+
+        appBar: AppBar(
+          title: const Text("تحليل الصورة"),
+          backgroundColor: Colors.indigo,
+          centerTitle: true,
+          elevation: 0,
+        ),
+
+        body: SingleChildScrollView(
+          padding: const EdgeInsets.all(16),
           child: Column(
-            // لضمان محاذاة كل العناصر في منتصف الشاشة عمودياً
-            mainAxisAlignment: MainAxisAlignment.start, // البدء من الأعلى
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Text(
-                'تم استلام الصورة بنجاح!',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                "تم استلام الصورة بنجاح",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
+
+              const SizedBox(height: 16),
+
+              ClipRRect(
+                borderRadius: BorderRadius.circular(14),
+                child: Image.memory(
+                  widget.imageFile,
+                  height: 240,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
+
+              const SizedBox(height: 24),
+
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: isLoading ? null : analyzeChildEmotion,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.indigo,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  ),
+                  child: isLoading
+                      ? const SizedBox(
+                          height: 22,
+                          width: 22,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : const Text(
+                          "بدء التحليل",
+                          style: TextStyle(fontSize: 17, color: Colors.white),
+                        ),
+                ),
+              ),
+
               const SizedBox(height: 20),
 
-              // ** تعديل حجم الصورة **
-              // SizedBox(
-              //   height: 300, // الارتفاع الجديد (مثال)
-              //   width: double.infinity, // العرض يملأ المساحة المتاحة أفقياً
-              //   child: ClipRRect(
-              //     borderRadius: BorderRadius.circular(10.0),
-              //     // لإضافة حواف دائرية
-              //     child: Image.file(
-              //       // التحقق من أن imageFile ليس null قبل استخدامه
-              //
-              //       // يضمن تغطية الصورة للمساحة المحددة (قد يقص جزءاً منها)
-              //
-              //
-              // ),
-              // // ** نهاية التعديل **
-              const SizedBox(height: 30),
-              // هذا هو المكان الذي ستبدأ فيه عملية التحليل
-              const Text(
-                'جاري إعداد الصورة للتحليل الفني...',
-                style: TextStyle(fontSize: 18, color: Colors.grey),
-              ),
-              // لإعطاء مساحة فارغة في الأسفل
-              const Spacer(),
+              if (analysis != null) ...[
+                _buildResultCard("المشاعر المتوقعة", analysis!["emotion"]),
+                _buildResultCard("نسبة الثقة", analysis!["confidence"]),
+                _buildResultCard(
+                  "وصف الحالة",
+                  analysis!["description"],
+                  maxLines: 10,
+                ),
+              ],
+
+              if (!isLoading && analysis == null && rawText != null)
+                Text(rawText!, style: const TextStyle(color: Colors.redAccent)),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _buildResultCard(String title, String? value, {int maxLines = 4}) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: const Color(0xfff1f1f5),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.indigo,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            value ?? "غير متوفر",
+            style: const TextStyle(
+              fontSize: 15,
+              height: 1.4,
+              color: Colors.black87,
+            ),
+            maxLines: maxLines,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
       ),
     );
   }
@@ -96,29 +209,7 @@ class AnalysiImagebyAiScreen extends StatelessWidget {
 
 Future<Uint8List?> pickImage({required ImageSource source}) async {
   final picker = ImagePicker();
-  final XFile? file = await picker.pickImage(source: ImageSource.gallery);
-
+  final XFile? file = await picker.pickImage(source: source);
   if (file == null) return null;
   return await file.readAsBytes();
-}
-
-Future<String> analyzeChildEmotion(Uint8List imageBytes) async {
-  final apiKey = "YOUR_GOOGLE_API_KEY";
-
-  final model = GenerativeModel(model: "gemini-1.5-pro", apiKey: apiKey);
-
-  final content = [
-    Content.multi([
-      TextPart(
-        "Analyze the emotional state of the child in this image. "
-        "Return the result as JSON with fields {emotion, confidence, description}. "
-        "Be accurate and consider facial expression, eyes, posture.",
-      ),
-      DataPart("image/jpeg", imageBytes),
-    ]),
-  ];
-
-  final response = await model.generateContent(content);
-
-  return response.text ?? "No response";
 }

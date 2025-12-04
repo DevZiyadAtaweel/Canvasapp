@@ -8,37 +8,34 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 // شاشة تحليل الصورة بالذكاء الاصطناعي
 class AnalysiImagebyAiScreen extends StatelessWidget {
   // استقبال ملف الصورة الملتقطة هنا
-   //final XFile? imageFile;
-   Uint8List? imageFile;
+  //final XFile? imageFile;
+  Uint8List? imageFile;
 
-   Future<String> analyzeChildEmotion(Uint8List imageBytes) async {
-     final apiKey = "AIzaSyCGO-IYBzaVIARV-o980oW46WFI7BiTPy8";
+  Future<String> analyzeChildEmotion(Uint8List imageBytes) async {
+    final apiKey = "AIzaSyCGO-IYBzaVIARV-o980oW46WFI7BiTPy8";
 
-     final model = GenerativeModel(
-       model: "gemini-1.5-pro",
-       apiKey: apiKey,
-     );
-//النص الخاص بالذكاء لارساله
-     final content = [
-       Content.multi([
-         TextPart(
-           "Analyze the emotional state of the child in this image. "
-               "Return the result as JSON with fields {emotion, confidence, description}. "
-               "Be accurate and consider facial expression, eyes, posture.",
-         ),
-         DataPart("image/jpeg", imageBytes),
-       ])
-     ];
+    final model = GenerativeModel(model: "gemini-1.5-pro", apiKey: apiKey);
+    //النص الخاص بالذكاء لارساله
+    final content = [
+      Content.multi([
+        TextPart(
+          "Analyze the emotional state of the child in this image. "
+          "Return the result as JSON with fields {emotion, confidence, description}. "
+          "Be accurate and consider facial expression, eyes, posture.",
+        ),
+        DataPart("image/jpeg", imageBytes),
+      ]),
+    ];
 
-     final response = await model.generateContent(content);
+    final response = await model.generateContent(content);
 
-     return response.text ?? "No response";
-   }
-   AnalysiImagebyAiScreen({super.key,  required this.imageFile});
+    return response.text ?? "No response";
+  }
+
+  AnalysiImagebyAiScreen({super.key, required this.imageFile});
 
   @override
   Widget build(BuildContext context) {
-
     // التحقق من وجود ملف الصورة
     if (imageFile == null) {
       return Scaffold(
@@ -81,7 +78,6 @@ class AnalysiImagebyAiScreen extends StatelessWidget {
               //
               // ),
               // // ** نهاية التعديل **
-
               const SizedBox(height: 30),
               // هذا هو المكان الذي ستبدأ فيه عملية التحليل
               const Text(
@@ -95,7 +91,8 @@ class AnalysiImagebyAiScreen extends StatelessWidget {
         ),
       ),
     );
-  }}
+  }
+}
 
 Future<Uint8List?> pickImage({required ImageSource source}) async {
   final picker = ImagePicker();
@@ -105,24 +102,20 @@ Future<Uint8List?> pickImage({required ImageSource source}) async {
   return await file.readAsBytes();
 }
 
-
 Future<String> analyzeChildEmotion(Uint8List imageBytes) async {
   final apiKey = "YOUR_GOOGLE_API_KEY";
 
-  final model = GenerativeModel(
-    model: "gemini-1.5-pro",
-    apiKey: apiKey,
-  );
+  final model = GenerativeModel(model: "gemini-1.5-pro", apiKey: apiKey);
 
   final content = [
     Content.multi([
       TextPart(
         "Analyze the emotional state of the child in this image. "
-            "Return the result as JSON with fields {emotion, confidence, description}. "
-            "Be accurate and consider facial expression, eyes, posture.",
+        "Return the result as JSON with fields {emotion, confidence, description}. "
+        "Be accurate and consider facial expression, eyes, posture.",
       ),
       DataPart("image/jpeg", imageBytes),
-    ])
+    ]),
   ];
 
   final response = await model.generateContent(content);

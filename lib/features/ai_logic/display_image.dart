@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+import 'package:moftahak/features/drawing/drawing_screen.dart';
 
 import 'analysi_imageby_ai_screen.dart';
 
@@ -45,6 +46,12 @@ class DisplayImageScreen extends StatelessWidget {
                   ElevatedButton.icon(
                     onPressed: () {
                       // العودة إلى شاشة الرسم (DrawingScreen)
+
+                      Navigator.push(context, MaterialPageRoute(builder: (context)
+                      {
+                        return DrawingScreen();
+                      }));
+
 
                     },
                     icon: const Icon(Icons.cancel),

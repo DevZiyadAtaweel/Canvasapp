@@ -1,12 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/routes/app_routes.dart';
 import 'package:moftahak/firebase_options.dart';
 
 // استيراد شاشة البداية لتشغيل التطبيق بشكل مؤقت
 // افتراض مسار الشاشة الرئيسية
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,18 +33,19 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
 
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.transparent,
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Colors.white),
-          bodyMedium: TextStyle(color: Colors.white),
-          bodySmall: TextStyle(color: Colors.white),
-          titleLarge: TextStyle(color: Colors.white),
-          titleMedium: TextStyle(color: Colors.white),
-          titleSmall: TextStyle(color: Colors.white),
-          labelLarge: TextStyle(color: Colors.white),
-          labelMedium: TextStyle(color: Colors.white),
-          labelSmall: TextStyle(color: Colors.white),
+        appBarTheme: AppBarTheme(
+          scrolledUnderElevation: 0,
+
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.black),
+          titleTextStyle: AppTextStyles.almarai700style28.copyWith(
+            color: Color(0xFF8A3FFC),
+          ),
+          centerTitle: true,
+          elevation: 0,
         ),
+        dialogBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: Colors.white,
       ),
     );
   }

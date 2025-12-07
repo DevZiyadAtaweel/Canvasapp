@@ -34,12 +34,12 @@ class _DrawingScreenState extends State<DrawingScreen> {
       });
 
       // الانتقال لصفحة عرض الصورة
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => DisplayImageScreen(imageBytes: selectedImage!),
-        ),
-      );
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (_) => DisplayImageScreen(imageBytes: selectedImage!),
+      //   ),
+      // );
     } catch (e) {
       print("خطأ في اختيار الصورة: $e");
     }
@@ -47,7 +47,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       backgroundColor: AppColors.backGroundColor,
       appBar: AppBar(

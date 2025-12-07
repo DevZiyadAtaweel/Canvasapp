@@ -1,6 +1,7 @@
 import 'package:go_router/go_router.dart';
 import 'package:moftahak/features/add%20child/add_child_view.dart';
 import 'package:moftahak/features/add%20child/cubit/add_child_cubit.dart';
+import 'package:moftahak/features/all_drawings/all_drawings.dart';
 import 'package:moftahak/features/auth/cubit/auth_cubit.dart';
 import 'package:moftahak/features/auth/login/login_view.dart';
 import 'package:moftahak/features/auth/signup/sign_up_view.dart';
@@ -9,6 +10,7 @@ import 'package:moftahak/features/child_details/cubit/child_details_cubit.dart';
 import 'package:moftahak/features/drawing/drawing_screen.dart';
 import 'package:moftahak/features/home/cubit/home_cubit.dart';
 import 'package:moftahak/features/home/home_screen.dart';
+import 'package:moftahak/features/main/main.dart';
 import 'package:moftahak/features/onBoarding/on_boarding_view.dart';
 import 'package:moftahak/features/settings/settings_view.dart';
 import 'package:moftahak/features/splash/splash_view.dart';
@@ -72,6 +74,28 @@ final GoRouter appRouter = GoRouter(
         return BlocProvider(
           create: (_) => ChildDetailsCubit()..loadChild(childId),
           child: const ChildDetailsView(),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/allDrawings',
+      builder: (context, state) => const AllDrawings(),
+    ),
+    GoRoute(
+      path: '/main',
+      builder: (context, state) {
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider<HomeCubit>(
+              create: (_) => HomeCubit()..startUserListener(),
+            ),
+            BlocProvider<AuthCubit>(create: (_) => AuthCubit()),
+            BlocProvider<AddChildCubit>(create: (_) => AddChildCubit()),
+            // لو DrawingScreen أو AllDrawings لهم Cubit خاص
+            // BlocProvider<DrawingCubit>(create: (_) => DrawingCubit()),
+            // BlocProvider<AllDrawingsCubit>(create: (_) => AllDrawingsCubit()),
+          ],
+          child: const Main(), // Main فيها الـ bottom nav
         );
       },
     ),

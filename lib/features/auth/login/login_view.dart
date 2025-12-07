@@ -4,7 +4,6 @@ import 'package:moftahak/core/constants/app_colors.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/constants/app_assets.dart';
 import 'package:moftahak/core/constants/navigation.dart';
-import 'package:moftahak/core/widgets/corner_decoration.dart';
 import 'package:moftahak/features/auth/cubit/auth_cubit.dart';
 import 'package:moftahak/features/auth/widgets/auth_text_filed.dart';
 import 'package:moftahak/features/auth/widgets/auth_toggle_tabs.dart';
@@ -56,343 +55,321 @@ class LoginView extends StatelessWidget {
               }
             },
             builder: (context, state) {
-              return Stack(
+              return Column(
                 children: [
-                  CornerDecoration(),
+                  const SizedBox(height: 120),
 
-                  Column(
-                    children: [
-                      const SizedBox(height: 120),
+                  // ---------- العنوان ----------
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          'تسجيل الدخول',
+                          style: AppTextStyles.lato600style20.copyWith(
+                            fontSize: 32,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'مرحبا بعودتك! يرجى تسجيل الدخول للمتابعة',
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.lato600style20.copyWith(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
 
-                      // ---------- العنوان ----------
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  const SizedBox(height: 24),
+
+                  // ---------- الكارد الأبيض ----------
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(32),
+                          topRight: Radius.circular(32),
+                        ),
+                      ),
+                      child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            Text(
-                              'تسجيل الدخول',
-                              style: AppTextStyles.lato600style20.copyWith(
-                                fontSize: 32,
-                                fontWeight: FontWeight.w700,
-                              ),
+                            AuthToggleTabs(
+                              isLoginSelected: true,
+                              onLoginTap: () {},
+                              onSignupTap: () {
+                                customNavigatePush(context, "/signUp");
+                              },
                             ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'مرحبا بعودتك! يرجى تسجيل الدخول للمتابعة',
-                              textAlign: TextAlign.center,
-                              style: AppTextStyles.lato600style20.copyWith(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w400,
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 24,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  const SizedBox(height: 24),
+
+                                  // -------------------
+                                  // البريد الإلكتروني
+                                  // -------------------
+                                  _buildLabel("البريد الإلكتروني", emailError),
+                                  const SizedBox(height: 8),
+
+                                  ValueListenableBuilder<bool>(
+                                    valueListenable: emailError,
+                                    builder: (context, hasError, _) {
+                                      return AuthTextField(
+                                        controller: emailController,
+                                        hint: 'example@gmail.com',
+                                        keyboardType:
+                                            TextInputType.emailAddress,
+                                        showError: hasError,
+                                      );
+                                    },
+                                  ),
+
+                                  const SizedBox(height: 16),
+
+                                  // -------------------
+                                  // كلمة المرور
+                                  // -------------------
+                                  _buildLabel("كلمة المرور", passError),
+                                  const SizedBox(height: 8),
+
+                                  ValueListenableBuilder<bool>(
+                                    valueListenable: passError,
+                                    builder: (context, hasError, _) {
+                                      return AuthTextField(
+                                        controller: passController,
+                                        hint: '********',
+                                        isPassword: true,
+                                        showError: hasError,
+                                      );
+                                    },
+                                  ),
+
+                                  const SizedBox(height: 8),
+
+                                  // تذكّرني + نسيت كلمة المرور
+                                  ValueListenableBuilder<bool>(
+                                    valueListenable: rememberMe,
+                                    builder: (context, isChecked, _) {
+                                      return Row(
+                                        children: [
+                                          Checkbox(
+                                            value: isChecked,
+                                            onChanged: (val) {
+                                              rememberMe.value = val ?? false;
+                                            },
+                                            activeColor: AppColors.green,
+                                            materialTapTargetSize:
+                                                MaterialTapTargetSize
+                                                    .shrinkWrap,
+                                          ),
+                                          Text(
+                                            'تذكّرني',
+                                            style: AppTextStyles.lato600style20
+                                                .copyWith(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                          ),
+                                          const Spacer(),
+                                          TextButton(
+                                            onPressed: state is AuthLoading
+                                                ? null
+                                                : () {
+                                                    final email =
+                                                        emailController.text
+                                                            .trim();
+
+                                                    final emailErrorMsg =
+                                                        AuthValidator.validateEmail(
+                                                          email,
+                                                        );
+
+                                                    emailError.value =
+                                                        emailErrorMsg != null;
+
+                                                    if (emailErrorMsg != null) {
+                                                      ScaffoldMessenger.of(
+                                                        context,
+                                                      ).showSnackBar(
+                                                        SnackBar(
+                                                          content: Text(
+                                                            emailErrorMsg,
+                                                          ),
+                                                        ),
+                                                      );
+                                                      return;
+                                                    }
+
+                                                    context
+                                                        .read<AuthCubit>()
+                                                        .resetPassword(
+                                                          email: email,
+                                                        );
+                                                  },
+                                            child: Text(
+                                              'نسيت كلمة المرور؟',
+                                              style: AppTextStyles
+                                                  .lato600style20
+                                                  .copyWith(
+                                                    fontSize: 12,
+                                                    color: Colors.redAccent,
+                                                  ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  ),
+
+                                  const SizedBox(height: 16),
+
+                                  // زر تسجيل الدخول
+                                  _buildLoginButton(state, context),
+
+                                  const SizedBox(height: 12),
+
+                                  // لا تملك حساب؟
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "ليس لديك حساب؟ ",
+                                        style: AppTextStyles.lato600style20
+                                            .copyWith(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () {
+                                          customNavigatePush(
+                                            context,
+                                            "/signUp",
+                                          );
+                                        },
+                                        child: Text(
+                                          'إنشاء حساب',
+                                          style: AppTextStyles.lato600style20
+                                              .copyWith(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w700,
+                                                color: AppColors.green,
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  const SizedBox(height: 16),
+
+                                  // Divider
+                                  Row(
+                                    children: [
+                                      const Expanded(
+                                        child: Divider(
+                                          thickness: 1,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0,
+                                        ),
+                                        child: Text(
+                                          'أو',
+                                          style: AppTextStyles.lato600style20
+                                              .copyWith(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w400,
+                                              ),
+                                        ),
+                                      ),
+                                      const Expanded(
+                                        child: Divider(
+                                          thickness: 1,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  const SizedBox(height: 16),
+
+                                  // زر تسجيل الدخول باستخدام جوجل
+                                  GestureDetector(
+                                    onTap: state is GmailAuthLoading
+                                        ? null
+                                        : () {
+                                            context
+                                                .read<AuthCubit>()
+                                                .signInWithGoogle();
+                                          },
+                                    child: Container(
+                                      height: 48,
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 16,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: Colors.grey[400]!,
+                                        ),
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      alignment: Alignment.center,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          if (state is GmailAuthLoading)
+                                            const SizedBox(
+                                              height: 20,
+                                              width: 20,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                              ),
+                                            )
+                                          else ...[
+                                            Image.asset(
+                                              AppAssets.googleIcon,
+                                              width: 24,
+                                              height: 24,
+                                            ),
+                                            const SizedBox(width: 12),
+                                            Text(
+                                              'تسجيل الدخول باستخدام جوجل',
+                                              style: AppTextStyles
+                                                  .lato600style20
+                                                  .copyWith(
+                                                    fontSize: 14,
+                                                    fontWeight: FontWeight.w500,
+                                                  ),
+                                            ),
+                                          ],
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+
+                                  const SizedBox(height: 24),
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
-
-                      const SizedBox(height: 24),
-
-                      // ---------- الكارد الأبيض ----------
-                      Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(32),
-                              topRight: Radius.circular(32),
-                            ),
-                          ),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                AuthToggleTabs(
-                                  isLoginSelected: true,
-                                  onLoginTap: () {},
-                                  onSignupTap: () {
-                                    customNavigatePush(context, "/signUp");
-                                  },
-                                ),
-
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 24,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      const SizedBox(height: 24),
-
-                                      // -------------------
-                                      // البريد الإلكتروني
-                                      // -------------------
-                                      _buildLabel(
-                                        "البريد الإلكتروني",
-                                        emailError,
-                                      ),
-                                      const SizedBox(height: 8),
-
-                                      ValueListenableBuilder<bool>(
-                                        valueListenable: emailError,
-                                        builder: (context, hasError, _) {
-                                          return AuthTextField(
-                                            controller: emailController,
-                                            hint: 'example@gmail.com',
-                                            keyboardType:
-                                                TextInputType.emailAddress,
-                                            showError: hasError,
-                                          );
-                                        },
-                                      ),
-
-                                      const SizedBox(height: 16),
-
-                                      // -------------------
-                                      // كلمة المرور
-                                      // -------------------
-                                      _buildLabel("كلمة المرور", passError),
-                                      const SizedBox(height: 8),
-
-                                      ValueListenableBuilder<bool>(
-                                        valueListenable: passError,
-                                        builder: (context, hasError, _) {
-                                          return AuthTextField(
-                                            controller: passController,
-                                            hint: '********',
-                                            isPassword: true,
-                                            showError: hasError,
-                                          );
-                                        },
-                                      ),
-
-                                      const SizedBox(height: 8),
-
-                                      // تذكّرني + نسيت كلمة المرور
-                                      ValueListenableBuilder<bool>(
-                                        valueListenable: rememberMe,
-                                        builder: (context, isChecked, _) {
-                                          return Row(
-                                            children: [
-                                              Checkbox(
-                                                value: isChecked,
-                                                onChanged: (val) {
-                                                  rememberMe.value =
-                                                      val ?? false;
-                                                },
-                                                activeColor: AppColors.green,
-                                                materialTapTargetSize:
-                                                    MaterialTapTargetSize
-                                                        .shrinkWrap,
-                                              ),
-                                              Text(
-                                                'تذكّرني',
-                                                style: AppTextStyles
-                                                    .lato600style20
-                                                    .copyWith(
-                                                      fontSize: 12,
-                                                      fontWeight:
-                                                          FontWeight.w400,
-                                                    ),
-                                              ),
-                                              const Spacer(),
-                                              TextButton(
-                                                onPressed: state is AuthLoading
-                                                    ? null
-                                                    : () {
-                                                        final email =
-                                                            emailController.text
-                                                                .trim();
-
-                                                        final emailErrorMsg =
-                                                            AuthValidator.validateEmail(
-                                                              email,
-                                                            );
-
-                                                        emailError.value =
-                                                            emailErrorMsg !=
-                                                            null;
-
-                                                        if (emailErrorMsg !=
-                                                            null) {
-                                                          ScaffoldMessenger.of(
-                                                            context,
-                                                          ).showSnackBar(
-                                                            SnackBar(
-                                                              content: Text(
-                                                                emailErrorMsg,
-                                                              ),
-                                                            ),
-                                                          );
-                                                          return;
-                                                        }
-
-                                                        context
-                                                            .read<AuthCubit>()
-                                                            .resetPassword(
-                                                              email: email,
-                                                            );
-                                                      },
-                                                child: Text(
-                                                  'نسيت كلمة المرور؟',
-                                                  style: AppTextStyles
-                                                      .lato600style20
-                                                      .copyWith(
-                                                        fontSize: 12,
-                                                        color: Colors.redAccent,
-                                                      ),
-                                                ),
-                                              ),
-                                            ],
-                                          );
-                                        },
-                                      ),
-
-                                      const SizedBox(height: 16),
-
-                                      // زر تسجيل الدخول
-                                      _buildLoginButton(state, context),
-
-                                      const SizedBox(height: 12),
-
-                                      // لا تملك حساب؟
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "ليس لديك حساب؟ ",
-                                            style: AppTextStyles.lato600style20
-                                                .copyWith(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () {
-                                              customNavigatePush(
-                                                context,
-                                                "/signUp",
-                                              );
-                                            },
-                                            child: Text(
-                                              'إنشاء حساب',
-                                              style: AppTextStyles
-                                                  .lato600style20
-                                                  .copyWith(
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: AppColors.green,
-                                                  ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-
-                                      const SizedBox(height: 16),
-
-                                      // Divider
-                                      Row(
-                                        children: [
-                                          const Expanded(
-                                            child: Divider(
-                                              thickness: 1,
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                          Padding(
-                                            padding: const EdgeInsets.symmetric(
-                                              horizontal: 8.0,
-                                            ),
-                                            child: Text(
-                                              'أو',
-                                              style: AppTextStyles
-                                                  .lato600style20
-                                                  .copyWith(
-                                                    fontSize: 12,
-                                                    fontWeight: FontWeight.w400,
-                                                  ),
-                                            ),
-                                          ),
-                                          const Expanded(
-                                            child: Divider(
-                                              thickness: 1,
-                                              color: Colors.grey,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-
-                                      const SizedBox(height: 16),
-
-                                      // زر تسجيل الدخول باستخدام جوجل
-                                      GestureDetector(
-                                        onTap: state is GmailAuthLoading
-                                            ? null
-                                            : () {
-                                                context
-                                                    .read<AuthCubit>()
-                                                    .signInWithGoogle();
-                                              },
-                                        child: Container(
-                                          height: 48,
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 16,
-                                          ),
-                                          decoration: BoxDecoration(
-                                            border: Border.all(
-                                              color: Colors.grey[400]!,
-                                            ),
-                                            borderRadius: BorderRadius.circular(
-                                              12,
-                                            ),
-                                          ),
-                                          alignment: Alignment.center,
-                                          child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              if (state is GmailAuthLoading)
-                                                const SizedBox(
-                                                  height: 20,
-                                                  width: 20,
-                                                  child:
-                                                      CircularProgressIndicator(
-                                                        strokeWidth: 2,
-                                                      ),
-                                                )
-                                              else ...[
-                                                Image.asset(
-                                                  AppAssets.googleIcon,
-                                                  width: 24,
-                                                  height: 24,
-                                                ),
-                                                const SizedBox(width: 12),
-                                                Text(
-                                                  'تسجيل الدخول باستخدام جوجل',
-                                                  style: AppTextStyles
-                                                      .lato600style20
-                                                      .copyWith(
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
-                                                ),
-                                              ],
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-
-                                      const SizedBox(height: 24),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               );

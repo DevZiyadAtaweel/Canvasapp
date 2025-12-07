@@ -12,13 +12,9 @@ import '../../core/widgets/custem_elevatedButton_widgets.dart';
 class ScreenMobile extends StatelessWidget {
   // يجب عليك تمرير الدوال التي تنفذ التقاط الصور عبر Constructor
   final Function(ImageSource)? onImageButtonPressed;
-  final Future<Uint8List?> Function() ?pickImage;
+  final Future<Uint8List?> Function()? pickImage;
 
-  const ScreenMobile({
-    super.key,
-     this.onImageButtonPressed,
-     this.pickImage ,
-  });
+  const ScreenMobile({super.key, this.onImageButtonPressed, this.pickImage});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +35,7 @@ class ScreenMobile extends StatelessWidget {
                 // زر إرفاق صورة (المعرض)
                 CustemElevatedbuttonWidgets(
                   onPressed: () async {
-                    final bytes = await pickImage!();
+                    await pickImage!();
                     // ... منطق التوجيه ...
                   },
                   textButton: 'ارفاق صورة',

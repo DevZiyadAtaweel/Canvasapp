@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moftahak/core/constants/app_text_styles.dart';
 
 import '../../core/constants/app_colors.dart';
 // class CustemElevatedbuttonWidgets extends StatelessWidget {
@@ -69,7 +70,7 @@ class _CustemElevatedbuttonWidgetsState
       child: ElevatedButton(
         onPressed: widget.onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.yellow,
+          backgroundColor: AppColors.primaryColor,
           foregroundColor: Colors.black,
           elevation: 5,
           shape: RoundedRectangleBorder(
@@ -81,9 +82,9 @@ class _CustemElevatedbuttonWidgetsState
         child: widget.icon == null
             ? Text(
                 widget.textButton,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                style: AppTextStyles.almarai700style20.copyWith(
+                  fontSize: 20,
+                  color: Colors.white,
                 ),
               )
             : Row(
@@ -92,10 +93,7 @@ class _CustemElevatedbuttonWidgetsState
                   widget.icon!,
                   Text(
                     widget.textButton,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: AppTextStyles.almarai700style20,
                   ),
                 ],
               ),

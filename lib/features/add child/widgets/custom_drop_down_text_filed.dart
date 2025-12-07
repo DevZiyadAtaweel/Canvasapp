@@ -25,7 +25,7 @@ class CustomDropdownField<T> extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: AppTextStyles.sen700style20),
+          Text(label, style: AppTextStyles.almarai500style16),
           const SizedBox(height: 8),
           SizedBox(
             width: 350,
@@ -37,9 +37,12 @@ class CustomDropdownField<T> extends StatelessWidget {
               //     : null,
               value: value,
 
-              hint: const Text(
+              hint: Text(
                 "انقر للاختيار",
-                style: TextStyle(color: Colors.grey, fontFamily: "Sen"),
+                style: AppTextStyles.almarai500style16.copyWith(
+                  color: Colors.grey,
+                  fontSize: 14,
+                ),
               ),
 
               items: items
@@ -48,24 +51,31 @@ class CustomDropdownField<T> extends StatelessWidget {
                       value: e,
                       child: Text(
                         e.toString(),
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontFamily: "Sen",
-                        ),
+                        style: AppTextStyles.almarai500style16,
                       ),
                     ),
                   )
                   .toList(),
               onChanged: onChanged,
-              style: const TextStyle(color: Colors.black, fontFamily: "Sen"),
+              style: AppTextStyles.almarai500style16,
+
               decoration: InputDecoration(
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 14,
+                ),
+
                 filled: true,
                 fillColor: AppColors.textField,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide.none,
                 ),
               ),
-              icon: const Icon(Icons.arrow_drop_down),
+              icon: Padding(
+                padding: const EdgeInsets.only(left: 14),
+                child: Icon(Icons.arrow_drop_down),
+              ),
             ),
           ),
         ],

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moftahak/core/constants/app_assets.dart';
 import 'package:moftahak/core/constants/app_colors.dart';
-import 'package:moftahak/core/constants/app_gradients.dart';
 import 'package:moftahak/core/constants/app_strings.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/constants/navigation.dart';
@@ -29,19 +28,18 @@ class SupportView extends StatelessWidget {
           children: [
             Container(
               padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 24.0),
-              decoration: BoxDecoration(gradient: AppGradients.mainGradient),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     AppStrings.supportTitle,
-                    style: AppTextStyles.lato700style28,
+                    style: AppTextStyles.almarai700style28,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 20.0),
                   Text(
                     AppStrings.supportEmail,
-                    style: AppTextStyles.lato600style20.copyWith(
+                    style: AppTextStyles.almarai700style20.copyWith(
                       color: AppColors.textColor,
                     ),
                     textAlign: TextAlign.center,
@@ -49,7 +47,7 @@ class SupportView extends StatelessWidget {
                   SizedBox(height: 40.0),
                   Text(
                     AppStrings.socialMedia,
-                    style: AppTextStyles.lato700style28,
+                    style: AppTextStyles.almarai700style28,
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 20.0),
@@ -64,7 +62,6 @@ class SupportView extends StatelessWidget {
                 ],
               ),
             ),
-            CornerDecoration(),
           ],
         ),
       ),

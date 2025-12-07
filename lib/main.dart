@@ -1,6 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/routes/app_routes.dart';
+import 'package:moftahak/features/home/cubit/home_cubit.dart';
 import 'package:moftahak/firebase_options.dart';
 
 // استيراد شاشة البداية لتشغيل التطبيق بشكل مؤقت
@@ -15,7 +18,12 @@ void main() async {
     anonKey:
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyb3Fqc25rbmVqcG1kZG9ibGZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ2NzY4MTcsImV4cCI6MjA4MDI1MjgxN30.fMI3ICfZelFWXdRe8K3MoqVbIQ2Z5kjLW_bhDBpgfHY',
   );
-  runApp(const MyApp());
+  runApp(
+    BlocProvider<HomeCubit>(
+      create: (_) => HomeCubit()..startUserListener(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -26,25 +34,25 @@ class MyApp extends StatelessWidget {
     // تم حل التعارض: تم اعتماد بنية MaterialApp.router مرة واحدة
     // مع دمج جميع إعدادات الـ Theme والـ routerConfig.
     return MaterialApp.router(
-      
       // تأكد أن 'appRouter' معرف ومتوفر للاستخدام
       routerConfig: appRouter,
 
       debugShowCheckedModeBanner: false,
 
       theme: ThemeData(
-        scaffoldBackgroundColor: Colors.transparent,
-        textTheme: const TextTheme(
-          bodyLarge: TextStyle(color: Colors.white),
-          bodyMedium: TextStyle(color: Colors.white),
-          bodySmall: TextStyle(color: Colors.white),
-          titleLarge: TextStyle(color: Colors.white),
-          titleMedium: TextStyle(color: Colors.white),
-          titleSmall: TextStyle(color: Colors.white),
-          labelLarge: TextStyle(color: Colors.white),
-          labelMedium: TextStyle(color: Colors.white),
-          labelSmall: TextStyle(color: Colors.white),
+        appBarTheme: AppBarTheme(
+          scrolledUnderElevation: 0,
+
+          backgroundColor: Colors.white,
+          iconTheme: IconThemeData(color: Colors.black),
+          titleTextStyle: AppTextStyles.almarai700style28.copyWith(
+            color: Color(0xFF8A3FFC),
+          ),
+          centerTitle: true,
+          elevation: 0,
         ),
+        dialogBackgroundColor: Colors.white,
+        scaffoldBackgroundColor: Colors.white,
       ),
     );
   }

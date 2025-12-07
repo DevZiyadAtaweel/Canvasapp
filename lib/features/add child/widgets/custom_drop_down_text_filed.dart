@@ -25,7 +25,7 @@ class CustomDropdownField<T> extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: AppTextStyles.sen700style20),
+          Text(label, style: AppTextStyles.almarai500style16),
           const SizedBox(height: 8),
           SizedBox(
             width: 350,
@@ -63,6 +63,7 @@ class CustomDropdownField<T> extends StatelessWidget {
                 fillColor: AppColors.textField,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8.0),
+                  borderSide: BorderSide.none,
                 ),
               ),
               icon: const Icon(Icons.arrow_drop_down),

@@ -20,7 +20,7 @@ class CustomTextField extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(text, style: AppTextStyles.sen700style20),
+          Text(text, style: AppTextStyles.almarai500style16),
           SizedBox(height: 8),
           SizedBox(
             width: 350,
@@ -31,7 +31,8 @@ class CustomTextField extends StatelessWidget {
               style: TextStyle(color: Colors.black, fontFamily: "Sen"),
               decoration: InputDecoration(
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8.0),
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide.none,
                 ),
                 fillColor: AppColors.textField,
                 filled: true,

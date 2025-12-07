@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/constants/navigation.dart';
 import 'package:moftahak/features/home/cubit/home_cubit.dart';
 
@@ -56,15 +57,12 @@ class ChildrenDropdown extends StatelessWidget {
               // 👈 نخلي القيمة دايمًا null عشان يظهر الـ hint
               value: null,
               isExpanded: true,
-              icon: const Icon(Icons.arrow_drop_down, color: Colors.white),
+              icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
               // النص اللي يظهر دائمًا فوق:
-              hint: const Text(
+              hint: Text(
                 'الأبناء',
                 textDirection: TextDirection.rtl,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: AppTextStyles.almarai700style20,
               ),
               items: items,
               onChanged: (value) {

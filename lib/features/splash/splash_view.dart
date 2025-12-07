@@ -41,7 +41,7 @@ class _SplashViewState extends State<SplashView> {
               } else if (state is SplashToAuth) {
                 customNavigatePushReplacement(context, '/login');
               } else if (state is SplashToHome) {
-                customNavigatePushReplacement(context, '/home');
+                customNavigatePushReplacement(context, '/main');
               }
             },
             child: Center(

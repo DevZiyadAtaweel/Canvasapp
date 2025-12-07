@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moftahak/core/constants/app_colors.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/constants/navigation.dart';
-import 'package:moftahak/core/widgets/corner_decoration.dart';
 import 'package:moftahak/features/auth/cubit/auth_cubit.dart';
 import 'package:moftahak/features/auth/widgets/auth_text_filed.dart';
 import 'package:moftahak/features/auth/widgets/auth_toggle_tabs.dart';
@@ -45,206 +44,194 @@ class SignUpView extends StatelessWidget {
             },
 
             builder: (context, state) {
-              return Stack(
+              return Column(
                 children: [
-                  CornerDecoration(),
+                  const SizedBox(height: 120),
 
-                  Column(
-                    children: [
-                      const SizedBox(height: 120),
+                  // ---------- العنوان ----------
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          'إنشاء حساب',
+                          style: AppTextStyles.lato600style20.copyWith(
+                            fontSize: 32,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'سجل بياناتك للبدء باستخدام التطبيق',
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.lato600style20.copyWith(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
 
-                      // ---------- العنوان ----------
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                  const SizedBox(height: 24),
+
+                  // ---------- الكارد الأبيض ----------
+                  Expanded(
+                    child: Container(
+                      width: double.infinity,
+                      decoration: const BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(32),
+                          topRight: Radius.circular(32),
+                        ),
+                      ),
+                      child: SingleChildScrollView(
                         child: Column(
                           children: [
-                            Text(
-                              'إنشاء حساب',
-                              style: AppTextStyles.lato600style20.copyWith(
-                                fontSize: 32,
-                                fontWeight: FontWeight.w700,
-                              ),
+                            AuthToggleTabs(
+                              isLoginSelected: false,
+                              onLoginTap: () =>
+                                  customNavigatePush(context, "/login"),
+                              onSignupTap: () {},
                             ),
-                            const SizedBox(height: 8),
-                            Text(
-                              'سجل بياناتك للبدء باستخدام التطبيق',
-                              textAlign: TextAlign.center,
-                              style: AppTextStyles.lato600style20.copyWith(
-                                fontSize: 22,
-                                fontWeight: FontWeight.w400,
+
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 24,
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  const SizedBox(height: 24),
+
+                                  // -------------------
+                                  // الاسم
+                                  // -------------------
+                                  _buildLabel("الاسم الكامل", nameError),
+                                  const SizedBox(height: 8),
+
+                                  ValueListenableBuilder<bool>(
+                                    valueListenable: nameError,
+                                    builder: (context, hasError, _) {
+                                      return AuthTextField(
+                                        controller: nameController,
+                                        hint: 'اكتب اسمك هنا',
+                                        keyboardType: TextInputType.name,
+                                        showError: hasError,
+                                      );
+                                    },
+                                  ),
+
+                                  const SizedBox(height: 16),
+
+                                  // -------------------
+                                  // البريد الإلكتروني
+                                  // -------------------
+                                  _buildLabel("البريد الإلكتروني", emailError),
+                                  const SizedBox(height: 8),
+
+                                  ValueListenableBuilder<bool>(
+                                    valueListenable: emailError,
+                                    builder: (context, hasError, _) {
+                                      return AuthTextField(
+                                        controller: emailController,
+                                        hint: 'example@gmail.com',
+                                        keyboardType:
+                                            TextInputType.emailAddress,
+                                        showError: hasError,
+                                      );
+                                    },
+                                  ),
+
+                                  const SizedBox(height: 16),
+
+                                  // -------------------
+                                  // كلمة المرور
+                                  // -------------------
+                                  _buildLabel("كلمة المرور", passError),
+                                  const SizedBox(height: 8),
+
+                                  ValueListenableBuilder<bool>(
+                                    valueListenable: passError,
+                                    builder: (context, hasError, _) {
+                                      return AuthTextField(
+                                        controller: passController,
+                                        hint: '********',
+                                        isPassword: true,
+                                        showError: hasError,
+                                      );
+                                    },
+                                  ),
+
+                                  const SizedBox(height: 16),
+
+                                  // -------------------
+                                  // تأكيد كلمة المرور
+                                  // -------------------
+                                  _buildLabel(
+                                    "إعادة كتابة كلمة المرور",
+                                    confirmPassError,
+                                  ),
+                                  const SizedBox(height: 8),
+
+                                  ValueListenableBuilder<bool>(
+                                    valueListenable: confirmPassError,
+                                    builder: (context, hasError, _) {
+                                      return AuthTextField(
+                                        controller: confirmPassController,
+                                        hint: '********',
+                                        isPassword: true,
+                                        showError: hasError,
+                                      );
+                                    },
+                                  ),
+
+                                  const SizedBox(height: 24),
+
+                                  // زر إنشاء حساب
+                                  _buildSubmitButton(state, context),
+
+                                  const SizedBox(height: 12),
+
+                                  // لديك حساب؟
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "لديك حساب بالفعل؟ ",
+                                        style: AppTextStyles.lato600style20
+                                            .copyWith(
+                                              fontSize: 13,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                      ),
+                                      GestureDetector(
+                                        onTap: () => customNavigatePush(
+                                          context,
+                                          "/login",
+                                        ),
+                                        child: Text(
+                                          'تسجيل الدخول',
+                                          style: AppTextStyles.lato600style20
+                                              .copyWith(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.w700,
+                                                color: AppColors.green,
+                                              ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  const SizedBox(height: 24),
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
-
-                      const SizedBox(height: 24),
-
-                      // ---------- الكارد الأبيض ----------
-                      Expanded(
-                        child: Container(
-                          width: double.infinity,
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(32),
-                              topRight: Radius.circular(32),
-                            ),
-                          ),
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                AuthToggleTabs(
-                                  isLoginSelected: false,
-                                  onLoginTap: () =>
-                                      customNavigatePush(context, "/login"),
-                                  onSignupTap: () {},
-                                ),
-
-                                Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 24,
-                                  ),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.stretch,
-                                    children: [
-                                      const SizedBox(height: 24),
-
-                                      // -------------------
-                                      // الاسم
-                                      // -------------------
-                                      _buildLabel("الاسم الكامل", nameError),
-                                      const SizedBox(height: 8),
-
-                                      ValueListenableBuilder<bool>(
-                                        valueListenable: nameError,
-                                        builder: (context, hasError, _) {
-                                          return AuthTextField(
-                                            controller: nameController,
-                                            hint: 'اكتب اسمك هنا',
-                                            keyboardType: TextInputType.name,
-                                            showError: hasError,
-                                          );
-                                        },
-                                      ),
-
-                                      const SizedBox(height: 16),
-
-                                      // -------------------
-                                      // البريد الإلكتروني
-                                      // -------------------
-                                      _buildLabel(
-                                        "البريد الإلكتروني",
-                                        emailError,
-                                      ),
-                                      const SizedBox(height: 8),
-
-                                      ValueListenableBuilder<bool>(
-                                        valueListenable: emailError,
-                                        builder: (context, hasError, _) {
-                                          return AuthTextField(
-                                            controller: emailController,
-                                            hint: 'example@gmail.com',
-                                            keyboardType:
-                                                TextInputType.emailAddress,
-                                            showError: hasError,
-                                          );
-                                        },
-                                      ),
-
-                                      const SizedBox(height: 16),
-
-                                      // -------------------
-                                      // كلمة المرور
-                                      // -------------------
-                                      _buildLabel("كلمة المرور", passError),
-                                      const SizedBox(height: 8),
-
-                                      ValueListenableBuilder<bool>(
-                                        valueListenable: passError,
-                                        builder: (context, hasError, _) {
-                                          return AuthTextField(
-                                            controller: passController,
-                                            hint: '********',
-                                            isPassword: true,
-                                            showError: hasError,
-                                          );
-                                        },
-                                      ),
-
-                                      const SizedBox(height: 16),
-
-                                      // -------------------
-                                      // تأكيد كلمة المرور
-                                      // -------------------
-                                      _buildLabel(
-                                        "إعادة كتابة كلمة المرور",
-                                        confirmPassError,
-                                      ),
-                                      const SizedBox(height: 8),
-
-                                      ValueListenableBuilder<bool>(
-                                        valueListenable: confirmPassError,
-                                        builder: (context, hasError, _) {
-                                          return AuthTextField(
-                                            controller: confirmPassController,
-                                            hint: '********',
-                                            isPassword: true,
-                                            showError: hasError,
-                                          );
-                                        },
-                                      ),
-
-                                      const SizedBox(height: 24),
-
-                                      // زر إنشاء حساب
-                                      _buildSubmitButton(state, context),
-
-                                      const SizedBox(height: 12),
-
-                                      // لديك حساب؟
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "لديك حساب بالفعل؟ ",
-                                            style: AppTextStyles.lato600style20
-                                                .copyWith(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                          ),
-                                          GestureDetector(
-                                            onTap: () => customNavigatePush(
-                                              context,
-                                              "/login",
-                                            ),
-                                            child: Text(
-                                              'تسجيل الدخول',
-                                              style: AppTextStyles
-                                                  .lato600style20
-                                                  .copyWith(
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.w700,
-                                                    color: AppColors.green,
-                                                  ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-
-                                      const SizedBox(height: 24),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               );

@@ -56,7 +56,7 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.label, style: AppTextStyles.sen700style20),
+          Text(widget.label, style: AppTextStyles.almarai500style16),
           const SizedBox(height: 8),
           SizedBox(
             width: 350,
@@ -67,14 +67,15 @@ class _CustomDatePickerFieldState extends State<CustomDatePickerField> {
               onTap: _pickDate,
               decoration: InputDecoration(
                 hintText: "اختر التاريخ",
-                hintStyle: const TextStyle(
+                hintStyle: AppTextStyles.almarai500style16.copyWith(
                   color: Colors.grey,
-                  fontFamily: "Sen",
+                  fontSize: 14,
                 ),
                 filled: true,
                 fillColor: AppColors.textField,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(8),
+                  borderSide: BorderSide.none,
                 ),
                 suffixIcon: const Icon(Icons.calendar_today),
               ),

@@ -32,13 +32,8 @@ final GoRouter appRouter = GoRouter(
 
     GoRoute(path: '/onBoarding', builder: (context, state) => OnBoardingView()),
 
-    GoRoute(
-      path: '/home',
-      builder: (context, state) => BlocProvider(
-        create: (_) => HomeCubit()..startUserListener(),
-        child: const HomeScreen(),
-      ),
-    ),
+    GoRoute(path: '/home', builder: (context, state) => const HomeScreen()),
+
     GoRoute(path: '/login', builder: (context, state) => LoginView()),
     GoRoute(path: '/signUp', builder: (context, state) => SignUpView()),
     GoRoute(
@@ -54,18 +49,18 @@ final GoRouter appRouter = GoRouter(
       path: '/settings',
       builder: (context, state) {
         return MultiBlocProvider(
-          providers: [
-            BlocProvider<AuthCubit>(create: (_) => AuthCubit()),
-            BlocProvider<HomeCubit>(
-              create: (_) => HomeCubit()..startUserListener(),
-            ),
-          ],
+          providers: [BlocProvider<AuthCubit>(create: (_) => AuthCubit())],
           child: const SettingsView(),
         );
       },
     ),
+
     GoRoute(path: '/support', builder: (context, state) => SupportView()),
-    GoRoute(path: '/drawing', builder: (context, state) => DrawingScreen()),
+    GoRoute(
+      path: '/drawing',
+      builder: (context, state) => const DrawingScreen(),
+    ),
+
     GoRoute(
       path: '/childDetails/:id',
       builder: (context, state) {
@@ -86,16 +81,10 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) {
         return MultiBlocProvider(
           providers: [
-            BlocProvider<HomeCubit>(
-              create: (_) => HomeCubit()..startUserListener(),
-            ),
             BlocProvider<AuthCubit>(create: (_) => AuthCubit()),
             BlocProvider<AddChildCubit>(create: (_) => AddChildCubit()),
-            // لو DrawingScreen أو AllDrawings لهم Cubit خاص
-            // BlocProvider<DrawingCubit>(create: (_) => DrawingCubit()),
-            // BlocProvider<AllDrawingsCubit>(create: (_) => AllDrawingsCubit()),
           ],
-          child: const Main(), // Main فيها الـ bottom nav
+          child: const Main(),
         );
       },
     ),

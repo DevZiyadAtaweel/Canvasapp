@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:moftahak/core/constants/app_colors.dart';
 
 class AppTextStyles {
   static final pacifico400style40 = TextStyle(
@@ -15,16 +14,22 @@ class AppTextStyles {
     color: Colors.black,
     fontFamily: "Lato",
   );
-  static final lato700style28 = TextStyle(
+  static final almarai700style28 = TextStyle(
     fontSize: 28,
     fontWeight: FontWeight.w700,
-    color: AppColors.textColor,
-    fontFamily: "Lato",
+    color: Colors.black,
+    fontFamily: "Almarai",
   );
-  static final sen700style20 = TextStyle(
+  static final almarai700style20 = TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.w700,
-    color: AppColors.textColor,
-    fontFamily: "Sen",
+    color: Colors.black,
+    fontFamily: "Almarai",
+  );
+  static final almarai500style16 = TextStyle(
+    fontSize: 16,
+    fontWeight: FontWeight.w500,
+    color: Colors.black,
+    fontFamily: "Almarai",
   );
 }

@@ -75,7 +75,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                         child: Text(
                           descriptions[index],
                           textAlign: TextAlign.center,
-                          style: AppTextStyles.lato700style28,
+                          style: AppTextStyles.almarai700style28,
                         ),
                       ),
                       Spacer(flex: 3),

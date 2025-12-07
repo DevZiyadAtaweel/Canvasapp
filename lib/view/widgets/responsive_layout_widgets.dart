@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:moftahak/main.dart';
 
 import '../../features/drawing/drawing_screen.dart';
 import 'drawing_responsive_tablet_widgets.dart';

@@ -36,15 +36,46 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
     );
 
     final prompt = TextPart("""
-حلل حالة الطفل الظاهرة في الصورة.
+You are an expert assistant trained to interpret general emotional and behavioral cues in children's drawings (ages 3–12).  
+Your role is to provide safe, non-diagnostic insights based strictly on the drawing, combined with the child’s basic context.
 
-أرجع فقط JSON التالي:
+Child Information:
+- Name: {child_name}
+- Age: {child_age}
+- Health condition (as reported by parents): {health_condition}
 
-{
-  "المشاعر": "",
-  "نسبة_الثقة": "",
-  "الوصف": ""
-}
+Drawing Information:
+- Image description: {image_description}
+- Detected elements: {detected_elements}
+- Dominant colors: {dominant_colors}
+- Notable shapes or symbols: {symbolic_elements}
+
+Parent Context:
+- Parent concern: {parent_concern}
+
+Please follow this structured output:
+
+### 🟦 Immediate Observations
+(Neutral, descriptive points based on the drawing)
+- ...
+- ...
+- ...
+
+### 🟩 Possible Emotional Signals (non-diagnostic)
+(Use cautious language such as “may suggest…”, “could indicate…”, “something a specialist may want to review…”)
+- ...
+- ...
+- ...
+
+### 🟨 Suggestions for Parents
+(Practical, simple, supportive)
+• ...  
+• ...  
+• ...  
+
+### 🟥 Disclaimer
+This is not a diagnosis or medical evaluation. It provides general insights only.  
+For any medical or psychological concerns, please consult a licensed child psychologist or pediatric specialist.
 """);
 
     try {

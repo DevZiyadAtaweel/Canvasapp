@@ -3,49 +3,10 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
-// شاشة تحليل الصورة بالذكاء الاصطناعي
-class AnalysiImagebyAiScreen extends StatelessWidget {
-  // استقبال ملف الصورة الملتقطة هنا
-   //final XFile? imageFile;
-   Uint8List? imageFile;
+class AnalysiImagebyAiScreen extends StatefulWidget {
+  final Uint8List imageFile;
 
-   Future<String> analyzeChildEmotion(Uint8List imageBytes) async {
-     final apiKey = "AIzaSyCGO-IYBzaVIARV-o980oW46WFI7BiTPy8";
-
-     final model = GenerativeModel(
-       model: "gemini-1.5-pro",
-       apiKey: apiKey,
-     );
-//النص الخاص بالذكاء لارساله
-     final content = [
-       Content.multi([
-         TextPart(
-             'As a child psychology expert analyzing drawings of children (3-12 years) with psychological disorders or autism:'
-
-                 '🔍 Immediate Observations:'
-                 '1. Color usage and symbolism'
-                 '2. Organization and detail level'
-                 ' 3. Element relationships'
-                 '💡 Initial Assessment:'
-                 ' - [Potential disorder 1]'
-                 '  - [Potential disorder 2]'
-
-                 '  ✨ Practical Parent Recommendations: '
-                 '• [Suggestion 1 - short & direct] '
-                 '• [Suggestion 2 - daily implementable] '
-                 '• [Suggestion 3 - emotional support]'
-
-                 ' ⚠️ Note: This is preliminary analysis only. Consult a professionalfor accurate diagnosis'
-         ),
-         DataPart("image/jpeg", imageBytes),
-       ])
-     ];
-
-     final response = await model.generateContent(content);
-
-     return response.text ?? "No response";
-   }
-   AnalysiImagebyAiScreen({super.key,  required this.imageFile});
+  const AnalysiImagebyAiScreen({super.key, required this.imageFile});
 
   @override
   State<AnalysiImagebyAiScreen> createState() => _AnalysiImagebyAiScreenState();
@@ -75,15 +36,46 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
     );
 
     final prompt = TextPart("""
-حلل حالة الطفل الظاهرة في الصورة.
+You are an expert assistant trained to interpret general emotional and behavioral cues in children's drawings (ages 3–12).  
+Your role is to provide safe, non-diagnostic insights based strictly on the drawing, combined with the child’s basic context.
 
-أرجع فقط JSON التالي:
+Child Information:
+- Name: {child_name}
+- Age: {child_age}
+- Health condition (as reported by parents): {health_condition}
 
-{
-  "المشاعر": "",
-  "نسبة_الثقة": "",
-  "الوصف": ""
-}
+Drawing Information:
+- Image description: {image_description}
+- Detected elements: {detected_elements}
+- Dominant colors: {dominant_colors}
+- Notable shapes or symbols: {symbolic_elements}
+
+Parent Context:
+- Parent concern: {parent_concern}
+
+Please follow this structured output:
+
+### 🟦 Immediate Observations
+(Neutral, descriptive points based on the drawing)
+- ...
+- ...
+- ...
+
+### 🟩 Possible Emotional Signals (non-diagnostic)
+(Use cautious language such as “may suggest…”, “could indicate…”, “something a specialist may want to review…”)
+- ...
+- ...
+- ...
+
+### 🟨 Suggestions for Parents
+(Practical, simple, supportive)
+• ...  
+• ...  
+• ...  
+
+### 🟥 Disclaimer
+This is not a diagnosis or medical evaluation. It provides general insights only.  
+For any medical or psychological concerns, please consult a licensed child psychologist or pediatric specialist.
 """);
 
     try {
@@ -251,42 +243,4 @@ Future<Uint8List?> pickImage({required ImageSource source}) async {
   final XFile? file = await picker.pickImage(source: source);
   if (file == null) return null;
   return await file.readAsBytes();
-}
-
-
-Future<String> analyzeChildEmotion(Uint8List imageBytes) async {
-  final apiKey = "YOUR_GOOGLE_API_KEY";
-
-  final model = GenerativeModel(
-    model: "gemini-1.5-pro",
-    apiKey: apiKey,
-  );
-
-  final content = [
-    Content.multi([
-      TextPart(
-        "As a child psychology expert analyzing drawings of children (3-12 years) with psychological disorders or autism:"
-
-        '🔍 Immediate Observations:'
-            '1. Color usage and symbolism'
-            '2. Organization and detail level'
-            ' 3. Element relationships'
-            '💡 Initial Assessment:'
-            ' - [Potential disorder 1]'
-            '  - [Potential disorder 2]'
-
-            '  ✨ Practical Parent Recommendations: '
-            '• [Suggestion 1 - short & direct] '
-            '• [Suggestion 2 - daily implementable] '
-            '• [Suggestion 3 - emotional support]'
-
-            ' ⚠️ Note: This is preliminary analysis only. Consult a professionalfor accurate diagnosis"'
-                  ),
-      DataPart("image/jpeg", imageBytes),
-    ])
-  ];
-
-  final response = await model.generateContent(content);
-
-  return response.text ?? "No response";
 }

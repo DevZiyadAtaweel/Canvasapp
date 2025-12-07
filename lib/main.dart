@@ -7,7 +7,6 @@ import 'package:moftahak/firebase_options.dart';
 // افتراض مسار الشاشة الرئيسية
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
@@ -27,6 +26,7 @@ class MyApp extends StatelessWidget {
     // تم حل التعارض: تم اعتماد بنية MaterialApp.router مرة واحدة
     // مع دمج جميع إعدادات الـ Theme والـ routerConfig.
     return MaterialApp.router(
+      
       // تأكد أن 'appRouter' معرف ومتوفر للاستخدام
       routerConfig: appRouter,
 

@@ -45,6 +45,7 @@ class HomeScreen extends StatelessWidget {
               final firstName = context.read<HomeCubit>().getFirstName(
                 user.name,
               );
+              final children = state.children;
 
               return ListView(
                 children: [
@@ -138,17 +139,55 @@ class HomeScreen extends StatelessWidget {
                   // ================== قسم أبنائي ==================
                   Center(
                     child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
                       children: [
                         Text('أبنائي', style: AppTextStyles.almarai700style28),
-                        const SizedBox(height: 40),
-                        // CustemImageIconWidgets(
-                        //   onTap: () {
-                        //     // هنا لاحقًا تروح على شاشة الأبناء
-                        //   },
-                        //   width: 135,
-                        //   height: 135,
-                        //   imagepath: 'assets/images/on_boarding_new.png',
-                        // ),
+                        const SizedBox(height: 16),
+
+                        // 🔥 Scrollable Row
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: children.map((child) {
+                              return GestureDetector(
+                                onTap: () {
+                                  customNavigatePush(
+                                    context,
+                                    '/childDetails/${child.id}',
+                                  );
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 18,
+                                    vertical: 12,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF8A3FFC), // بنفسجي
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 6,
+                                        offset: const Offset(0, 3),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Text(
+                                    child.name,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }).toList(),
+                          ),
+                        ),
                       ],
                     ),
                   ),

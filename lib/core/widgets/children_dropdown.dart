@@ -11,22 +11,15 @@ class ChildrenDropdown extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<HomeCubit, HomeState>(
       builder: (context, state) {
-        if (state is HomeLoading || state is HomeInitial) {
-          return const SizedBox.shrink();
-        }
-
-        if (state is HomeError) {
-          return const SizedBox.shrink();
-        }
-
         if (state is! HomeSuccess) {
           return const SizedBox.shrink();
         }
 
         final children = state.children;
+        final selectedChildId = state.selectedChildId;
         const addNewValue = '__add_child__';
 
-        // نبني العناصر اللي داخل القائمة
+        // نبني العناصر
         final items = <DropdownMenuItem<String>>[
           ...children.map(
             (child) => DropdownMenuItem<String>(
@@ -48,32 +41,33 @@ class ChildrenDropdown extends StatelessWidget {
           height: 48,
           padding: const EdgeInsets.symmetric(horizontal: 12),
           decoration: BoxDecoration(
-            color: Colors.transparent, // غيّرها للّون اللي بدك إياه
+            color: Colors.transparent,
             borderRadius: BorderRadius.circular(12),
           ),
           alignment: Alignment.centerRight,
           child: DropdownButtonHideUnderline(
             child: DropdownButton<String>(
-              // 👈 نخلي القيمة دايمًا null عشان يظهر الـ hint
-              value: null,
+              // 🔥 القيمة الحالية (إما null أو selectedChildId)
+              value: selectedChildId,
+
               isExpanded: true,
               icon: const Icon(Icons.arrow_drop_down, color: Colors.black),
-              // النص اللي يظهر دائمًا فوق:
+
+              // 🔥 الهينت يظهر فقط إذا القيمة null
               hint: Text(
                 'الأبناء',
                 textDirection: TextDirection.rtl,
                 style: AppTextStyles.almarai700style20,
               ),
+
               items: items,
               onChanged: (value) {
                 if (value == null) return;
 
                 if (value == addNewValue) {
-                  // الذهاب لشاشة إضافة ابن جديد
                   customNavigatePush(context, '/addChild');
                 } else {
-                  // اختيار طفل معيّن (للاستخدام داخل الكيوبت)
-                  context.read<HomeCubit>().selectChild(context, value);
+                  context.read<HomeCubit>().selectChild(value);
                 }
               },
             ),

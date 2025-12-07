@@ -3,9 +3,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/widgets/children_dropdown.dart';
 
-import '../../core/constants/app_colors.dart';
 import '../../core/widgets/custem_elevatedButton_widgets.dart';
 import '../ai_logic/display_image.dart';
 import '../home/cubit/home_cubit.dart';
@@ -49,20 +49,17 @@ class _DrawingScreenState extends State<DrawingScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.backGroundColor,
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        backgroundColor: AppColors.backGroundColor,
-        title: const Text(
-          'اختر فنان اليوم',
-          style: TextStyle(color: Colors.white),
-        ),
+        backgroundColor: Colors.white,
+        title: const Text('اختر فنان اليوم'),
         centerTitle: true,
         leading: IconButton(
           onPressed: () {
             // نرجع خطوة للخلف بدل ما نعمل push لصفحة جديدة
             Navigator.pop(context);
           },
-          icon: const Icon(Icons.arrow_back_outlined, color: Colors.white),
+          icon: const Icon(Icons.arrow_back_outlined),
         ),
       ),
       body: Padding(
@@ -79,7 +76,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
               return Center(
                 child: Text(
                   state.message,
-                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                  style: const TextStyle(color: Colors.black, fontSize: 18),
                   textAlign: TextAlign.center,
                 ),
               );
@@ -113,11 +110,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                     if (firstName.isNotEmpty)
                       Text(
                         'أهلًا، $firstName 👋',
-                        style: const TextStyle(
-                          fontSize: 22,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
-                        ),
+                        style: AppTextStyles.almarai700style20,
                         textAlign: TextAlign.right,
                       ),
 
@@ -127,11 +120,8 @@ class _DrawingScreenState extends State<DrawingScreen> {
                     if (selectedChildName != null)
                       Text(
                         'الفنان اليوم: $selectedChildName',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.white,
-                        ),
+                        style: AppTextStyles.almarai700style20,
+
                         textAlign: TextAlign.right,
                       ),
 

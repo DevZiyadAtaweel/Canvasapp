@@ -26,7 +26,7 @@ class LoginView extends StatelessWidget {
       child: BlocProvider(
         create: (context) => AuthCubit(),
         child: Scaffold(
-          backgroundColor: AppColors.backGroundColor,
+          backgroundColor: AppColors.primaryColor,
           body: BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) {
               if (state is AuthSuccess) {

@@ -49,6 +49,7 @@ dependencies:
   shared_preferences: ^2.5.3
   smooth_page_indicator: ^1.2.1
   supabase_flutter: ^2.10.3
+  convert: ^3.1.2
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4

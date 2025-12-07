@@ -178,16 +178,7 @@ class _AddChildViewState extends State<AddChildView> {
                         });
                       },
                     ),
-                    CustomTextField(
-                      text: "وصف الحالة الصحية للطفل",
-                      controller: _healthDescController,
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return "الرجاء إدخال وصف الحالة الصحية";
-                        }
-                        return null;
-                      },
-                    ),
+
                     CustomDropdownField<String>(
                       validator: (value) {
                         if (value == null || value.isEmpty) {
@@ -204,7 +195,18 @@ class _AddChildViewState extends State<AddChildView> {
                         });
                       },
                     ),
+                    CustomTextField(
+                      maxLines: 3,
 
+                      text: "وصف الحالة الصحية للطفل",
+                      controller: _healthDescController,
+                      validator: (value) {
+                        if (value == null || value.trim().isEmpty) {
+                          return "الرجاء إدخال وصف الحالة الصحية";
+                        }
+                        return null;
+                      },
+                    ),
                     const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

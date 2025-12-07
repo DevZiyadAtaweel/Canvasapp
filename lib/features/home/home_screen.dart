@@ -7,7 +7,6 @@ import 'package:moftahak/core/widgets/children_dropdown.dart';
 import 'package:moftahak/core/widgets/custem_drawing_widgets.dart';
 import 'package:moftahak/core/widgets/custem_elevatedButton_widgets.dart';
 import 'package:moftahak/core/widgets/custem_image_icon_widgets.dart';
-import 'package:moftahak/view/screen/drawing_screen.dart';
 import 'package:moftahak/features/home/cubit/home_cubit.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -87,12 +86,7 @@ class HomeScreen extends StatelessWidget {
                   // ================== زر رسمة جديدة ==================
                   CustemElevatedbuttonWidgets(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const DrawingScreen(),
-                        ),
-                      );
+                      customNavigatePush(context, "/drawing");
                     },
                     width: double.infinity,
                     textButton: 'رسمة جديدة',

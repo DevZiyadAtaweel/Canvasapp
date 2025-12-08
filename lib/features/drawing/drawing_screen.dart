@@ -54,13 +54,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
         backgroundColor: Colors.white,
         title: const Text('اختر فنان اليوم'),
         centerTitle: true,
-        leading: IconButton(
-          onPressed: () {
-            // نرجع خطوة للخلف بدل ما نعمل push لصفحة جديدة
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back_outlined),
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),

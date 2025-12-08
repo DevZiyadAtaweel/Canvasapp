@@ -71,7 +71,7 @@ class _CustemElevatedbuttonWidgetsState
         onPressed: widget.onPressed,
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColors.primaryColor,
-          foregroundColor: Colors.black,
+          foregroundColor: Colors.white,
           elevation: 5,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -93,7 +93,7 @@ class _CustemElevatedbuttonWidgetsState
                   widget.icon!,
                   Text(
                     widget.textButton,
-                    style: AppTextStyles.almarai700style20,
+                    style: AppTextStyles.almarai700style20.copyWith(color: Colors.white),
                   ),
                 ],
               ),

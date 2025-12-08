@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/widgets/children_dropdown.dart';
 
+import '../../core/constants/app_colors.dart';
 import '../../core/widgets/custem_elevatedButton_widgets.dart';
 import '../ai_logic/display_image.dart';
 import '../home/cubit/home_cubit.dart';
@@ -121,77 +122,89 @@ class _DrawingScreenState extends State<DrawingScreen> {
                     const SizedBox(height: 50),
 
                     // أزرار اختيار الصورة
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        CustemElevatedbuttonWidgets(
-                          onPressed: () => pickImage(ImageSource.gallery),
-                          textButton: 'إرفاق صورة',
-                          width: MediaQuery.of(context).size.width * 0.4,
-                          icon: const Icon(Icons.upload, size: 22),
-                        ),
-                        CustemElevatedbuttonWidgets(
-                          onPressed: () => pickImage(ImageSource.camera),
-                          textButton: 'التقاط صورة',
-                          icon: const Icon(Icons.camera_alt_outlined, size: 22),
-                          width: MediaQuery.of(context).size.width * 0.4,
-                        ),
-                      ],
-                    ),
-
-                    const SizedBox(height: 60),
-                    const Divider(
-                      color: Colors.black,
-                      height: 40,
-                      thickness: 1,
-                    ),
-                    const SizedBox(height: 60),
 
                     // صندوق التعليمات
                     Container(
-                      height: 300,
-                      width: double.infinity,
+                      padding: const EdgeInsets.all(20.0),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
-                        borderRadius: BorderRadius.circular(16),
+                        color: Color(0xffe6dcf5),
+                        // لون البطاقة الأساسي أبيض (لكنها محاطة بظل بنفسجي)
+                        borderRadius: BorderRadius.circular(15),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.black.withOpacity(0.3),
-                            offset: const Offset(0, 4),
-                            blurRadius: 8,
-                            spreadRadius: 2,
+                            color: AppColors.kPrimaryPurple.withOpacity(0.22),
+                            blurRadius: 20,
+                            offset: const Offset(0, 1), // ظل سفلي
                           ),
                         ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(18),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            const Text(
-                              'تأكد من الآتي قبل التقاط الصورة',
-                              style: TextStyle(
-                                fontSize: 25,
-                                fontWeight: FontWeight.w700,
-                                color: Colors.white,
-                              ),
-                            ),
-                            const SizedBox(height: 20),
-                            _buildInstruction('تأكد من وضوح التصوير'),
-                            _buildInstruction('تأكد من عدم وجود ظلال'),
-                            _buildInstruction(
-                              'تأكد من ثبات الكاميرا عند التصوير',
-                            ),
-                          ],
+                        border: Border.all(
+                          color: AppColors.kPrimaryPurple.withOpacity(0.6),
+                          width: 1,
                         ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          // العنوان
+                           Text(
+                            'تأكد من الآتي قبل التقاط الصورة',
+                            textAlign: TextAlign.center,
+                            style:AppTextStyles.almarai700style20.copyWith(color: Colors.black)
+                          ),
+
+                          const SizedBox(height: 15),
+                          Divider(
+                            color: AppColors.kPrimaryDarkPurple,
+                            height: 1,
+                          ),
+                          const SizedBox(height: 15),
+
+                          // قائمة الخيارات (List Tiles)
+                          TextContainer('تأكد من وضوح التصوير'),
+                          TextContainer('تأكد من عدم وجود ظلال'),
+                          TextContainer('تأكد من ثبات الكاميرا عند التصوير'),
+                          TextContainer('تأكد من وضوح التصوير'),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 60),
+                    // const Divider(
+                    //   color: Colors.black,
+                    //   height: 40,
+                    //   thickness: 1,
+                    // ),
+                    const SizedBox(height: 40),
+
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          CustemElevatedbuttonWidgets(
+                            onPressed: () => pickImage(ImageSource.gallery),
+                            textButton: 'إرفاق صورة',
+                            width: double.infinity,
+                            // width: MediaQuery.of(context).size.width * 0.4,
+                            icon: const Icon(Icons.upload, size: 22),
+                          ),
+                          SizedBox(height: 24),
+                          CustemElevatedbuttonWidgets(
+                            onPressed: () => pickImage(ImageSource.camera),
+                            textButton: 'التقاط صورة',
+                            icon: const Icon(
+                              Icons.camera_alt_outlined,
+                              size: 22,
+                            ),
+                            width: double.infinity,
+
+                            // width: MediaQuery.of(context).size.width * 0.4,
+                          ),
+                        ],
                       ),
                     ),
                   ],
                 ),
               );
             }
-
-            // حالة احتياطية
             return const SizedBox.shrink();
           },
         ),
@@ -211,6 +224,60 @@ class _DrawingScreenState extends State<DrawingScreen> {
         ),
         textAlign: TextAlign.right,
       ),
+    );
+  }
+
+  // Row(
+  // mainAxisAlignment: MainAxisAlignment.end,
+  // children: [
+  // Text(
+  // 'تأكد من وضوح التصوير',
+  // style: TextStyle(
+  // color: AppColors.kPrimaryPurple,
+  // fontSize: 18
+  // ),
+  // ),
+  // SizedBox(
+  // width: 5,
+  // ),
+  // const Icon(
+  // Icons.check_circle,
+  // // color: Colors.purpleAccent,
+  // color: Color(0xffa78bfa),
+  // size: 18,
+  // ),
+  // ]
+  // ),
+
+  Widget TextContainer(String text) {
+    // يمكنك تغيير الألوان هنا لتجنب الحاجة لملف AppColors إذا لم يكن مُستوردًا
+    const Color primaryPurple = Color(0xffa78bfa);
+
+    return Row(
+      // لجعل النص والأيقونة تبدأ من اليمين
+      mainAxisAlignment: MainAxisAlignment.end,
+
+      // لضمان التعامل السليم مع النص العربي
+      textDirection: TextDirection.ltr,
+
+      children: [
+        // 1. النص (في البداية من اليمين)
+        Text(
+          text, // استخدام المتغير المُمرر للدالة
+          style:
+          AppTextStyles.almarai500style16.copyWith( color: Colors.black.withOpacity(0.5),     fontWeight: FontWeight.w700,
+          ) ,
+
+
+    textDirection: TextDirection.rtl,
+        ),
+
+        // مسافة فاصلة صغيرة
+        const SizedBox(width: 5),
+
+        // 2. الأيقونة (تأتي بعد النص من اليمين)
+        const Icon(Icons.check_circle, color: primaryPurple, size: 18),
+      ],
     );
   }
 }

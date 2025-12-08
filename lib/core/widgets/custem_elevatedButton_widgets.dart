@@ -73,9 +73,7 @@ class _CustemElevatedbuttonWidgetsState
           backgroundColor: AppColors.primaryColor,
           foregroundColor: Colors.black,
           elevation: 5,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10),
-          ),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
         ),
 
         // 👇 هنا المنطق الجديد

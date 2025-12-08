@@ -15,12 +15,13 @@ class Main extends StatefulWidget {
 class _MainState extends State<Main> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = const [
-    HomeScreen(),
-    SettingsView(),
+  late final List<Widget> _pages = [
+    HomeScreen(onGoToAddChild: () => _onNavItemTapped(1)),
+    AddChildView(),
     DrawingScreen(),
     AllDrawings(),
-    AddChildView(),
+
+    SettingsView(),
   ];
 
   void _onNavItemTapped(int index) {
@@ -72,27 +73,45 @@ class _MainState extends State<Main> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               _NavItem(
-                                icon: Icons.home_filled,
+                                icon: const Icon(Icons.home_filled),
                                 label: 'الرئيسية',
                                 isActive: _selectedIndex == 0,
                                 onTap: () => _onNavItemTapped(0),
                               ),
+
                               _NavItem(
-                                icon: Icons.settings_outlined,
-                                label: 'الإعدادات',
+                                icon: Stack(
+                                  alignment: Alignment.center,
+                                  children: const [
+                                    Icon(Icons.child_care, size: 26),
+                                    Positioned(
+                                      right: -1,
+                                      top: -1,
+                                      child: Icon(
+                                        Icons.add,
+                                        size: 12,
+                                        // شيل fontWeight هون لأنه مش موجود في Icon
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                label: 'اضافة طفل',
                                 isActive: _selectedIndex == 1,
                                 onTap: () => _onNavItemTapped(1),
                               ),
+
                               const SizedBox(width: 60),
+
                               _NavItem(
-                                icon: Icons.history,
-                                label: 'السجل',
+                                icon: const Icon(Icons.history),
+                                label: 'تحليل الرسمات',
                                 isActive: _selectedIndex == 3,
                                 onTap: () => _onNavItemTapped(3),
                               ),
+
                               _NavItem(
-                                icon: Icons.person_outline,
-                                label: 'أنا',
+                                icon: const Icon(Icons.settings_outlined),
+                                label: 'الإعدادات',
                                 isActive: _selectedIndex == 4,
                                 onTap: () => _onNavItemTapped(4),
                               ),
@@ -134,7 +153,7 @@ class _MainState extends State<Main> {
 }
 
 class _NavItem extends StatelessWidget {
-  final IconData icon;
+  final Widget icon;
   final String label;
   final bool isActive;
   final VoidCallback onTap;
@@ -168,7 +187,13 @@ class _NavItem extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(icon, size: 22, color: isActive ? activeColor : inactiveColor),
+            IconTheme(
+              data: IconThemeData(
+                size: 25,
+                color: isActive ? activeColor : inactiveColor,
+              ),
+              child: icon,
+            ),
             if (isActive) ...[
               const SizedBox(width: 6),
               Text(

@@ -22,11 +22,22 @@ class _DrawingScreenState extends State<DrawingScreen> {
   final ImagePicker _picker = ImagePicker();
   Uint8List? selectedImage;
 
-  // دالة مسؤولة عن التقاط أو اختيار الصورة
   Future<void> pickImage(ImageSource source) async {
     try {
-      final XFile? file = await _picker.pickImage(source: source);
+      final homeState = context.read<HomeCubit>().state;
 
+      // 1) نتأكد إن في HomeSuccess وفي childSelected
+      if (homeState is! HomeSuccess || homeState.selectedChildId == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('الرجاء اختيار طفل أولاً قبل إرفاق أو التقاط صورة'),
+          ),
+        );
+        return;
+      }
+
+      // 2) لو كل شيء تمام نكمّل ونختار الصورة
+      final XFile? file = await _picker.pickImage(source: source);
       if (file == null) return;
 
       final bytes = await file.readAsBytes();
@@ -35,11 +46,18 @@ class _DrawingScreenState extends State<DrawingScreen> {
         selectedImage = bytes;
       });
 
-      // الانتقال لصفحة عرض الصورة
+      // 3) نجيب childId من الـ state
+      final String childId = homeState.selectedChildId!;
+
+      // 4) ننتقل لصفحة عرض الصورة، ونمرر الصورة + childId + ملف الصورة
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => DisplayImageScreen(imageBytes: selectedImage!),
+          builder: (_) => DisplayImageScreen(
+            imageBytes: bytes,
+            imageFilePath: file.path, // 👈 مهم لرفعها لاحقًا كـ File
+            childId: childId,
+          ),
         ),
       );
     } catch (e) {

@@ -1,17 +1,29 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
 import 'package:google_generative_ai/google_generative_ai.dart';
-import 'dart:convert'; // مكتبة فك تشفير JSON
+import 'dart:convert';
+
+import 'package:moftahak/features/drawing/cubit/add_drawing_cubit.dart'; // مكتبة فك تشفير JSON
 // import 'package:firebase_storage/firebase_storage.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // ... باقي الاستيرادات
 
 class AnalysiImagebyAiScreen extends StatefulWidget {
-  final Uint8List imageFile;
+  final Uint8List imageBytes;
+  final String imageFilePath;
+  final String childId;
 
-  const AnalysiImagebyAiScreen({super.key, required this.imageFile});
+  const AnalysiImagebyAiScreen({
+    super.key,
+    required this.imageBytes,
+    required this.imageFilePath,
+    required this.childId,
+  });
 
   @override
   State<AnalysiImagebyAiScreen> createState() => _AnalysiImagebyAiScreenState();
@@ -84,7 +96,7 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
 
     try {
       final response = await model.generateContent([
-        Content.multi([prompt, DataPart("image/jpeg", widget.imageFile)]),
+        Content.multi([prompt, DataPart("image/jpeg", widget.imageBytes)]),
       ]);
 
       _rawText = response.text;
@@ -141,14 +153,13 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // 🔥 تحسين: وضع Directionality هنا يغطي الواجهة بفعالية
-    return Directionality(
-      textDirection: TextDirection.rtl, // تحديد اتجاه النص للعربية
+    // نحول مسار الصورة إلى File عشان نبعته للكيوبت
+    final drawingFile = File(widget.imageFilePath);
 
+    return Directionality(
+      textDirection: TextDirection.rtl,
       child: Scaffold(
         backgroundColor: Colors.white,
-
-        // 🔥 تحسين: إضافة const للـ AppBar
         appBar: AppBar(
           title: const Text("تحليل الصورة"),
           backgroundColor: Colors.indigo,
@@ -156,76 +167,140 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
           elevation: 0,
         ),
 
-        body: SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 16),
+        // 👈 هنا ربطنا الشاشة مع AddDrawingCubit
+        body: BlocConsumer<AddDrawingCubit, AddDrawingState>(
+          listener: (context, state) {
+            if (state is AddDrawingSuccess) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('تم حفظ الرسمة بنجاح ✅')),
+              );
+            } else if (state is AddDrawingFailure) {
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+            }
+          },
+          builder: (context, state) {
+            final isSaving = state is AddDrawingLoading;
 
-              // عرض الصورة
-              ClipRRect(
-                borderRadius: BorderRadius.circular(14),
-                child: Image.memory(
-                  widget.imageFile,
-                  height: 240,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              ),
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 16),
 
-              const SizedBox(height: 24),
-
-              // زر بدء التحليل
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: _isLoading ? null : _analyzeChildEmotion,
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.indigo,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
+                  // عرض الصورة
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(14),
+                    child: Image.memory(
+                      widget.imageBytes,
+                      height: 240,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                  child: _isLoading
-                      ? const SizedBox(
-                          height: 22,
-                          width: 22,
-                          child: CircularProgressIndicator(
-                            color: Colors.white,
-                            strokeWidth: 2,
-                          ),
-                        )
-                      : const Text(
-                          "بدء التحليل",
-                          style: TextStyle(fontSize: 17, color: Colors.white),
-                        ),
-                ),
+
+                  const SizedBox(height: 24),
+
+                  // زر "بدء التحليل" (AI فقط)
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: _isLoading ? null : _analyzeChildEmotion,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.indigo,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      child: _isLoading
+                          ? const SizedBox(
+                              height: 22,
+                              width: 22,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Text(
+                              "بدء التحليل",
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: Colors.white,
+                              ),
+                            ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  // 🔥 زر حفظ الرسمة في Supabase + Firestore عبر الكيوبت
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: isSaving
+                          ? null
+                          : () {
+                              context.read<AddDrawingCubit>().addDrawing(
+                                drawingFile: drawingFile,
+                                childId: widget.childId,
+                              );
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('جارٍ حفظ الرسمة...'),
+                                ),
+                              );
+                            },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                        padding: const EdgeInsets.symmetric(vertical: 14),
+                      ),
+                      child: isSaving
+                          ? const SizedBox(
+                              height: 22,
+                              width: 22,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : const Text(
+                              "حفظ الرسمة",
+                              style: TextStyle(
+                                fontSize: 17,
+                                color: Colors.white,
+                              ),
+                            ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+
+                  // عرض النتائج المُنظمة من الـ AI
+                  if (_analysis != null) ...[
+                    _buildResultCard(
+                      "التقييم الأولي المهني",
+                      _analysis!["emotion"],
+                      maxLines: 5,
+                    ),
+                    _buildResultCard(
+                      "تقرير التحليل المفصّل",
+                      _analysis!["description"],
+                      maxLines: 50,
+                    ),
+                  ],
+
+                  // عرض النص الخام عند الخطأ
+                  if (!_isLoading && _analysis == null && _rawText != null)
+                    Text(
+                      "حدث خطأ في قراءة JSON أو API. النص الخام:\n$_rawText",
+                      style: const TextStyle(color: Colors.redAccent),
+                      textDirection: TextDirection.rtl,
+                    ),
+                ],
               ),
-
-              const SizedBox(height: 20),
-
-              // عرض النتائج المُنظمة
-              if (_analysis != null) ...[
-                _buildResultCard(
-                  "التقييم الأولي المهني",
-                  _analysis!["emotion"],
-                  maxLines: 5,
-                ),
-                _buildResultCard(
-                  "تقرير التحليل المفصّل",
-                  _analysis!["description"],
-                  maxLines: 50,
-                ),
-              ],
-
-              // عرض النص الخام في حالة حدوث خطأ أو عدم قراءة JSON
-              if (!_isLoading && _analysis == null && _rawText != null)
-                Text(
-                  "حدث خطأ في قراءة JSON أو API. النص الخام:\n$_rawText",
-                  style: const TextStyle(color: Colors.redAccent),
-                  textDirection: TextDirection.rtl,
-                ),
-            ],
-          ),
+            );
+          },
         ),
       ),
     );

@@ -24,4 +24,23 @@ class SupabaseStorageService {
 
     return publicUrl;
   }
+
+  static Future<String> uploadChildDrawingImage({
+    required File file,
+    required String userId,
+    required String childId,
+    required String drawingId,
+  }) async {
+    final ext = file.path.split('.').last;
+    final filePath = 'drawings/$userId/$childId/$drawingId.$ext';
+
+    const bucketName = 'drawings';
+
+    await _client.storage
+        .from(bucketName)
+        .upload(filePath, file, fileOptions: const FileOptions(upsert: true));
+
+    final publicUrl = _client.storage.from(bucketName).getPublicUrl(filePath);
+    return publicUrl;
+  }
 }

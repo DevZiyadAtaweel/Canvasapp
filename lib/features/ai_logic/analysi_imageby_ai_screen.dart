@@ -243,6 +243,7 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
                               context.read<AddDrawingCubit>().addDrawing(
                                 drawingFile: drawingFile,
                                 childId: widget.childId,
+                                analysis: _analysis,
                               );
 
                               ScaffoldMessenger.of(context).showSnackBar(

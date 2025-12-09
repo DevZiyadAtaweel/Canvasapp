@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/routes/app_routes.dart';
 import 'package:moftahak/features/home/cubit/home_cubit.dart';
@@ -11,12 +12,13 @@ import 'package:moftahak/firebase_options.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
+  await dotenv.load(fileName: ".env");
+
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Supabase.initialize(
     url: 'https://sroqjsnknejpmddoblfj.supabase.co',
-    anonKey:
-        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNyb3Fqc25rbmVqcG1kZG9ibGZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjQ2NzY4MTcsImV4cCI6MjA4MDI1MjgxN30.fMI3ICfZelFWXdRe8K3MoqVbIQ2Z5kjLW_bhDBpgfHY',
+    anonKey: dotenv.env['SUPABASE_ANNON_KEY'] ?? '',
   );
   runApp(
     BlocProvider<HomeCubit>(

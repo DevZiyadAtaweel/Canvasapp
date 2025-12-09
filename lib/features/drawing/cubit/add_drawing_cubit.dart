@@ -17,6 +17,7 @@ class AddDrawingCubit extends Cubit<AddDrawingState> {
   Future<void> addDrawing({
     required File drawingFile,
     required String childId,
+    Map<String, dynamic>? analysis,
   }) async {
     emit(AddDrawingLoading());
 
@@ -46,8 +47,8 @@ class AddDrawingCubit extends Cubit<AddDrawingState> {
       // 3) نخزّن بيانات الرسمة في Firestore
       await docRef.set({
         'drawingUrl': drawingUrl,
-        'analysisStatus': 'pending', // لحد ما يشتغل الـ AI
-        'analysisResult': null,
+        'analysisStatus': analysis == null ? 'pending' : 'done',
+        'analysisResult': analysis,
         'createdAt': FieldValue.serverTimestamp(),
       });
 

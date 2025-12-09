@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "443558959338",
+    "project_id": "moftahak-5164e",
+    "storage_bucket": "moftahak-5164e.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:443558959338:android:d596964a76035009301f93",
+        "android_client_info": {
+          "package_name": "com.example.moftahak"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "443558959338-reundchqpm719jmsul2hn5jdfqmr7aqr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA8pZMOYXhzZnPbaYxgdf1GynP37k0bf5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "443558959338-reundchqpm719jmsul2hn5jdfqmr7aqr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

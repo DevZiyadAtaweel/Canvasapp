@@ -94,8 +94,35 @@ class HomeScreen extends StatelessWidget {
                   Center(
                     child: Column(
                       children: [
-                        Text('أبنائي', style: AppTextStyles.almarai700style28),
-                        const SizedBox(height: 16),
+                        // ================== نظرة على رسومات طفلك ==================
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  'انظر المزيد',
+                                  style: AppTextStyles.almarai700style20
+                                      .copyWith(fontSize: 16),
+                                ),
+                                IconButton(
+                                  onPressed: () {},
+                                  icon: Icon(
+                                    Icons.arrow_back_ios,
+                                    color: Colors.black,
+                                    size: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              'نظرة على رسومات طفلك',
+                              style: AppTextStyles.almarai700style20.copyWith(
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
                         // 🔥 Scrollable Row
                         if (children.isEmpty)
                           Row(
@@ -172,38 +199,6 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 40),
-                  // ================== نظرة على رسومات طفلك ==================
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        children: [
-                          Text(
-                            'انظر المزيد',
-                            style: AppTextStyles.almarai700style20.copyWith(
-                              fontSize: 16,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: Icon(
-                              Icons.arrow_back_ios,
-                              color: Colors.black,
-                              size: 16,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Text(
-                        'نظرة على رسومات طفلك',
-                        style: AppTextStyles.almarai700style20.copyWith(
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 15),
 
                   // ================== عرض الرسومات ==================
                   CustemDrawingWidgets(

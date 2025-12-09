@@ -49,7 +49,10 @@ final GoRouter appRouter = GoRouter(
       path: '/settings',
       builder: (context, state) {
         return MultiBlocProvider(
-          providers: [BlocProvider<AuthCubit>(create: (_) => AuthCubit())],
+          providers: [
+            BlocProvider<AuthCubit>(create: (_) => AuthCubit()),
+            BlocProvider<HomeCubit>(create: (_) => HomeCubit()),
+          ],
           child: const SettingsView(),
         );
       },

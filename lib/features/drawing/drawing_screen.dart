@@ -96,7 +96,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Center(
-                      child: SizedBox(width: 100, child: ChildrenDropdown()),
+                      child: SizedBox(width: 120, child: ChildrenDropdown()),
                     ),
                     const SizedBox(height: 16),
 
@@ -116,6 +116,14 @@ class _DrawingScreenState extends State<DrawingScreen> {
                         'الفنان اليوم: $selectedChildName',
                         style: AppTextStyles.almarai700style20,
 
+                        textAlign: TextAlign.right,
+                      )
+                    else
+                      Text(
+                        'الرجاء اختيار طفل لبدء الرسم',
+                        style: AppTextStyles.almarai500style16.copyWith(
+                          color: AppColors.primaryColor,
+                        ),
                         textAlign: TextAlign.right,
                       ),
 
@@ -146,10 +154,12 @@ class _DrawingScreenState extends State<DrawingScreen> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           // العنوان
-                           Text(
+                          Text(
                             'تأكد من الآتي قبل التقاط الصورة',
                             textAlign: TextAlign.center,
-                            style:AppTextStyles.almarai700style20.copyWith(color: Colors.black)
+                            style: AppTextStyles.almarai700style20.copyWith(
+                              color: Colors.black,
+                            ),
                           ),
 
                           const SizedBox(height: 15),
@@ -264,12 +274,12 @@ class _DrawingScreenState extends State<DrawingScreen> {
         // 1. النص (في البداية من اليمين)
         Text(
           text, // استخدام المتغير المُمرر للدالة
-          style:
-          AppTextStyles.almarai500style16.copyWith( color: Colors.black.withOpacity(0.5),     fontWeight: FontWeight.w700,
-          ) ,
+          style: AppTextStyles.almarai500style16.copyWith(
+            color: Colors.black.withOpacity(0.5),
+            fontWeight: FontWeight.w700,
+          ),
 
-
-    textDirection: TextDirection.rtl,
+          textDirection: TextDirection.rtl,
         ),
 
         // مسافة فاصلة صغيرة

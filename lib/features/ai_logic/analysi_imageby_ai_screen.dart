@@ -1,10 +1,5 @@
-
-
-
-
-
-
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -44,32 +39,29 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
     });
 
     // 🔥 تحسين: استخدام final أو const بدلاً من التكرار
-    const apiKey = "AIzaSyC26QktwpoFTapmHn2XudxSsTPO214MbLY";
-    final model = GenerativeModel(
-      model: "gemini-2.5-flash",
-      apiKey: apiKey,
-    );
+    final apiKey = dotenv.env['API_KEY'] ?? '';
+    final model = GenerativeModel(model: "gemini-2.5-flash", apiKey: apiKey);
 
-//     final  promptText =("""
-//     أنت خبير نفسي مُعتمد ومتخصص حصراً في العلاج بالفن واضطراب ما بعد الصدمة (PTSD) لدى الأطفال.
-//
-// **المهمة:**
-// قم بالتحليل السريري للرسم المرفق. يجب أن يكون الإخراج تحليلًا فنيًا **موجزًا للغاية** يركز فقط على الدلالات التي تشير مباشرة إلى الصدمة أو القلق المزمن أو الفقدان العميق. تجنب أي إطالة أو تفسيرات غير ضرورية.
-//
-// **معايير التحليل:**
-// 1.  **التركيز الصارم:** استخدم فقط المؤشرات الفنية الواضحة: استخدام الألوان السوداء/الداكنة، ضغط القلم الشديد، حجم الشكل (صغير جداً)، ووجود رموز للتهديد أو العزلة (مثل الأشكال المسجونة).
-// 2.  **الإيجاز:** يجب أن تكون كل نقطة في القوائم عبارة عن جملة واحدة أو عبارة مختصرة جداً.
-//
-// **المخرجات المطلوبة (بصيغة JSON حصراً وباللغة العربية الفصحى):**
-//
-// {
-//   "التقييم_الأولي": "تحديد الاتجاه السريري العام في كلمة أو كلمتين (مثال: 'صدمة حادة'، 'قلق مزمن'، 'ثبات').",
-//   "مؤشرات_الصدمة": ["اذكر المؤشرات الفنية الأكثر أهمية (1-2 نقطة فقط)."],
-//   "الاضطرابات_المحتملة": ["حدد التشخيص المحتمل أو المشاعر الأساسية (مثال: PTSD، اكتئاب)."],
-//   "تدخل_عاجل": "الإجابة يجب أن تكون 'نعم' أو 'لا' فقط."
-// }
-//
-// """);
+    //     final  promptText =("""
+    //     أنت خبير نفسي مُعتمد ومتخصص حصراً في العلاج بالفن واضطراب ما بعد الصدمة (PTSD) لدى الأطفال.
+    //
+    // **المهمة:**
+    // قم بالتحليل السريري للرسم المرفق. يجب أن يكون الإخراج تحليلًا فنيًا **موجزًا للغاية** يركز فقط على الدلالات التي تشير مباشرة إلى الصدمة أو القلق المزمن أو الفقدان العميق. تجنب أي إطالة أو تفسيرات غير ضرورية.
+    //
+    // **معايير التحليل:**
+    // 1.  **التركيز الصارم:** استخدم فقط المؤشرات الفنية الواضحة: استخدام الألوان السوداء/الداكنة، ضغط القلم الشديد، حجم الشكل (صغير جداً)، ووجود رموز للتهديد أو العزلة (مثل الأشكال المسجونة).
+    // 2.  **الإيجاز:** يجب أن تكون كل نقطة في القوائم عبارة عن جملة واحدة أو عبارة مختصرة جداً.
+    //
+    // **المخرجات المطلوبة (بصيغة JSON حصراً وباللغة العربية الفصحى):**
+    //
+    // {
+    //   "التقييم_الأولي": "تحديد الاتجاه السريري العام في كلمة أو كلمتين (مثال: 'صدمة حادة'، 'قلق مزمن'، 'ثبات').",
+    //   "مؤشرات_الصدمة": ["اذكر المؤشرات الفنية الأكثر أهمية (1-2 نقطة فقط)."],
+    //   "الاضطرابات_المحتملة": ["حدد التشخيص المحتمل أو المشاعر الأساسية (مثال: PTSD، اكتئاب)."],
+    //   "تدخل_عاجل": "الإجابة يجب أن تكون 'نعم' أو 'لا' فقط."
+    // }
+    //
+    // """);
 
     // Prompt المُحسَّن الذي يطلب إخراج JSON باللغة العربية
     const promptText = ("""
@@ -88,18 +80,17 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
       "تنبيه_الحاجة_للتدخل_العاجل": "الإجابة يجب أن تكون 'نعم' أو 'لا' فقط."
     }
 """);
-    final prompt = TextPart(promptText );
-
+    final prompt = TextPart(promptText);
 
     try {
-    final response = await model.generateContent([
-    Content.multi([prompt, DataPart("image/jpeg", widget.imageFile)]),
-    ]);
+      final response = await model.generateContent([
+        Content.multi([prompt, DataPart("image/jpeg", widget.imageFile)]),
+      ]);
 
-    _rawText = response.text;
-    _analysis = _extractJson(_rawText!);
+      _rawText = response.text;
+      _analysis = _extractJson(_rawText!);
     } catch (e) {
-    _rawText = "خطأ: فشل الاتصال بالخادم أو مشكلة في مفتاح API: $e";
+      _rawText = "خطأ: فشل الاتصال بالخادم أو مشكلة في مفتاح API: $e";
     }
 
     setState(() => _isLoading = false);
@@ -123,26 +114,28 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
 
       // 🔥 تحسين: التحقق من القوائم قبل الانضمام إليها
       final List Indicators = (data["المؤشرات_الفنية_المرصودة"] as List?) ?? [];
-    final List Disturbances = (data["الاضطرابات_المحتملة"] as List?) ?? [];
-    final String alert = data["تنبيه_الحاجة_للتدخل_العاجل"] ?? "غير متوفر";
+      final List Disturbances = (data["الاضطرابات_المحتملة"] as List?) ?? [];
+      final String alert = data["تنبيه_الحاجة_للتدخل_العاجل"] ?? "غير متوفر";
 
-    // دمج المؤشرات والاضطرابات في نص واحد منظم لعرضه في خانة "وصف الحالة"
-    String descriptionReport =
-    "**المؤشرات الفنية المرصودة:**\n- ${Indicators.join('\n- ')}\n\n"
-    "**الاضطرابات المحتملة:**\n- ${Disturbances.join('\n- ')}\n\n"
-    "**تنبيه الحاجة لتدخل عاجل:** $alert";
+      // دمج المؤشرات والاضطرابات في نص واحد منظم لعرضه في خانة "وصف الحالة"
+      String descriptionReport =
+          "**المؤشرات الفنية المرصودة:**\n- ${Indicators.join('\n- ')}\n\n"
+          "**الاضطرابات المحتملة:**\n- ${Disturbances.join('\n- ')}\n\n"
+          "**تنبيه الحاجة لتدخل عاجل:** $alert";
 
-    // إرجاع خريطة النتائج باستخدام المفاتيح التي تحتاجها واجهة المستخدم
-    return {
-    // نستخدم المفتاح "emotion" لعرض "التقييم_الأولي_المهني"
-    "emotion": data["التقييم_الأولي_المهني"] ?? "غير متوفر",
+      // إرجاع خريطة النتائج باستخدام المفاتيح التي تحتاجها واجهة المستخدم
+      return {
+        // نستخدم المفتاح "emotion" لعرض "التقييم_الأولي_المهني"
+        "emotion": data["التقييم_الأولي_المهني"] ?? "غير متوفر",
 
-    // نستخدم المفتاح "description" لعرض التقرير المفصل المنسق
-    "description": descriptionReport,
-    };
+        // نستخدم المفتاح "description" لعرض التقرير المفصل المنسق
+        "description": descriptionReport,
+      };
     } catch (e) {
-    debugPrint("JSON Decoding Error: $e"); // استخدام debugPrint أفضل في Flutter
-    return null;
+      debugPrint(
+        "JSON Decoding Error: $e",
+      ); // استخدام debugPrint أفضل في Flutter
+      return null;
     }
   }
 
@@ -194,17 +187,17 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
                   ),
                   child: _isLoading
                       ? const SizedBox(
-                    height: 22,
-                    width: 22,
-                    child: CircularProgressIndicator(
-                      color: Colors.white,
-                      strokeWidth: 2,
-                    ),
-                  )
+                          height: 22,
+                          width: 22,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
                       : const Text(
-                    "بدء التحليل",
-                    style: TextStyle(fontSize: 17, color: Colors.white),
-                  ),
+                          "بدء التحليل",
+                          style: TextStyle(fontSize: 17, color: Colors.white),
+                        ),
                 ),
               ),
 
@@ -284,6 +277,7 @@ Future<Uint8List?> pickImage({required ImageSource source}) async {
   final XFile? file = await await picker.pickImage(source: source);
   return file?.readAsBytes(); // استخدام Safe Call (?. )
 }
+
 //
 //
 //

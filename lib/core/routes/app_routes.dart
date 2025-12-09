@@ -5,16 +5,15 @@ import 'package:moftahak/features/add%20child/add_child_view.dart';
 import 'package:moftahak/features/add%20child/cubit/add_child_cubit.dart';
 import 'package:moftahak/features/ai_logic/analysi_imageby_ai_screen.dart';
 import 'package:moftahak/features/ai_logic/analysis_arg.dart';
-import 'package:moftahak/features/all_drawings/all_drawings.dart';
 import 'package:moftahak/features/auth/cubit/auth_cubit.dart';
 import 'package:moftahak/features/auth/login/login_view.dart';
 import 'package:moftahak/features/auth/signup/sign_up_view.dart';
+import 'package:moftahak/features/child%20analysis/cubit/all_drawings_cubit.dart';
 import 'package:moftahak/features/child_details/child_details.dart';
 import 'package:moftahak/features/child_details/cubit/child_details_cubit.dart';
 import 'package:moftahak/features/drawing/cubit/add_drawing_cubit.dart';
 import 'package:moftahak/features/drawing/drawing_screen.dart';
 import 'package:moftahak/features/home/cubit/home_cubit.dart';
-import 'package:moftahak/features/home/home_screen.dart';
 import 'package:moftahak/features/main/main.dart';
 import 'package:moftahak/features/onBoarding/on_boarding_view.dart';
 import 'package:moftahak/features/settings/settings_view.dart';
@@ -80,10 +79,10 @@ final GoRouter appRouter = GoRouter(
         );
       },
     ),
-    GoRoute(
-      path: '/allDrawings',
-      builder: (context, state) => const AllDrawings(),
-    ),
+    // GoRoute(
+    //   path: '/allDrawings',
+    //   builder: (context, state) => const ChildAnalysisScreen(),
+    // ),
     GoRoute(
       path: '/main',
       builder: (context, state) {
@@ -91,6 +90,12 @@ final GoRouter appRouter = GoRouter(
           providers: [
             BlocProvider<AuthCubit>(create: (_) => AuthCubit()),
             BlocProvider<AddChildCubit>(create: (_) => AddChildCubit()),
+            BlocProvider<AllDrawingsCubit>(
+              create: (_) => AllDrawingsCubit(
+                FirebaseFirestore.instance,
+                FirebaseAuth.instance,
+              ),
+            ),
           ],
           child: const Main(),
         );

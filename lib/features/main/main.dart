@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moftahak/features/add%20child/add_child_view.dart';
-import 'package:moftahak/features/all_drawings/all_drawings.dart';
+import 'package:moftahak/features/child%20analysis/child_analysis_view.dart';
 import 'package:moftahak/features/drawing/drawing_screen.dart';
 import 'package:moftahak/features/home/home_screen.dart';
 import 'package:moftahak/features/settings/settings_view.dart';
@@ -19,8 +19,7 @@ class _MainState extends State<Main> {
     HomeScreen(onGoToAddChild: () => _onNavItemTapped(1)),
     AddChildView(),
     DrawingScreen(),
-    AllDrawings(),
-
+    ChildAnalysisScreen(),
     SettingsView(),
   ];
 

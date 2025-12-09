@@ -32,7 +32,8 @@ class SupabaseStorageService {
     required String drawingId,
   }) async {
     final ext = file.path.split('.').last;
-    final filePath = 'drawings/$userId/$childId/$drawingId.$ext';
+
+    final filePath = '$userId/$childId/$drawingId.$ext';
 
     const bucketName = 'drawings';
 

@@ -1,23 +1,29 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:moftahak/features/drawing/drawing_screen.dart';
+import 'package:go_router/go_router.dart';
+import 'package:moftahak/features/ai_logic/analysis_arg.dart';
 
 import 'analysi_imageby_ai_screen.dart';
 
 // شاشة جديدة لعرض الصورة المختارة
 class DisplayImageScreen extends StatelessWidget {
-  // يجب أن تستقبل ملف الصورة (XFile) كمتطلب أساسي
-
   final Uint8List imageBytes;
 
-   const DisplayImageScreen({super.key, required this.imageBytes});
+  // 🆕 مسار الملف عشان نقدر نعمل File لاحقاً
+  final String imageFilePath;
 
+  // 🆕 معرف الطفل صاحب الرسمة
+  final String childId;
+
+  const DisplayImageScreen({
+    super.key,
+    required this.imageBytes,
+    required this.imageFilePath,
+    required this.childId,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // نستخدم File(path) لتحويل XFile إلى ويدجيت File
-
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('معاينة الصورة'),
@@ -31,8 +37,7 @@ class DisplayImageScreen extends StatelessWidget {
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Image.memory(imageBytes
-                ),
+                child: Image.memory(imageBytes),
               ),
             ),
 
@@ -42,47 +47,51 @@ class DisplayImageScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  // زر إلغاء (العودة للصفحة السابقة)
+                  // زر إلغاء (رجوع)
                   ElevatedButton.icon(
                     onPressed: () {
-                      // العودة إلى شاشة الرسم (DrawingScreen)
-
-                      Navigator.push(context, MaterialPageRoute(builder: (context)
-                      {
-                        return DrawingScreen();
-                      }));
-
-
+                      // بدل ما نفتح DrawingScreen من جديد، نرجع خطوة للخلف
+                      Navigator.pop(context);
                     },
                     icon: const Icon(Icons.cancel),
                     label: const Text('إلغاء'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.red,
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
                     ),
                   ),
 
-                  // زر تأكيد (للانتقال إلى الخطوة التالية أو الرفع)
                   ElevatedButton.icon(
                     onPressed: () {
-
-                      Navigator.push(context, MaterialPageRoute(builder: (context)
-                      {
-                        return AnalysiImagebyAiScreen(imageFile: imageBytes);
-                      }));
-
-                      // هنا تضع منطق إرسال/رفع الصورة (على سبيل المثال، إلى Firebase)
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('تم تأكيد الصورة! (يتم الآن إرسالها...)')),
+                      // نجهز الـ args
+                      final args = AnalysisArgs(
+                        imageBytes: imageBytes,
+                        imageFilePath: imageFilePath,
+                        childId: childId,
                       );
-                      // يمكنك التوجيه إلى شاشة أخرى بعد التأكيد
-                      // Navigator.push(context, MaterialPageRoute(builder: (context) => NextStepScreen()));
+
+                      // نستخدم GoRouter بدل Navigator
+                      context.push('/analysisDrawing', extra: args);
+
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'تم تأكيد الصورة، يتم المتابعة للتحليل...',
+                          ),
+                        ),
+                      );
                     },
                     icon: const Icon(Icons.check_circle),
                     label: const Text('تأكيد والمتابعة'),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.green,
-                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 20,
+                        vertical: 15,
+                      ),
                     ),
                   ),
                 ],

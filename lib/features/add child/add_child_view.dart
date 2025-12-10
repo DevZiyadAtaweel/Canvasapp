@@ -58,8 +58,7 @@ class _AddChildViewState extends State<AddChildView> {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(const SnackBar(content: Text("تم إضافة الإبن بنجاح")));
-          // نرجع للهوم، و HomeCubit رح يلتقط الطفل الجديد تلقائيًا
-          customNavigatePop(context);
+          customNavigatePush(context, "/home");
         }
 
         if (state is AddChildFailure) {

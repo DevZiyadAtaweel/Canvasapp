@@ -22,11 +22,22 @@ class _DrawingScreenState extends State<DrawingScreen> {
   final ImagePicker _picker = ImagePicker();
   Uint8List? selectedImage;
 
-  // دالة مسؤولة عن التقاط أو اختيار الصورة
   Future<void> pickImage(ImageSource source) async {
     try {
-      final XFile? file = await _picker.pickImage(source: source);
+      final homeState = context.read<HomeCubit>().state;
 
+      // 1) نتأكد إن في HomeSuccess وفي childSelected
+      if (homeState is! HomeSuccess || homeState.selectedChildId == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('الرجاء اختيار طفل أولاً قبل إرفاق أو التقاط صورة'),
+          ),
+        );
+        return;
+      }
+
+      // 2) لو كل شيء تمام نكمّل ونختار الصورة
+      final XFile? file = await _picker.pickImage(source: source);
       if (file == null) return;
 
       final bytes = await file.readAsBytes();
@@ -35,11 +46,18 @@ class _DrawingScreenState extends State<DrawingScreen> {
         selectedImage = bytes;
       });
 
-      // الانتقال لصفحة عرض الصورة
+      // 3) نجيب childId من الـ state
+      final String childId = homeState.selectedChildId!;
+
+      // 4) ننتقل لصفحة عرض الصورة، ونمرر الصورة + childId + ملف الصورة
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (_) => DisplayImageScreen(imageBytes: selectedImage!),
+          builder: (_) => DisplayImageScreen(
+            imageBytes: bytes,
+            imageFilePath: file.path, // 👈 مهم لرفعها لاحقًا كـ File
+            childId: childId,
+          ),
         ),
       );
     } catch (e) {
@@ -55,13 +73,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
         backgroundColor: Colors.white,
         title: const Text('اختر فنان اليوم'),
         centerTitle: true,
-        leading: IconButton(
-          onPressed: () {
-            // نرجع خطوة للخلف بدل ما نعمل push لصفحة جديدة
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back_outlined),
-        ),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -103,7 +114,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Center(
-                      child: SizedBox(width: 100, child: ChildrenDropdown()),
+                      child: SizedBox(width: 120, child: ChildrenDropdown()),
                     ),
                     const SizedBox(height: 16),
 
@@ -123,6 +134,14 @@ class _DrawingScreenState extends State<DrawingScreen> {
                         'الفنان اليوم: $selectedChildName',
                         style: AppTextStyles.almarai700style20,
 
+                        textAlign: TextAlign.right,
+                      )
+                    else
+                      Text(
+                        'الرجاء اختيار طفل لبدء الرسم',
+                        style: AppTextStyles.almarai500style16.copyWith(
+                          color: AppColors.primaryColor,
+                        ),
                         textAlign: TextAlign.right,
                       ),
 
@@ -153,10 +172,12 @@ class _DrawingScreenState extends State<DrawingScreen> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           // العنوان
-                           Text(
+                          Text(
                             'تأكد من الآتي قبل التقاط الصورة',
                             textAlign: TextAlign.center,
-                            style:AppTextStyles.almarai700style20.copyWith(color: Colors.black)
+                            style: AppTextStyles.almarai700style20.copyWith(
+                              color: Colors.black,
+                            ),
                           ),
 
                           const SizedBox(height: 15),
@@ -271,12 +292,12 @@ class _DrawingScreenState extends State<DrawingScreen> {
         // 1. النص (في البداية من اليمين)
         Text(
           text, // استخدام المتغير المُمرر للدالة
-          style:
-          AppTextStyles.almarai500style16.copyWith( color: Colors.black.withOpacity(0.5),     fontWeight: FontWeight.w700,
-          ) ,
+          style: AppTextStyles.almarai500style16.copyWith(
+            color: Colors.black.withOpacity(0.5),
+            fontWeight: FontWeight.w700,
+          ),
 
-
-    textDirection: TextDirection.rtl,
+          textDirection: TextDirection.rtl,
         ),
 
         // مسافة فاصلة صغيرة

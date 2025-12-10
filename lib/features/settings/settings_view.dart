@@ -29,12 +29,7 @@ class SettingsView extends StatelessWidget {
           appBar: AppBar(
             backgroundColor: Colors.white,
             title: Text("اعداداتي", style: AppTextStyles.almarai700style28),
-            leading: IconButton(
-              onPressed: () {
-                customNavigatePop(context);
-              },
-              icon: const Icon(Icons.arrow_back, color: Colors.black),
-            ),
+
             elevation: 0,
             centerTitle: true,
           ),
@@ -122,17 +117,73 @@ class SettingsView extends StatelessWidget {
 
                           const SizedBox(height: 16),
 
-                          _SettingsCard(
-                            title: 'الأبناء',
-                            items: [
-                              _SettingsItem(title: 'عمر', onTap: () {}),
-                              _SettingsItem(
-                                title: 'إضافة ابن جديد',
-                                onTap: () {
-                                  customNavigatePush(context, '/addChild');
-                                },
-                              ),
-                            ],
+                          BlocBuilder<HomeCubit, HomeState>(
+                            builder: (context, state) {
+                              // لو في تحميل أو حالة مبدئية
+                              if (state is HomeLoading ||
+                                  state is HomeInitial) {
+                                return const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                );
+                              }
+
+                              // لو في خطأ
+                              if (state is HomeError) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 8.0,
+                                  ),
+                                  child: Text(
+                                    state.message,
+                                    style: const TextStyle(color: Colors.red),
+                                  ),
+                                );
+                              }
+
+                              if (state is! HomeSuccess) {
+                                return const SizedBox.shrink();
+                              }
+
+                              final children = state.children;
+
+                              final List<_SettingsItem> items = [];
+
+                              // لو في أبناء: أضف أسماءهم بالترتيب
+                              if (children.isNotEmpty) {
+                                for (final child in children) {
+                                  items.add(
+                                    _SettingsItem(
+                                      title: child.name, // 👈 اسم الإبن
+                                      onTap: () {
+                                        // مثال: صفحة تفاصيل الطفل
+                                        customNavigatePush(
+                                          context,
+                                          '/childDetails/${child.id}', // عدّل حسب الروت عندك
+                                        );
+                                      },
+                                    ),
+                                  );
+                                }
+                              }
+
+                              // سواء في أبناء أو لا، دايماً نضيف "إضافة ابن جديد" في الآخر
+                              items.add(
+                                _SettingsItem(
+                                  title: 'إضافة ابن جديد',
+                                  onTap: () {
+                                    customNavigatePush(context, '/addChild');
+                                  },
+                                ),
+                              );
+
+                              return _SettingsCard(
+                                title: 'الأبناء',
+                                items: items,
+                              );
+                            },
                           ),
 
                           const SizedBox(height: 16),

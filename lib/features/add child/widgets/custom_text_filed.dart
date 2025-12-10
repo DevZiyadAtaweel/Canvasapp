@@ -8,13 +8,15 @@ class CustomTextField extends StatelessWidget {
     required this.text,
     required this.controller,
     required this.validator,
-    this.maxLines = 1, // 👈 الافتراضي سطر واحد
+    this.maxLines = 1,
+    this.hintText,
   });
 
   final String text;
   final TextEditingController controller;
   final String? Function(String?)? validator;
-  final int maxLines; // 👈 خاصية جديدة
+  final int maxLines;
+  final String? hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +34,15 @@ class CustomTextField extends StatelessWidget {
               controller: controller,
               style: AppTextStyles.almarai500style16,
 
-              maxLines: maxLines, // 👈 نطبقها هنا
+              maxLines: maxLines,
 
               decoration: InputDecoration(
+                hintText: hintText,
+                hintStyle: AppTextStyles.almarai500style16.copyWith(
+                  color: Colors.grey,
+                  fontSize: 14,
+                ),
+
                 contentPadding: EdgeInsets.symmetric(
                   horizontal: 20,
                   vertical: 14,

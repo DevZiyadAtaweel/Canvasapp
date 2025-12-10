@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:moftahak/core/constants/app_colors.dart';
 
 import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/constants/navigation.dart';
@@ -22,12 +23,8 @@ class ChildDetailsView extends StatelessWidget {
       bottom: true,
       top: false,
       child: Scaffold(
-        backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: Colors.white,
-          elevation: 0,
-          centerTitle: true,
-          title: Text("تفاصيل الطفل", style: AppTextStyles.almarai700style20),
+          title: Text("تفاصيل الطفل"),
           leading: IconButton(
             onPressed: () => customNavigatePop(context),
             icon: const Icon(Icons.arrow_back, color: Colors.black),
@@ -117,7 +114,8 @@ class ChildDetailsView extends StatelessWidget {
                         label: "الجنس",
                         value: child.gender, // عندك أصلاً "ذكر" / "أنثى"
                       ),
-                      const SizedBox(height: 8),
+                      Divider(),
+
                       _InfoRow(label: "مكان الإقامة", value: child.location),
                     ],
                   ),
@@ -196,6 +194,7 @@ class _DetailsCard extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Card(
+          color: AppColors.textField,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
           elevation: 1,
           child: Padding(
@@ -219,31 +218,34 @@ class _InfoRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: [
-        // القيمة
-        Expanded(
-          child: Text(
-            value,
-            textAlign: TextAlign.left,
-            style: AppTextStyles.almarai700style20.copyWith(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          // القيمة
+          Expanded(
+            child: Text(
+              value,
+              textAlign: TextAlign.left,
+              style: AppTextStyles.almarai700style20.copyWith(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
-        ),
-        const SizedBox(width: 5),
-        // العنوان
-        Text(
-          label,
-          style: AppTextStyles.almarai700style20.copyWith(
-            fontSize: 14,
-            fontWeight: FontWeight.normal,
-            color: Colors.grey[600],
+          const SizedBox(width: 5),
+          // العنوان
+          Text(
+            label,
+            style: AppTextStyles.almarai700style20.copyWith(
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+              color: Colors.grey[600],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

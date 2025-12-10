@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moftahak/core/constants/app_colors.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/constants/navigation.dart';
 import 'package:moftahak/features/auth/cubit/auth_cubit.dart';
@@ -26,13 +27,7 @@ class SettingsView extends StatelessWidget {
         bottom: true,
         top: false,
         child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            title: Text("اعداداتي", style: AppTextStyles.almarai700style28),
-
-            elevation: 0,
-            centerTitle: true,
-          ),
+          appBar: AppBar(title: Text("اعداداتي")),
           body: Container(
             padding: const EdgeInsets.symmetric(
               horizontal: 30.0,
@@ -75,7 +70,7 @@ class SettingsView extends StatelessWidget {
                     return Column(
                       children: [
                         CircleAvatar(
-                          radius: 50,
+                          radius: 55,
                           backgroundImage: NetworkImage(user.imageUrl),
                         ),
                         const SizedBox(height: 5),
@@ -229,7 +224,7 @@ class SettingsView extends StatelessWidget {
                                         ),
                                   ),
                                 ),
-                                SizedBox(height: 120),
+                                SizedBox(height: 100),
                               ],
                             ),
                           ),
@@ -270,7 +265,8 @@ class _SettingsCard extends StatelessWidget {
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
-            color: Colors.grey[200],
+            //TODO change the color
+            color: AppColors.textField,
             borderRadius: BorderRadius.circular(16),
           ),
           child: Column(

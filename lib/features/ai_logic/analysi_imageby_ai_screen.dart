@@ -6,9 +6,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:moftahak/features/child_details/cubit/child_details_cubit.dart';
 import 'dart:convert';
 
 import 'package:moftahak/features/drawing/cubit/add_drawing_cubit.dart';
+import 'package:moftahak/features/home/model/child_model.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/widgets/custem_elevatedButton_widgets.dart'; // مكتبة فك تشفير JSON
@@ -17,14 +19,16 @@ import '../../core/widgets/custem_elevatedButton_widgets.dart'; // مكتبة ف
 class AnalysiImagebyAiScreen extends StatefulWidget {
   final Uint8List? imageBytes;
   final String? imageFilePath;
-  final String?  childId;
+  final String? childId;
+  final ChildModel child;
 
   const AnalysiImagebyAiScreen({
     super.key,
 
-     this.imageBytes,
-     this.imageFilePath,
-     this.childId,
+    this.imageBytes,
+    this.imageFilePath,
+    this.childId,
+    required this.child,
   });
 
   @override
@@ -55,9 +59,11 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
     // 🔥 تحسين: استخدام final أو const بدلاً من التكرار
     final apiKey = dotenv.env['API_KEY'] ?? '';
     final model = GenerativeModel(model: "gemini-2.5-flash", apiKey: apiKey);
-
+    //TODO: child."""'"
+    final child = widget.child;
+    final age = context.read<ChildDetailsCubit>().calculateAge(child.birthDate);
     // Prompt المُحسَّن الذي يطلب إخراج JSON باللغة العربية
-    const promptText = ("""
+    final promptText = ("""
     
    أنت خبير نفسي مُعتمد ومتخصص في العلاج بالفن وتحليل رسومات الأطفال.
 
@@ -78,7 +84,10 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
 
     try {
       final response = await model.generateContent([
-        Content.multi([prompt, DataPart("image/jpeg", widget.imageBytes?? Uint8List(0))]),
+        Content.multi([
+          prompt,
+          DataPart("image/jpeg", widget.imageBytes ?? Uint8List(0)),
+        ]),
       ]);
 
       _rawText = response.text;
@@ -136,7 +145,7 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
   @override
   Widget build(BuildContext context) {
     // نحول مسار الصورة إلى File عشان نبعته للكيوبت
-    final drawingFile = File(widget.imageFilePath??'');
+    final drawingFile = File(widget.imageFilePath ?? '');
 
     return Directionality(
       textDirection: TextDirection.ltr,
@@ -168,81 +177,80 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
                 final isSaving = state is AddDrawingLoading;
 
                 return SingleChildScrollView(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 7),
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 7),
 
-                          // عرض الصورة
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(14),
-                            child: Image.memory(
-                              widget.imageBytes?? Uint8List(0),
-                              height: 320,
-                              width: double.infinity,
-                              fit: BoxFit.contain,
-                            ),
+                      // عرض الصورة
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(14),
+                        child: Image.memory(
+                          widget.imageBytes ?? Uint8List(0),
+                          height: 320,
+                          width: double.infinity,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+
+                      // زر "بدء التحليل" (AI فقط)
+                      const SizedBox(height: 12),
+
+                      // 🔥 زر حفظ الرسمة في Supabase + Firestore عبر الكيوبت
+                      if (_analysis != null) // الشرط الجديد هنا
+                        SizedBox(
+                          width: double.infinity,
+                          // استخدام الكلاس المخصص بدلاً من ElevatedButton
+                          child: CustemElevatedbuttonWidgets(
+                            textButton: "حفظ الرسمة", // النص المطلوب عرضه
+                            width: double
+                                .infinity, // لنقل قيمة العرض إلى الـ Widget المخصص
+                            isLoading: isSaving, // تمرير حالة التحميل isSaving
+                            onPressed: isSaving
+                                ? null
+                                : () {
+                                    context.read<AddDrawingCubit>().addDrawing(
+                                      drawingFile: drawingFile,
+                                      childId: widget.childId ?? '',
+                                      analysis: _analysis,
+                                    );
+
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('جارٍ حفظ الرسمة...'),
+                                      ),
+                                    );
+                                  },
+                            // تم إزالة خصائص style و child المكررة لأنها أصبحت داخل الكلاس المخصص
                           ),
+                        ),
 
+                      const SizedBox(height: 20),
 
-                          // زر "بدء التحليل" (AI فقط)
+                      // عرض النتائج المُنظمة من الـ AI
+                      if (_analysis != null) ...[
+                        _buildResultCard(
+                          "التقييم الأولي المهني",
+                          _analysis!["emotion"],
+                          maxLines: 5,
+                        ),
+                        _buildResultCard(
+                          "تقرير التحليل المفصّل",
+                          _analysis!["description"],
+                          maxLines: 50,
+                        ),
+                      ],
 
-                          const SizedBox(height: 12),
-
-                          // 🔥 زر حفظ الرسمة في Supabase + Firestore عبر الكيوبت
-                          if (_analysis != null) // الشرط الجديد هنا
-                            SizedBox(
-                              width: double.infinity,
-                              // استخدام الكلاس المخصص بدلاً من ElevatedButton
-                              child: CustemElevatedbuttonWidgets(
-                                textButton: "حفظ الرسمة", // النص المطلوب عرضه
-                                width: double.infinity, // لنقل قيمة العرض إلى الـ Widget المخصص
-                                isLoading: isSaving,    // تمرير حالة التحميل isSaving
-                                onPressed: isSaving
-                                    ? null
-                                    : () {
-                                  context.read<AddDrawingCubit>().addDrawing(
-                                    drawingFile: drawingFile,
-                                    childId: widget.childId??'',
-                                    analysis: _analysis,
-                                  );
-
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('جارٍ حفظ الرسمة...'),
-                                    ),
-                                  );
-                                },
-                                // تم إزالة خصائص style و child المكررة لأنها أصبحت داخل الكلاس المخصص
-                              ),
-                            ),
-
-                          const SizedBox(height: 20),
-
-                          // عرض النتائج المُنظمة من الـ AI
-                          if (_analysis != null) ...[
-                            _buildResultCard(
-                              "التقييم الأولي المهني",
-                              _analysis!["emotion"],
-                              maxLines: 5,
-                            ),
-                            _buildResultCard(
-                              "تقرير التحليل المفصّل",
-                              _analysis!["description"],
-                              maxLines: 50,
-                            ),
-                          ],
-
-                          // عرض النص الخام عند الخطأ
-                          if (!_isLoading && _analysis == null && _rawText != null)
-                            Text(
-                              "حدث خطأ في قراءة JSON أو API. النص الخام:\n$_rawText",
-                              style: const TextStyle(color: Colors.redAccent),
-                              textDirection: TextDirection.rtl,
-                            ),
-                        ]
-                    )
+                      // عرض النص الخام عند الخطأ
+                      if (!_isLoading && _analysis == null && _rawText != null)
+                        Text(
+                          "حدث خطأ في قراءة JSON أو API. النص الخام:\n$_rawText",
+                          style: const TextStyle(color: Colors.redAccent),
+                          textDirection: TextDirection.rtl,
+                        ),
+                    ],
+                  ),
                 );
               },
             ),
@@ -310,12 +318,14 @@ class ModalProgressHUD extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AbsorbPointer( // تمنع التفاعل مع العناصر الموجودة تحتها
+    return AbsorbPointer(
+      // تمنع التفاعل مع العناصر الموجودة تحتها
       child: Scaffold(
         body: Container(
           color: Colors.black.withOpacity(0.3), // خلفية شبه شفافة داكنة قليلاً
           child: Center(
-            child: Column( // 👈 استبدلنا Center هنا بـ Column
+            child: Column(
+              // 👈 استبدلنا Center هنا بـ Column
               mainAxisAlignment: MainAxisAlignment.center,
               mainAxisSize: MainAxisSize.min, // لجعل العمود يأخذ أصغر حجم ممكن
               children: <Widget>[
@@ -323,9 +333,8 @@ class ModalProgressHUD extends StatelessWidget {
                 const CircularProgressIndicator(
                   valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                 ),
-        
+
                 const SizedBox(height: 10), // مسافة بين الدائرة والنص
-        
                 // 2. النص المراد إظهاره
                 Text(
                   " الرجاء الانتظار لحظات ", // استخدام الرسالة الممررة
@@ -344,8 +353,6 @@ class ModalProgressHUD extends StatelessWidget {
     );
   }
 }
-
-
 
 //
 //

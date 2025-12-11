@@ -49,7 +49,12 @@ class _DrawingScreenState extends State<DrawingScreen> {
       // 3) نجيب childId من الـ state
       final String childId = homeState.selectedChildId!;
 
-      // 4) ننتقل لصفحة عرض الصورة، ونمرر الصورة + childId + ملف الصورة
+      // 🆕 3.1 نجيب كائن الطفل نفسه من قائمة الأطفال
+      final selectedChild = (homeState as HomeSuccess).children.firstWhere(
+        (c) => c.id == childId,
+      );
+
+      // 4) ننتقل لصفحة عرض الصورة، ونمرر الصورة + childId + ملف الصورة + بيانات الطفل
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -57,6 +62,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
             imageBytes: bytes,
             imageFilePath: file.path, // 👈 مهم لرفعها لاحقًا كـ File
             childId: childId,
+            child: selectedChild, // 🆕 تمرير بيانات الطفل
           ),
         ),
       );

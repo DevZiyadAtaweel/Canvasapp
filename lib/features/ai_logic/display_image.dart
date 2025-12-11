@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:moftahak/features/ai_logic/analysis_arg.dart';
 import 'package:moftahak/features/home/model/child_model.dart';
 
+import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
 import '../../core/constants/navigation.dart';
 import '../../core/widgets/custem_elevatedButton_widgets.dart';
@@ -59,8 +60,8 @@ class DisplayImageScreen extends StatelessWidget {
                     // width: double.infinity,
                     width: MediaQuery.of(context).size.width * 0.4,
                   ),
-                  SizedBox(width: 10),
 
+                  // SizedBox(width: 20),
                   CustemElevatedbuttonWidgets(
                     textButton: 'تأكيد والمتابعة',
                     width: MediaQuery.of(context).size.width * 0.4,

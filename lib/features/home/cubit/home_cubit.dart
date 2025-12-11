@@ -4,6 +4,7 @@ import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:moftahak/features/child%20analysis/model/all_drawings_model.dart';
 import 'package:moftahak/features/home/model/child_model.dart';
 import 'package:moftahak/features/home/model/user_model.dart';
 
@@ -20,6 +21,7 @@ class HomeCubit extends Cubit<HomeState> {
   UserModel? _currentUser;
   List<ChildModel> _children = [];
   String? _selectedChildId;
+  List<AllDrawingsModel> _lastDrawings = [];
   void startUserListener() {
     _userSub?.cancel();
     _childrenSub?.cancel();
@@ -64,8 +66,12 @@ class HomeCubit extends Cubit<HomeState> {
               _selectedChildId = _children.first.id;
             } else if (_children.isEmpty) {
               _selectedChildId = null;
+              _lastDrawings = [];
             }
             _emitSuccess();
+            if (_selectedChildId != null) {
+              _loadLastDrawingsForSelectedChild();
+            }
           },
           onError: (error) {
             print("فشل في جلب بيانات الأطفال: $error");
@@ -76,6 +82,7 @@ class HomeCubit extends Cubit<HomeState> {
                   user: _currentUser!,
                   children: _children,
                   selectedChildId: _selectedChildId,
+                  lastDrawings: _lastDrawings,
                 ),
               );
             }
@@ -90,13 +97,15 @@ class HomeCubit extends Cubit<HomeState> {
         user: _currentUser!,
         children: _children,
         selectedChildId: _selectedChildId,
+        lastDrawings: _lastDrawings,
       ),
     );
   }
 
-  void selectChild(String childId) {
+  Future<void> selectChild(String childId) async {
     _selectedChildId = childId;
     _emitSuccess();
+    await _loadLastDrawingsForSelectedChild();
   }
 
   String getFirstName(String fullName) {
@@ -115,6 +124,37 @@ class HomeCubit extends Cubit<HomeState> {
 
     // يرجع آخر جزء مش فاضي (لو في مسافات زيادة)
     return parts.lastWhere((p) => p.trim().isNotEmpty, orElse: () => '');
+  }
+
+  Future<void> _loadLastDrawingsForSelectedChild() async {
+    if (_auth.currentUser == null || _selectedChildId == null) {
+      _lastDrawings = [];
+      _emitSuccess();
+      return;
+    }
+
+    try {
+      final uid = _auth.currentUser!.uid;
+
+      final snapshot = await _firestore
+          .collection('users')
+          .doc(uid)
+          .collection('children')
+          .doc(_selectedChildId)
+          .collection('drawings')
+          .orderBy('createdAt', descending: true)
+          .limit(3)
+          .get();
+
+      _lastDrawings = snapshot.docs
+          .map((doc) => AllDrawingsModel.fromDoc(doc.id, doc.data()))
+          .toList();
+
+      _emitSuccess();
+    } catch (e) {
+      print('Error loading last drawings: $e');
+      // هنا ممكن تتركها بدون emit Error حتى ما تكسر الهوم
+    }
   }
 
   @override

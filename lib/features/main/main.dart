@@ -3,6 +3,7 @@ import 'package:moftahak/features/add%20child/add_child_view.dart';
 import 'package:moftahak/features/child%20analysis/child_analysis_view.dart';
 import 'package:moftahak/features/drawing/drawing_screen.dart';
 import 'package:moftahak/features/home/home_screen.dart';
+import 'package:moftahak/features/main/widgets/nav_item.dart';
 import 'package:moftahak/features/settings/settings_view.dart';
 
 class Main extends StatefulWidget {
@@ -71,14 +72,14 @@ class _MainState extends State<Main> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              _NavItem(
+                              NavItem(
                                 icon: const Icon(Icons.home_filled),
                                 label: 'الرئيسية',
                                 isActive: _selectedIndex == 0,
                                 onTap: () => _onNavItemTapped(0),
                               ),
 
-                              _NavItem(
+                              NavItem(
                                 icon: Stack(
                                   alignment: Alignment.center,
                                   children: const [
@@ -101,14 +102,14 @@ class _MainState extends State<Main> {
 
                               const SizedBox(width: 60),
 
-                              _NavItem(
+                              NavItem(
                                 icon: const Icon(Icons.history),
                                 label: 'تحليل الرسمات',
                                 isActive: _selectedIndex == 3,
                                 onTap: () => _onNavItemTapped(3),
                               ),
 
-                              _NavItem(
+                              NavItem(
                                 icon: const Icon(Icons.settings_outlined),
                                 label: 'الإعدادات',
                                 isActive: _selectedIndex == 4,
@@ -146,66 +147,6 @@ class _MainState extends State<Main> {
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _NavItem extends StatelessWidget {
-  final Widget icon;
-  final String label;
-  final bool isActive;
-  final VoidCallback onTap;
-
-  const _NavItem({
-    required this.icon,
-    required this.label,
-    required this.onTap,
-    this.isActive = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    final Color activeColor = const Color(0xFF8A3FFC);
-    final Color inactiveColor = Colors.grey.shade500;
-
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(24),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 200),
-        curve: Curves.easeOut,
-        padding: EdgeInsets.symmetric(
-          horizontal: isActive ? 14 : 8,
-          vertical: 8,
-        ),
-        decoration: BoxDecoration(
-          color: isActive ? activeColor.withOpacity(0.06) : Colors.transparent,
-          borderRadius: BorderRadius.circular(24),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconTheme(
-              data: IconThemeData(
-                size: 25,
-                color: isActive ? activeColor : inactiveColor,
-              ),
-              child: icon,
-            ),
-            if (isActive) ...[
-              const SizedBox(width: 6),
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 12,
-                  color: activeColor,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ],
-        ),
       ),
     );
   }

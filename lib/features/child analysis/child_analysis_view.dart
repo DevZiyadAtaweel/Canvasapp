@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moftahak/core/constants/app_colors.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
+import 'package:moftahak/core/widgets/children_dropdown.dart';
 import 'package:moftahak/features/home/cubit/home_cubit.dart';
 import 'package:moftahak/features/child analysis/cubit/all_drawings_cubit.dart';
 
@@ -15,7 +16,6 @@ class ChildAnalysisScreen extends StatefulWidget {
 
 class _ChildAnalysisScreenState extends State<ChildAnalysisScreen> {
   String? _lastLoadedChildId;
-
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -25,8 +25,8 @@ class _ChildAnalysisScreenState extends State<ChildAnalysisScreen> {
     if (homeState is HomeSuccess && homeState.selectedChildId != null) {
       final currentChildId = homeState.selectedChildId!;
 
-      // عشان ما نعيد التحميل بدون داعي
-      if (_lastLoadedChildId != currentChildId) {
+      // نحمل مرة واحدة بس عند أول فتح للشاشة
+      if (_lastLoadedChildId == null) {
         _lastLoadedChildId = currentChildId;
         context.read<AllDrawingsCubit>().loadChildDrawings(currentChildId);
       }
@@ -42,9 +42,22 @@ class _ChildAnalysisScreenState extends State<ChildAnalysisScreen> {
           title: const Text('تحليلات الرسومات'),
           centerTitle: true,
         ),
-        body: BlocBuilder<HomeCubit, HomeState>(
+        body: BlocConsumer<HomeCubit, HomeState>(
+          listener: (context, homeState) {
+            if (homeState is HomeSuccess && homeState.selectedChildId != null) {
+              final currentChildId = homeState.selectedChildId!;
+
+              // عشان ما نعيد التحميل بدون داعي
+              if (_lastLoadedChildId != currentChildId) {
+                _lastLoadedChildId = currentChildId;
+                context.read<AllDrawingsCubit>().loadChildDrawings(
+                  currentChildId,
+                );
+              }
+            }
+          },
           builder: (context, homeState) {
-            // لو ما في طفل مختار
+            // نفس الكود اللي كان جوه BlocBuilder بدون تغيير
             if (homeState is! HomeSuccess ||
                 homeState.selectedChildId == null) {
               return const Center(
@@ -52,26 +65,31 @@ class _ChildAnalysisScreenState extends State<ChildAnalysisScreen> {
               );
             }
 
-            // نحاول نجيب بيانات الطفل بس عشان الاسم في العنوان
-            final selectedChild = homeState.children.firstWhere(
-              (c) => c.id == homeState.selectedChildId,
-              orElse: () => homeState.children.first,
-            );
+            // final selectedChild = homeState.children.firstWhere(
+            //   (c) => c.id == homeState.selectedChildId,
+            //   orElse: () => homeState.children.first,
+            // );
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'تحليلات رسومات: ${selectedChild.name}',
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  child: Row(
+                    children: [
+                      const Text(
+                        'تحليلات رسومات :',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Center(
+                        child: SizedBox(width: 120, child: ChildrenDropdown()),
+                      ),
+                    ],
                   ),
                 ),
-
                 Expanded(
                   child: BlocBuilder<AllDrawingsCubit, AllDrawingsState>(
                     builder: (context, state) {
@@ -103,11 +121,9 @@ class _ChildAnalysisScreenState extends State<ChildAnalysisScreen> {
                             final drawing = state.drawings[index];
 
                             return Card(
-                              //TODO change the color
-                              color: Color(0xFFe6dcf5),
+                              color: const Color(0xFFe6dcf5),
                               shadowColor: Colors.transparent,
                               elevation: 0,
-                              //  margin: const EdgeInsets.only(bottom: 30),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
@@ -129,7 +145,6 @@ class _ChildAnalysisScreenState extends State<ChildAnalysisScreen> {
                                       ),
                                     ),
                                     const SizedBox(height: 12),
-
                                     Text(
                                       'التقييم الأولي:',
                                       style: AppTextStyles.almarai700style20
@@ -171,8 +186,7 @@ class _ChildAnalysisScreenState extends State<ChildAnalysisScreen> {
                                         ),
                                       ),
                                     ),
-
-                                    SizedBox(height: 8),
+                                    const SizedBox(height: 8),
                                   ],
                                 ),
                               ),
@@ -185,7 +199,7 @@ class _ChildAnalysisScreenState extends State<ChildAnalysisScreen> {
                     },
                   ),
                 ),
-                SizedBox(height: 75),
+                const SizedBox(height: 75),
               ],
             );
           },

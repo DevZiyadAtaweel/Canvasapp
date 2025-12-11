@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:moftahak/core/constants/app_colors.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/routes/app_routes.dart';
 import 'package:moftahak/features/home/cubit/home_cubit.dart';
@@ -50,8 +51,9 @@ class MyApp extends StatelessWidget {
 
           backgroundColor: Colors.white,
           iconTheme: IconThemeData(color: Colors.black),
-          titleTextStyle: AppTextStyles.almarai700style28.copyWith(
-            color: Color(0xFF8A3FFC),
+          titleTextStyle: AppTextStyles.almarai700style20.copyWith(
+            color: AppColors.primaryColor,
+            fontSize: 24,
           ),
           centerTitle: true,
           elevation: 0,

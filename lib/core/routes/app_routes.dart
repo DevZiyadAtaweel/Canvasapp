@@ -8,7 +8,9 @@ import 'package:moftahak/features/ai_logic/analysis_arg.dart';
 import 'package:moftahak/features/auth/cubit/auth_cubit.dart';
 import 'package:moftahak/features/auth/login/login_view.dart';
 import 'package:moftahak/features/auth/signup/sign_up_view.dart';
+import 'package:moftahak/features/chaild%20analysis%20details/child_analysis_details.dart';
 import 'package:moftahak/features/child%20analysis/cubit/all_drawings_cubit.dart';
+import 'package:moftahak/features/child%20analysis/model/all_drawings_model.dart';
 import 'package:moftahak/features/child_details/child_details.dart';
 import 'package:moftahak/features/child_details/cubit/child_details_cubit.dart';
 import 'package:moftahak/features/drawing/cubit/add_drawing_cubit.dart';
@@ -79,10 +81,7 @@ final GoRouter appRouter = GoRouter(
         );
       },
     ),
-    // GoRoute(
-    //   path: '/allDrawings',
-    //   builder: (context, state) => const ChildAnalysisScreen(),
-    // ),
+
     GoRoute(
       path: '/main',
       builder: (context, state) {
@@ -104,7 +103,6 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/analysisDrawing',
       builder: (context, state) {
-        // ناخذ الـ args اللي مررناها من DisplayImageScreen
         final args = state.extra as AnalysisArgs;
 
         return BlocProvider(
@@ -118,6 +116,13 @@ final GoRouter appRouter = GoRouter(
             childId: args.childId,
           ),
         );
+      },
+    ),
+    GoRoute(
+      path: '/drawingDetails',
+      builder: (context, state) {
+        final drawing = state.extra as AllDrawingsModel;
+        return ChildAnalysisDetails(drawing: drawing);
       },
     ),
   ],

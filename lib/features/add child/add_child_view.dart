@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-
 import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/constants/navigation.dart';
 import 'package:moftahak/core/widgets/custem_elevatedButton_widgets.dart';
@@ -73,19 +72,15 @@ class _AddChildViewState extends State<AddChildView> {
           bottom: true,
           top: false,
           child: Scaffold(
+            appBar: AppBar(title: Text("اضافة ابن جديد")),
             body: SingleChildScrollView(
               child: Form(
                 key: _formKey,
+
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(height: 40),
-                    Text(
-                      "اضافة ابن جديد",
-                      style: AppTextStyles.almarai700style20,
-                    ),
-                    SizedBox(height: 20),
                     // ===== صورة الطفل =====
                     InkWell(
                       onTap: _pickImage,
@@ -196,8 +191,10 @@ class _AddChildViewState extends State<AddChildView> {
                     ),
                     CustomTextField(
                       maxLines: 3,
-
+                      hintText:
+                          "اكتب/ي وصفاً مفصلاً عن حالة طفلك الصحية، سلوكه اليومي، تفاعله مع الآخرين، وأي ملاحظات مهمة عن حياته.",
                       text: "وصف الحالة الصحية للطفل",
+
                       controller: _healthDescController,
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {

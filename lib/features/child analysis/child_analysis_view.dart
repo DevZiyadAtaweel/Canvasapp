@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:moftahak/core/constants/app_colors.dart';
+import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/features/home/cubit/home_cubit.dart';
 import 'package:moftahak/features/child analysis/cubit/all_drawings_cubit.dart';
 
@@ -58,9 +61,8 @@ class _ChildAnalysisScreenState extends State<ChildAnalysisScreen> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // عنوان باسم الطفل
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: Text(
                     'تحليلات رسومات: ${selectedChild.name}',
                     style: const TextStyle(
@@ -92,59 +94,85 @@ class _ChildAnalysisScreenState extends State<ChildAnalysisScreen> {
                         }
 
                         return ListView.builder(
-                          padding: const EdgeInsets.all(16),
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
                           itemCount: state.drawings.length,
                           itemBuilder: (context, index) {
                             final drawing = state.drawings[index];
 
                             return Card(
-                              margin: const EdgeInsets.only(bottom: 16),
+                              //TODO change the color
+                              color: Color(0xFFe6dcf5),
+                              shadowColor: Colors.transparent,
+                              elevation: 0,
+                              //  margin: const EdgeInsets.only(bottom: 30),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
+                                borderRadius: BorderRadius.circular(8),
                               ),
                               child: Padding(
-                                padding: const EdgeInsets.all(12),
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 16,
+                                  vertical: 16,
+                                ),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     ClipRRect(
-                                      borderRadius: BorderRadius.circular(10),
+                                      borderRadius: BorderRadius.circular(8),
                                       child: Image.network(
                                         drawing.drawingUrl,
                                         height: 180,
                                         width: double.infinity,
-                                        fit: BoxFit.cover,
+                                        fit: BoxFit.contain,
                                       ),
                                     ),
                                     const SizedBox(height: 12),
+
                                     Text(
-                                      'حالة التحليل: ${drawing.analysisStatus}',
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    const Text(
                                       'التقييم الأولي:',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                    Text(drawing.emotion ?? 'غير متوفر'),
-                                    const SizedBox(height: 8),
-                                    const Text(
-                                      'تقرير مفصّل:',
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 15,
-                                      ),
+                                      style: AppTextStyles.almarai700style20
+                                          .copyWith(
+                                            color: AppColors.primaryColor,
+                                          ),
                                     ),
                                     Text(
-                                      drawing.description ?? 'غير متوفر',
-                                      style: const TextStyle(height: 1.4),
+                                      drawing.emotion ?? 'غير متوفر',
+                                      style: AppTextStyles.almarai700style20
+                                          .copyWith(height: 1.4, fontSize: 14),
                                     ),
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          backgroundColor:
+                                              AppColors.primaryColor,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
+                                          ),
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 16,
+                                            vertical: 8,
+                                          ),
+                                        ),
+                                        onPressed: () {
+                                          context.push(
+                                            '/drawingDetails',
+                                            extra: drawing,
+                                          );
+                                        },
+                                        child: Text(
+                                          'عرض التقرير المفصّل',
+                                          style: AppTextStyles.almarai500style16
+                                              .copyWith(color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+
+                                    SizedBox(height: 8),
                                   ],
                                 ),
                               ),
@@ -157,6 +185,7 @@ class _ChildAnalysisScreenState extends State<ChildAnalysisScreen> {
                     },
                   ),
                 ),
+                SizedBox(height: 75),
               ],
             );
           },

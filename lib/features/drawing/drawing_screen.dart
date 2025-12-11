@@ -26,7 +26,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
     try {
       final homeState = context.read<HomeCubit>().state;
 
-      // 1) نتأكد إن في HomeSuccess وفي childSelected
       if (homeState is! HomeSuccess || homeState.selectedChildId == null) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
@@ -36,7 +35,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
         return;
       }
 
-      // 2) لو كل شيء تمام نكمّل ونختار الصورة
       final XFile? file = await _picker.pickImage(source: source);
       if (file == null) return;
 

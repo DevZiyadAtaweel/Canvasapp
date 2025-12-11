@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
 import 'package:google_generative_ai/google_generative_ai.dart';
@@ -98,8 +99,6 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
 
 """);
 
-
-
     final prompt = TextPart(promptText);
 
     try {
@@ -178,9 +177,15 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
               title: const Text("تحليل الصورة"),
               centerTitle: true,
               elevation: 0,
+              automaticallyImplyLeading: false,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  //TODO: Navigator.pop(context);
+                },
+              ),
             ),
 
-            // 👈 هنا ربطنا الشاشة مع AddDrawingCubit
             body: BlocConsumer<AddDrawingCubit, AddDrawingState>(
               listener: (context, state) {
                 if (state is AddDrawingSuccess) {

@@ -11,6 +11,8 @@ import 'package:moftahak/firebase_options.dart';
 // افتراض مسار الشاشة الرئيسية
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import 'features/drawing/cubit/add_drawing_cubit.dart';
+
 void main() async {
   await dotenv.load(fileName: ".env");
 
@@ -26,6 +28,7 @@ void main() async {
       child: const MyApp(),
     ),
   );
+
 }
 
 class MyApp extends StatelessWidget {

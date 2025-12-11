@@ -164,7 +164,7 @@ class _DrawingScreenState extends State<DrawingScreen> {
                           ),
                         ],
                         border: Border.all(
-                          color: AppColors.kPrimaryPurple.withOpacity(0.6),
+                          color: AppColors.kPrimaryPurple,
                           width: 1,
                         ),
                       ),

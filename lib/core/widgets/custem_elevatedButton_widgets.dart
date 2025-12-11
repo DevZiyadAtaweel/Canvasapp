@@ -45,6 +45,7 @@ class CustemElevatedbuttonWidgets extends StatefulWidget {
     required this.width,
     required this.onPressed,
     this.icon,
+     bool? isLoading,
     // <<<<< HEAD:lib/view/widgets/custem_elevatedButton_widgets.dart
     // =======
     // >>>>>>> 8c98d7b106ddb0927500bed0785b77d66099d337:lib/core/widgets/custem_elevatedButton_widgets.dart

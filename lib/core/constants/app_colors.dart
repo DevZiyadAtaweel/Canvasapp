@@ -8,7 +8,7 @@ class AppColors {
   static Color textField = Colors.grey.shade100;
 
   static Color kPrimaryLightPurple = Color(0xFF070C4C); // لون بنفسجي فاتح
-  static Color kPrimaryPurple = Color(0xFF070C4C); // لون بنفسجي فاتح
+  static Color kPrimaryPurple = Color(0xFFe6dcf5); // لون بنفسجي فاتح
   static Color kPrimaryDarkPurple = Color(0xFF8A5AA8);  // لون بنفسجي غامق/أساسي
   static Color kSecondaryText = Color(0xFF333333);      // لون النص الأساس
 }

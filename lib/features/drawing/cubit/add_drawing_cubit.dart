@@ -12,7 +12,9 @@ class AddDrawingCubit extends Cubit<AddDrawingState> {
   final FirebaseFirestore _firestore;
   final FirebaseAuth _auth;
 
-  AddDrawingCubit(this._firestore, this._auth) : super(AddDrawingInitial());
+  AddDrawingCubit(
+      this._firestore,
+      this._auth) : super(AddDrawingInitial());
 
   Future<void> addDrawing({
     required File drawingFile,

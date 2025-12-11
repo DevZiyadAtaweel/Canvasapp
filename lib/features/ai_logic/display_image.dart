@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moftahak/features/ai_logic/analysis_arg.dart';
 
+import '../../core/constants/app_text_styles.dart';
+import '../../core/constants/navigation.dart';
+import '../../core/widgets/custem_elevatedButton_widgets.dart';
 import 'analysi_imageby_ai_screen.dart';
 
 // شاشة جديدة لعرض الصورة المختارة
@@ -28,7 +31,6 @@ class DisplayImageScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('معاينة الصورة'),
         centerTitle: true,
-        backgroundColor: Colors.blueGrey,
       ),
       body: Center(
         child: Column(
@@ -45,57 +47,48 @@ class DisplayImageScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
                 children: [
-                  // زر إلغاء (رجوع)
-                  ElevatedButton.icon(
+                  CustemElevatedbuttonWidgets(
+
                     onPressed: () {
                       // بدل ما نفتح DrawingScreen من جديد، نرجع خطوة للخلف
                       Navigator.pop(context);
                     },
-                    icon: const Icon(Icons.cancel),
-                    label: const Text('إلغاء'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
-                    ),
+                    textButton: 'الغاء',
+                    // width: double.infinity,
+                    width: MediaQuery.of(context).size.width * 0.4,
+
                   ),
+                  SizedBox(width: 10),
 
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      // نجهز الـ args
-                      final args = AnalysisArgs(
-                        imageBytes: imageBytes,
-                        imageFilePath: imageFilePath,
-                        childId: childId,
-                      );
+                  CustemElevatedbuttonWidgets(
+                    // width: double.infinity,
+                    textButton: 'تأكيد والمتابعة',
+                    width: MediaQuery.of(context).size.width * 0.4,
 
-                      // نستخدم GoRouter بدل Navigator
-                      context.push('/analysisDrawing', extra: args);
+                      onPressed: () {
+                        // نجهز الـ args
+                        final args = AnalysisArgs(
+                          imageBytes: imageBytes,
+                          imageFilePath: imageFilePath,
+                          childId: childId,
+                        );
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text(
-                            'تم تأكيد الصورة، يتم المتابعة للتحليل...',
-                          ),
-                        ),
-                      );
-                    },
-                    icon: const Icon(Icons.check_circle),
-                    label: const Text('تأكيد والمتابعة'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20,
-                        vertical: 15,
-                      ),
-                    ),
+                        // نستخدم GoRouter بدل Navigator
+                        context.push('/analysisDrawing', extra: args);
+
+
+
+                      },
                   ),
                 ],
               ),
+
+            ),
+            SizedBox(
+              height: 120,
             ),
           ],
         ),

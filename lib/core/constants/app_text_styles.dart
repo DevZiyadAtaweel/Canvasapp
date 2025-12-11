@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppTextStyles {
+
   static final pacifico400style40 = TextStyle(
     fontSize: 50,
     fontWeight: FontWeight.w700,

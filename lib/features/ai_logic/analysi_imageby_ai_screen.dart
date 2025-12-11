@@ -8,21 +8,23 @@ import 'dart:typed_data';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'dart:convert';
 
-import 'package:moftahak/features/drawing/cubit/add_drawing_cubit.dart'; // مكتبة فك تشفير JSON
-// import 'package:firebase_storage/firebase_storage.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:moftahak/features/drawing/cubit/add_drawing_cubit.dart';
+
+import '../../core/constants/app_colors.dart';
+import '../../core/widgets/custem_elevatedButton_widgets.dart'; // مكتبة فك تشفير JSON
 // ... باقي الاستيرادات
 
 class AnalysiImagebyAiScreen extends StatefulWidget {
-  final Uint8List imageBytes;
-  final String imageFilePath;
-  final String childId;
+  final Uint8List? imageBytes;
+  final String? imageFilePath;
+  final String?  childId;
 
   const AnalysiImagebyAiScreen({
     super.key,
-    required this.imageBytes,
-    required this.imageFilePath,
-    required this.childId,
+
+     this.imageBytes,
+     this.imageFilePath,
+     this.childId,
   });
 
   @override
@@ -54,29 +56,9 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
     final apiKey = dotenv.env['API_KEY'] ?? '';
     final model = GenerativeModel(model: "gemini-2.5-flash", apiKey: apiKey);
 
-    //     final  promptText =("""
-    //     أنت خبير نفسي مُعتمد ومتخصص حصراً في العلاج بالفن واضطراب ما بعد الصدمة (PTSD) لدى الأطفال.
-    //
-    // **المهمة:**
-    // قم بالتحليل السريري للرسم المرفق. يجب أن يكون الإخراج تحليلًا فنيًا **موجزًا للغاية** يركز فقط على الدلالات التي تشير مباشرة إلى الصدمة أو القلق المزمن أو الفقدان العميق. تجنب أي إطالة أو تفسيرات غير ضرورية.
-    //
-    // **معايير التحليل:**
-    // 1.  **التركيز الصارم:** استخدم فقط المؤشرات الفنية الواضحة: استخدام الألوان السوداء/الداكنة، ضغط القلم الشديد، حجم الشكل (صغير جداً)، ووجود رموز للتهديد أو العزلة (مثل الأشكال المسجونة).
-    // 2.  **الإيجاز:** يجب أن تكون كل نقطة في القوائم عبارة عن جملة واحدة أو عبارة مختصرة جداً.
-    //
-    // **المخرجات المطلوبة (بصيغة JSON حصراً وباللغة العربية الفصحى):**
-    //
-    // {
-    //   "التقييم_الأولي": "تحديد الاتجاه السريري العام في كلمة أو كلمتين (مثال: 'صدمة حادة'، 'قلق مزمن'، 'ثبات').",
-    //   "مؤشرات_الصدمة": ["اذكر المؤشرات الفنية الأكثر أهمية (1-2 نقطة فقط)."],
-    //   "الاضطرابات_المحتملة": ["حدد التشخيص المحتمل أو المشاعر الأساسية (مثال: PTSD، اكتئاب)."],
-    //   "تدخل_عاجل": "الإجابة يجب أن تكون 'نعم' أو 'لا' فقط."
-    // }
-    //
-    // """);
-
     // Prompt المُحسَّن الذي يطلب إخراج JSON باللغة العربية
     const promptText = ("""
+    
    أنت خبير نفسي مُعتمد ومتخصص في العلاج بالفن وتحليل رسومات الأطفال.
 
     **المهمة:**
@@ -96,7 +78,7 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
 
     try {
       final response = await model.generateContent([
-        Content.multi([prompt, DataPart("image/jpeg", widget.imageBytes)]),
+        Content.multi([prompt, DataPart("image/jpeg", widget.imageBytes?? Uint8List(0))]),
       ]);
 
       _rawText = response.text;
@@ -154,155 +136,122 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
   @override
   Widget build(BuildContext context) {
     // نحول مسار الصورة إلى File عشان نبعته للكيوبت
-    final drawingFile = File(widget.imageFilePath);
+    final drawingFile = File(widget.imageFilePath??'');
 
     return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: const Text("تحليل الصورة"),
-          backgroundColor: Colors.indigo,
-          centerTitle: true,
-          elevation: 0,
-        ),
+      textDirection: TextDirection.ltr,
+      child: Stack(
+        children: [
+          // 1. Scaffold (الواجهة الرئيسية)
+          Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              title: const Text("تحليل الصورة"),
+              centerTitle: true,
+              elevation: 0,
+            ),
 
-        // 👈 هنا ربطنا الشاشة مع AddDrawingCubit
-        body: BlocConsumer<AddDrawingCubit, AddDrawingState>(
-          listener: (context, state) {
-            if (state is AddDrawingSuccess) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('تم حفظ الرسمة بنجاح ✅')),
-              );
-            } else if (state is AddDrawingFailure) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
-            }
-          },
-          builder: (context, state) {
-            final isSaving = state is AddDrawingLoading;
+            // 👈 هنا ربطنا الشاشة مع AddDrawingCubit
+            body: BlocConsumer<AddDrawingCubit, AddDrawingState>(
+              listener: (context, state) {
+                if (state is AddDrawingSuccess) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('تم حفظ الرسمة بنجاح ✅')),
+                  );
+                } else if (state is AddDrawingFailure) {
+                  ScaffoldMessenger.of(
+                    context,
+                  ).showSnackBar(SnackBar(content: Text(state.errorMessage)));
+                }
+              },
+              builder: (context, state) {
+                final isSaving = state is AddDrawingLoading;
 
-            return SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 16),
+                return SingleChildScrollView(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const SizedBox(height: 7),
 
-                  // عرض الصورة
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(14),
-                    child: Image.memory(
-                      widget.imageBytes,
-                      height: 240,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+                          // عرض الصورة
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(14),
+                            child: Image.memory(
+                              widget.imageBytes?? Uint8List(0),
+                              height: 320,
+                              width: double.infinity,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
 
-                  const SizedBox(height: 24),
 
-                  // زر "بدء التحليل" (AI فقط)
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: _isLoading ? null : _analyzeChildEmotion,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.indigo,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                      ),
-                      child: _isLoading
-                          ? const SizedBox(
-                              height: 22,
-                              width: 22,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : const Text(
-                              "بدء التحليل",
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: Colors.white,
+                          // زر "بدء التحليل" (AI فقط)
+
+                          const SizedBox(height: 12),
+
+                          // 🔥 زر حفظ الرسمة في Supabase + Firestore عبر الكيوبت
+                          if (_analysis != null) // الشرط الجديد هنا
+                            SizedBox(
+                              width: double.infinity,
+                              // استخدام الكلاس المخصص بدلاً من ElevatedButton
+                              child: CustemElevatedbuttonWidgets(
+                                textButton: "حفظ الرسمة", // النص المطلوب عرضه
+                                width: double.infinity, // لنقل قيمة العرض إلى الـ Widget المخصص
+                                isLoading: isSaving,    // تمرير حالة التحميل isSaving
+                                onPressed: isSaving
+                                    ? null
+                                    : () {
+                                  context.read<AddDrawingCubit>().addDrawing(
+                                    drawingFile: drawingFile,
+                                    childId: widget.childId??'',
+                                    analysis: _analysis,
+                                  );
+
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('جارٍ حفظ الرسمة...'),
+                                    ),
+                                  );
+                                },
+                                // تم إزالة خصائص style و child المكررة لأنها أصبحت داخل الكلاس المخصص
                               ),
                             ),
-                    ),
-                  ),
 
-                  const SizedBox(height: 12),
+                          const SizedBox(height: 20),
 
-                  // 🔥 زر حفظ الرسمة في Supabase + Firestore عبر الكيوبت
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: isSaving
-                          ? null
-                          : () {
-                              context.read<AddDrawingCubit>().addDrawing(
-                                drawingFile: drawingFile,
-                                childId: widget.childId,
-                                analysis: _analysis,
-                              );
-
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('جارٍ حفظ الرسمة...'),
-                                ),
-                              );
-                            },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.green,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                      ),
-                      child: isSaving
-                          ? const SizedBox(
-                              height: 22,
-                              width: 22,
-                              child: CircularProgressIndicator(
-                                color: Colors.white,
-                                strokeWidth: 2,
-                              ),
-                            )
-                          : const Text(
-                              "حفظ الرسمة",
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: Colors.white,
-                              ),
+                          // عرض النتائج المُنظمة من الـ AI
+                          if (_analysis != null) ...[
+                            _buildResultCard(
+                              "التقييم الأولي المهني",
+                              _analysis!["emotion"],
+                              maxLines: 5,
                             ),
-                    ),
-                  ),
+                            _buildResultCard(
+                              "تقرير التحليل المفصّل",
+                              _analysis!["description"],
+                              maxLines: 50,
+                            ),
+                          ],
 
-                  const SizedBox(height: 20),
+                          // عرض النص الخام عند الخطأ
+                          if (!_isLoading && _analysis == null && _rawText != null)
+                            Text(
+                              "حدث خطأ في قراءة JSON أو API. النص الخام:\n$_rawText",
+                              style: const TextStyle(color: Colors.redAccent),
+                              textDirection: TextDirection.rtl,
+                            ),
+                        ]
+                    )
+                );
+              },
+            ),
+          ),
 
-                  // عرض النتائج المُنظمة من الـ AI
-                  if (_analysis != null) ...[
-                    _buildResultCard(
-                      "التقييم الأولي المهني",
-                      _analysis!["emotion"],
-                      maxLines: 5,
-                    ),
-                    _buildResultCard(
-                      "تقرير التحليل المفصّل",
-                      _analysis!["description"],
-                      maxLines: 50,
-                    ),
-                  ],
-
-                  // عرض النص الخام عند الخطأ
-                  if (!_isLoading && _analysis == null && _rawText != null)
-                    Text(
-                      "حدث خطأ في قراءة JSON أو API. النص الخام:\n$_rawText",
-                      style: const TextStyle(color: Colors.redAccent),
-                      textDirection: TextDirection.rtl,
-                    ),
-                ],
-              ),
-            );
-          },
-        ),
+          // 2. مؤشر التحميل (Loading Overlay)
+          if (_isLoading)
+            const ModalProgressHUD(), // إضافة مؤشر التحميل المشروط
+        ],
       ),
     );
   }
@@ -314,11 +263,11 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: const Color(0xfff1f1f5),
+        color: AppColors.kPrimaryPurple,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
             title,
@@ -350,9 +299,53 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
 // 🔥 تحسين: تبسيط الدالة لتكون أكثر نظافة
 Future<Uint8List?> pickImage({required ImageSource source}) async {
   final picker = ImagePicker();
-  final XFile? file = await await picker.pickImage(source: source);
+  final XFile? file = await picker.pickImage(source: source);
   return file?.readAsBytes(); // استخدام Safe Call (?. )
 }
+
+// 📌 أداة مساعدة جديدة: ModalProgressHUD
+// هذه الأداة تغطي الشاشة بالكامل عند التحميل وتمنع التفاعل.
+class ModalProgressHUD extends StatelessWidget {
+  const ModalProgressHUD({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return AbsorbPointer( // تمنع التفاعل مع العناصر الموجودة تحتها
+      child: Scaffold(
+        body: Container(
+          color: Colors.black.withOpacity(0.3), // خلفية شبه شفافة داكنة قليلاً
+          child: Center(
+            child: Column( // 👈 استبدلنا Center هنا بـ Column
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min, // لجعل العمود يأخذ أصغر حجم ممكن
+              children: <Widget>[
+                // 1. مؤشر التحميل الدائري
+                const CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                ),
+        
+                const SizedBox(height: 10), // مسافة بين الدائرة والنص
+        
+                // 2. النص المراد إظهاره
+                Text(
+                  " الرجاء الانتظار لحظات ", // استخدام الرسالة الممررة
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500,
+                  ),
+                  textDirection: TextDirection.rtl,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+
 
 //
 //

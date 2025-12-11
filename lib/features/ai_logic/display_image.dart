@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moftahak/features/ai_logic/analysis_arg.dart';
+import 'package:moftahak/features/home/model/child_model.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
@@ -18,12 +19,14 @@ class DisplayImageScreen extends StatelessWidget {
 
   // 🆕 معرف الطفل صاحب الرسمة
   final String childId;
+  final ChildModel child;
 
   const DisplayImageScreen({
     super.key,
     required this.imageBytes,
     required this.imageFilePath,
     required this.childId,
+    required this.child,
   });
 
   @override
@@ -48,50 +51,27 @@ class DisplayImageScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                 children: [
-                  // CustemElevatedbuttonWidgets(
-                  //
-                  //   onPressed: () {
-                  //     // بدل ما نفتح DrawingScreen من جديد، نرجع خطوة للخلف
-                  //     Navigator.pop(context);
-                  //   },
-                  //   textButton: 'إلغاء',
-                  //   // width: double.infinity,
-                  //   width: MediaQuery.of(context).size.width * 0.4,
-                  //
-                  // ),
-                  SizedBox(
-                    width: 150,
-                    height: 55,
-                    child: OutlinedButton(
-                      onPressed: () {
-                        // بدل ما نفتح DrawingScreen من جديد، نرجع خطوة للخلف
-                        Navigator.pop(context);
-                      },
-                      style: OutlinedButton.styleFrom(
-                        side: const BorderSide(color: Colors.grey, width: 2),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: Text(
-                        "إلغاء",
-                        style: AppTextStyles.almarai700style20,
-                      ),
-                    ),
+                  CustemElevatedbuttonWidgets(
+                    onPressed: () {
+                      // بدل ما نفتح DrawingScreen من جديد، نرجع خطوة للخلف
+                      Navigator.pop(context);
+                    },
+                    textButton: 'الغاء',
+                    // width: double.infinity,
+                    width: MediaQuery.of(context).size.width * 0.4,
                   ),
 
                   // SizedBox(width: 20),
                   CustemElevatedbuttonWidgets(
-                    // width: double.infinity,
-                    textButton: 'متابعة',
+                    textButton: 'تأكيد والمتابعة',
                     width: MediaQuery.of(context).size.width * 0.4,
-
                     onPressed: () {
-                      // نجهز الـ args
+                      // نجهز الـ args مع بيانات الطفل
                       final args = AnalysisArgs(
                         imageBytes: imageBytes,
                         imageFilePath: imageFilePath,
                         childId: childId,
+                        child: child, // 🆕 تمرير بيانات الطفل
                       );
 
                       // نستخدم GoRouter بدل Navigator

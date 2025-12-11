@@ -105,19 +105,26 @@ final GoRouter appRouter = GoRouter(
       builder: (context, state) {
         final args = state.extra as AnalysisArgs;
 
-        return BlocProvider(
-          create: (_) => AddDrawingCubit(
-            FirebaseFirestore.instance,
-            FirebaseAuth.instance,
-          ),
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => AddDrawingCubit(
+                FirebaseFirestore.instance,
+                FirebaseAuth.instance,
+              ),
+            ),
+            BlocProvider(create: (_) => ChildDetailsCubit()),
+          ],
           child: AnalysiImagebyAiScreen(
             imageBytes: args.imageBytes,
             imageFilePath: args.imageFilePath,
             childId: args.childId,
+            child: args.child, // 🆕 تمرير بيانات الطفل
           ),
         );
       },
     ),
+
     GoRoute(
       path: '/drawingDetails',
       builder: (context, state) {

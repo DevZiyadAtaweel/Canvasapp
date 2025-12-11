@@ -45,13 +45,14 @@ class ChildAnalysisDetails extends StatelessWidget {
                     'التقييم الأولي:',
                     style: AppTextStyles.almarai700style20.copyWith(
                       color: AppColors.primaryColor,
+                      fontSize: 22,
                     ),
                   ),
                   Text(
                     drawing.emotion ?? 'غير متوفر',
                     style: AppTextStyles.almarai700style20.copyWith(
                       height: 1.4,
-                      fontSize: 14,
+                      fontSize: 16,
                     ),
                   ),
 
@@ -60,13 +61,14 @@ class ChildAnalysisDetails extends StatelessWidget {
                     'تقرير مفصّل:',
                     style: AppTextStyles.almarai700style20.copyWith(
                       color: AppColors.primaryColor,
+                      fontSize: 22,
                     ),
                   ),
                   Text(
                     drawing.description ?? 'غير متوفر',
                     style: AppTextStyles.almarai700style20.copyWith(
                       height: 1.4,
-                      fontSize: 14,
+                      fontSize: 16,
                     ),
                   ),
                   SizedBox(height: 8),

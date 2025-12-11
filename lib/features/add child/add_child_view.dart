@@ -70,6 +70,8 @@ class _AddChildViewState extends State<AddChildView> {
         textDirection: TextDirection.rtl,
         child: SafeArea(
           bottom: true,
+          right: true,
+          left: true,
           top: false,
           child: Scaffold(
             appBar: AppBar(title: Text("اضافة ابن جديد")),
@@ -251,7 +253,7 @@ class _AddChildViewState extends State<AddChildView> {
                           },
                         ),
 
-                        SizedBox(width: 20),
+                        SizedBox(width: 46),
                         SizedBox(
                           width: 150,
                           height: 55,

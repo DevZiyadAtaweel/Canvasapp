@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moftahak/features/ai_logic/analysis_arg.dart';
 
+import '../../core/constants/app_colors.dart';
 import '../../core/constants/app_text_styles.dart';
 import '../../core/constants/navigation.dart';
 import '../../core/widgets/custem_elevatedButton_widgets.dart';
@@ -28,10 +29,7 @@ class DisplayImageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('معاينة الصورة'),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text('معاينة الصورة'), centerTitle: true),
       body: Center(
         child: Column(
           children: [
@@ -50,46 +48,60 @@ class DisplayImageScreen extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
 
                 children: [
+                  // CustemElevatedbuttonWidgets(
+                  //
+                  //   onPressed: () {
+                  //     // بدل ما نفتح DrawingScreen من جديد، نرجع خطوة للخلف
+                  //     Navigator.pop(context);
+                  //   },
+                  //   textButton: 'إلغاء',
+                  //   // width: double.infinity,
+                  //   width: MediaQuery.of(context).size.width * 0.4,
+                  //
+                  // ),
+                  SizedBox(
+                    width: 150,
+                    height: 55,
+                    child: OutlinedButton(
+                      onPressed: () {
+                        // بدل ما نفتح DrawingScreen من جديد، نرجع خطوة للخلف
+                        Navigator.pop(context);
+                      },
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.grey, width: 2),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      child: Text(
+                        "إلغاء",
+                        style: AppTextStyles.almarai700style20,
+                      ),
+                    ),
+                  ),
+
+                  // SizedBox(width: 20),
                   CustemElevatedbuttonWidgets(
+                    // width: double.infinity,
+                    textButton: 'متابعة',
+                    width: MediaQuery.of(context).size.width * 0.4,
 
                     onPressed: () {
-                      // بدل ما نفتح DrawingScreen من جديد، نرجع خطوة للخلف
-                      Navigator.pop(context);
+                      // نجهز الـ args
+                      final args = AnalysisArgs(
+                        imageBytes: imageBytes,
+                        imageFilePath: imageFilePath,
+                        childId: childId,
+                      );
+
+                      // نستخدم GoRouter بدل Navigator
+                      context.push('/analysisDrawing', extra: args);
                     },
-                    textButton: 'الغاء',
-                    // width: double.infinity,
-                    width: MediaQuery.of(context).size.width * 0.4,
-
-                  ),
-                  SizedBox(width: 10),
-
-                  CustemElevatedbuttonWidgets(
-                    // width: double.infinity,
-                    textButton: 'تأكيد والمتابعة',
-                    width: MediaQuery.of(context).size.width * 0.4,
-
-                      onPressed: () {
-                        // نجهز الـ args
-                        final args = AnalysisArgs(
-                          imageBytes: imageBytes,
-                          imageFilePath: imageFilePath,
-                          childId: childId,
-                        );
-
-                        // نستخدم GoRouter بدل Navigator
-                        context.push('/analysisDrawing', extra: args);
-
-
-
-                      },
                   ),
                 ],
               ),
-
             ),
-            SizedBox(
-              height: 120,
-            ),
+            SizedBox(height: 120),
           ],
         ),
       ),

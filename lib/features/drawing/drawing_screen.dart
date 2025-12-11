@@ -196,13 +196,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
                       ),
                     ),
                     const SizedBox(height: 60),
-                    // const Divider(
-                    //   color: Colors.black,
-                    //   height: 40,
-                    //   thickness: 1,
-                    // ),
-                    const SizedBox(height: 40),
-
                     Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -211,7 +204,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
                             onPressed: () => pickImage(ImageSource.gallery),
                             textButton: 'إرفاق صورة',
                             width: double.infinity,
-                            // width: MediaQuery.of(context).size.width * 0.4,
                             icon: const Icon(Icons.upload, size: 22),
                           ),
                           SizedBox(height: 24),
@@ -223,8 +215,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
                               size: 22,
                             ),
                             width: double.infinity,
-
-                            // width: MediaQuery.of(context).size.width * 0.4,
                           ),
                         ],
                       ),
@@ -239,43 +229,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
       ),
     );
   }
-
-  Widget _buildInstruction(String text) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Text(
-        '• $text',
-        style: const TextStyle(
-          fontSize: 20,
-          fontWeight: FontWeight.w300,
-          color: Colors.white,
-        ),
-        textAlign: TextAlign.right,
-      ),
-    );
-  }
-
-  // Row(
-  // mainAxisAlignment: MainAxisAlignment.end,
-  // children: [
-  // Text(
-  // 'تأكد من وضوح التصوير',
-  // style: TextStyle(
-  // color: AppColors.kPrimaryPurple,
-  // fontSize: 18
-  // ),
-  // ),
-  // SizedBox(
-  // width: 5,
-  // ),
-  // const Icon(
-  // Icons.check_circle,
-  // // color: Colors.purpleAccent,
-  // color: Color(0xffa78bfa),
-  // size: 18,
-  // ),
-  // ]
-  // ),
 
   Widget TextContainer(String text) {
     // يمكنك تغيير الألوان هنا لتجنب الحاجة لملف AppColors إذا لم يكن مُستوردًا

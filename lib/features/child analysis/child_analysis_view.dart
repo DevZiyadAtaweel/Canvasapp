@@ -70,12 +70,12 @@ class _ChildAnalysisScreenState extends State<ChildAnalysisScreen> {
             //   orElse: () => homeState.children.first,
             // );
 
-            return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
                       const Text(
                         'تحليلات رسومات :',
@@ -89,118 +89,124 @@ class _ChildAnalysisScreenState extends State<ChildAnalysisScreen> {
                       ),
                     ],
                   ),
-                ),
-                Expanded(
-                  child: BlocBuilder<AllDrawingsCubit, AllDrawingsState>(
-                    builder: (context, state) {
-                      if (state is AllDrawingsLoading ||
-                          state is AllDrawingsInitial) {
-                        return const Center(child: CircularProgressIndicator());
-                      }
-
-                      if (state is AllDrawingsError) {
-                        return Center(child: Text(state.message));
-                      }
-
-                      if (state is AllDrawingsLoaded) {
-                        if (state.drawings.isEmpty) {
+                  Expanded(
+                    child: BlocBuilder<AllDrawingsCubit, AllDrawingsState>(
+                      builder: (context, state) {
+                        if (state is AllDrawingsLoading ||
+                            state is AllDrawingsInitial) {
                           return const Center(
-                            child: Text(
-                              'لا توجد رسومات محلَّلة لهذا الطفل بعد.',
-                            ),
+                            child: CircularProgressIndicator(),
                           );
                         }
 
-                        return ListView.builder(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          itemCount: state.drawings.length,
-                          itemBuilder: (context, index) {
-                            final drawing = state.drawings[index];
+                        if (state is AllDrawingsError) {
+                          return Center(child: Text(state.message));
+                        }
 
-                            return Card(
-                              color: const Color(0xFFe6dcf5),
-                              shadowColor: Colors.transparent,
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 16,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(8),
-                                      child: Image.network(
-                                        drawing.drawingUrl,
-                                        height: 180,
-                                        width: double.infinity,
-                                        fit: BoxFit.contain,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 12),
-                                    Text(
-                                      'التقييم الأولي:',
-                                      style: AppTextStyles.almarai700style20
-                                          .copyWith(
-                                            color: AppColors.primaryColor,
-                                          ),
-                                    ),
-                                    Text(
-                                      drawing.emotion ?? 'غير متوفر',
-                                      style: AppTextStyles.almarai700style20
-                                          .copyWith(height: 1.4, fontSize: 14),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: ElevatedButton(
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor:
-                                              AppColors.primaryColor,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(
-                                              8,
-                                            ),
-                                          ),
-                                          padding: const EdgeInsets.symmetric(
-                                            horizontal: 16,
-                                            vertical: 8,
-                                          ),
-                                        ),
-                                        onPressed: () {
-                                          context.push(
-                                            '/drawingDetails',
-                                            extra: drawing,
-                                          );
-                                        },
-                                        child: Text(
-                                          'عرض التقرير المفصّل',
-                                          style: AppTextStyles.almarai500style16
-                                              .copyWith(color: Colors.white),
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(height: 8),
-                                  ],
-                                ),
+                        if (state is AllDrawingsLoaded) {
+                          if (state.drawings.isEmpty) {
+                            return const Center(
+                              child: Text(
+                                'لا توجد رسومات محلَّلة لهذا الطفل بعد.',
                               ),
                             );
-                          },
-                        );
-                      }
+                          }
 
-                      return const SizedBox.shrink();
-                    },
+                          return ListView.builder(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 0,
+                              vertical: 8,
+                            ),
+                            itemCount: state.drawings.length,
+                            itemBuilder: (context, index) {
+                              final drawing = state.drawings[index];
+
+                              return Card(
+                                color: const Color(0xFFe6dcf5),
+                                shadowColor: Colors.transparent,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 0,
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      ClipRRect(
+                                        borderRadius: BorderRadius.circular(8),
+                                        child: Image.network(
+                                          drawing.drawingUrl,
+                                          height: 180,
+                                          width: double.infinity,
+                                          fit: BoxFit.contain,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 12),
+                                      Text(
+                                        'التقييم الأولي:',
+                                        style: AppTextStyles.almarai700style20
+                                            .copyWith(
+                                              color: AppColors.primaryColor,
+                                            ),
+                                      ),
+                                      Text(
+                                        drawing.emotion ?? 'غير متوفر',
+                                        style: AppTextStyles.almarai700style20
+                                            .copyWith(
+                                              height: 1.4,
+                                              fontSize: 14,
+                                            ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                AppColors.primaryColor,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 16,
+                                              vertical: 8,
+                                            ),
+                                          ),
+                                          onPressed: () {
+                                            context.push(
+                                              '/drawingDetails',
+                                              extra: drawing,
+                                            );
+                                          },
+                                          child: Text(
+                                            'عرض التقرير المفصّل',
+                                            style: AppTextStyles
+                                                .almarai500style16
+                                                .copyWith(color: Colors.white),
+                                          ),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          );
+                        }
+
+                        return const SizedBox.shrink();
+                      },
+                    ),
                   ),
-                ),
-                const SizedBox(height: 75),
-              ],
+                  const SizedBox(height: 75),
+                ],
+              ),
             );
           },
         ),

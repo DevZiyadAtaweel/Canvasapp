@@ -50,7 +50,7 @@ class _SplashViewState extends State<SplashView> {
                 children: [
                   Text(
                     AppStrings.appName,
-                    style: AppTextStyles.lato600style20.copyWith(
+                    style: AppTextStyles.almarai600style20.copyWith(
                       fontSize: 40,
                       color: Colors.white,
                       letterSpacing: 16.0,
@@ -59,7 +59,7 @@ class _SplashViewState extends State<SplashView> {
                   ),
                   Text(
                     AppStrings.welcomeMessage,
-                    style: AppTextStyles.lato600style20.copyWith(
+                    style: AppTextStyles.almarai600style20.copyWith(
                       fontSize: 25,
                       color: Colors.white,
                     ),

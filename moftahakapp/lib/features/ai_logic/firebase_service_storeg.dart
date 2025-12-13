@@ -1,5 +1,3 @@
-// lib/services/firebase_service.dart
-import 'package:flutter/material.dart';
 import 'dart:typed_data';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -15,7 +13,9 @@ class FirebaseStorageService {
   }) async {
     // 1. رفع الصورة إلى Storage
     String fileName = '${DateTime.now().millisecondsSinceEpoch}_drawing.jpg';
-    Reference storageRef = _storage.ref().child('child_drawings/$childId/$fileName');
+    Reference storageRef = _storage.ref().child(
+      'child_drawings/$childId/$fileName',
+    );
 
     UploadTask uploadTask = storageRef.putData(
       imageBytes,

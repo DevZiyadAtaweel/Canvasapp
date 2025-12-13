@@ -1,16 +1,13 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:moftahak/core/constants/app_text_styles.dart';
+import 'package:moftahak/core/constants/navigation.dart';
+import 'package:moftahak/core/widgets/cancel_button.dart';
 import 'package:moftahak/features/ai_logic/analysis_arg.dart';
 import 'package:moftahak/features/home/model/child_model.dart';
-
-import '../../core/constants/app_colors.dart';
-import '../../core/constants/app_text_styles.dart';
-import '../../core/constants/navigation.dart';
 import '../../core/widgets/custem_elevatedButton_widgets.dart';
-import 'analysi_imageby_ai_screen.dart';
 
-// شاشة جديدة لعرض الصورة المختارة
 class DisplayImageScreen extends StatelessWidget {
   final Uint8List imageBytes;
 
@@ -32,11 +29,14 @@ class DisplayImageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('معاينة الصورة'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('معاينة الصورة'),
+        centerTitle: true,
+        automaticallyImplyLeading: false,
+      ),
       body: Center(
         child: Column(
           children: [
-            // 1. عرض الصورة
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -44,27 +44,17 @@ class DisplayImageScreen extends StatelessWidget {
               ),
             ),
 
-            // 2. أزرار الإجراءات
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
                 children: [
-                  CustemElevatedbuttonWidgets(
-                    onPressed: () {
-                      // بدل ما نفتح DrawingScreen من جديد، نرجع خطوة للخلف
-                      Navigator.pop(context);
-                    },
-                    textButton: 'الغاء',
-                    // width: double.infinity,
-                    width: MediaQuery.of(context).size.width * 0.4,
-                  ),
+                  CancelButton(),
 
-                  // SizedBox(width: 20),
                   CustemElevatedbuttonWidgets(
                     textButton: 'تأكيد والمتابعة',
-                    width: MediaQuery.of(context).size.width * 0.4,
+                    width: 150,
                     onPressed: () {
                       // نجهز الـ args مع بيانات الطفل
                       final args = AnalysisArgs(
@@ -75,7 +65,7 @@ class DisplayImageScreen extends StatelessWidget {
                       );
 
                       // نستخدم GoRouter بدل Navigator
-                      context.push('/analysisDrawing', extra: args);
+                      context.pushReplacement('/analysisDrawing', extra: args);
                     },
                   ),
                 ],

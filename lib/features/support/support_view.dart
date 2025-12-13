@@ -4,7 +4,6 @@ import 'package:moftahak/core/constants/app_colors.dart';
 import 'package:moftahak/core/constants/app_strings.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/constants/navigation.dart';
-import 'package:moftahak/core/widgets/corner_decoration.dart';
 
 class SupportView extends StatelessWidget {
   const SupportView({super.key});
@@ -40,7 +39,7 @@ class SupportView extends StatelessWidget {
                   Text(
                     AppStrings.supportEmail,
                     style: AppTextStyles.almarai700style20.copyWith(
-                      color: AppColors.textColor,
+                      color: AppColors.kPrimaryPurple,
                     ),
                     textAlign: TextAlign.center,
                   ),

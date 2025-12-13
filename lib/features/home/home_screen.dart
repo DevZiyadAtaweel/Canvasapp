@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moftahak/core/constants/app_colors.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
 
 import 'package:moftahak/core/constants/navigation.dart';
@@ -49,6 +50,7 @@ class HomeScreen extends StatelessWidget {
                 final children = state.children;
                 final selectedChildId = state.selectedChildId;
                 final lastDrawings = state.lastDrawings;
+                final isDrawingsLoading = state.isDrawingsLoading;
 
                 return ListView(
                   children: [
@@ -132,7 +134,7 @@ class HomeScreen extends StatelessWidget {
                             ],
                           ),
 
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 10),
 
                           // 🔥 Scrollable Row
                           if (children.isEmpty)
@@ -173,9 +175,6 @@ class HomeScreen extends StatelessWidget {
                                         context.read<HomeCubit>().selectChild(
                                           child.id,
                                         );
-
-                                        // لو بدك تروح لصفحة تفاصيل الطفل:
-                                        // customNavigatePush(context, '/childDetails/${child.id}');
                                       },
                                       child: Container(
                                         margin: const EdgeInsets.symmetric(
@@ -188,12 +187,9 @@ class HomeScreen extends StatelessWidget {
                                         decoration: BoxDecoration(
                                           color: isSelected
                                               ? const Color(0xFF8A3FFC)
-                                              : Colors.white,
+                                              : AppColors.textField,
                                           borderRadius: BorderRadius.circular(
                                             20,
-                                          ),
-                                          border: Border.all(
-                                            color: const Color(0xFF8A3FFC),
                                           ),
                                         ),
                                         child: Text(
@@ -201,7 +197,7 @@ class HomeScreen extends StatelessWidget {
                                           style: TextStyle(
                                             color: isSelected
                                                 ? Colors.white
-                                                : const Color(0xFF8A3FFC),
+                                                : AppColors.inactiveColor,
                                             fontSize: 16,
                                             fontWeight: FontWeight.w600,
                                           ),
@@ -226,11 +222,20 @@ class HomeScreen extends StatelessWidget {
                           style: AppTextStyles.almarai500style16,
                         ),
                       )
+                    else if (isDrawingsLoading)
+                      const Center(
+                        child: Column(
+                          children: [
+                            SizedBox(height: 100),
+                            CircularProgressIndicator(),
+                          ],
+                        ),
+                      )
                     else if (lastDrawings.isEmpty)
                       Center(
                         child: Column(
                           children: [
-                            SizedBox(height: 20),
+                            SizedBox(height: 100),
                             Text(
                               'لا توجد رسومات بعد لهذا الطفل',
                               style: AppTextStyles.almarai500style16,
@@ -253,14 +258,24 @@ class HomeScreen extends StatelessWidget {
                                   const SizedBox(width: 6),
                               itemBuilder: (context, index) {
                                 final drawing = lastDrawings[index];
-
                                 return ClipRRect(
                                   borderRadius: BorderRadius.circular(8),
                                   child: AspectRatio(
                                     aspectRatio: 4 / 5,
-                                    child: Image.network(
-                                      drawing.drawingUrl,
-                                      fit: BoxFit.cover,
+                                    child: Card(
+                                      color: AppColors.kPrimaryPurple
+                                          .withOpacity(0.1),
+                                      margin: EdgeInsets.all(10),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      elevation: 30,
+                                      shadowColor: AppColors.kPrimaryPurple
+                                          .withOpacity(0.4),
+                                      child: Image.network(
+                                        drawing.drawingUrl,
+                                        fit: BoxFit.cover,
+                                      ),
                                     ),
                                   ),
                                 );

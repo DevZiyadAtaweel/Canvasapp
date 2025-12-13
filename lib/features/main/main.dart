@@ -7,14 +7,20 @@ import 'package:moftahak/features/main/widgets/nav_item.dart';
 import 'package:moftahak/features/settings/settings_view.dart';
 
 class Main extends StatefulWidget {
-  const Main({super.key});
+  const Main({super.key, this.initialIndex = 0});
+  final int initialIndex;
 
   @override
   State<Main> createState() => _MainState();
 }
 
 class _MainState extends State<Main> {
-  int _selectedIndex = 0;
+  late int _selectedIndex;
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialIndex;
+  }
 
   late final List<Widget> _pages = [
     HomeScreen(onGoToAddChild: () => _onNavItemTapped(1)),
@@ -95,7 +101,7 @@ class _MainState extends State<Main> {
                                     ),
                                   ],
                                 ),
-                                label: 'اضافة طفل',
+                                label: 'اضافة ابن جديد',
                                 isActive: _selectedIndex == 1,
                                 onTap: () => _onNavItemTapped(1),
                               ),

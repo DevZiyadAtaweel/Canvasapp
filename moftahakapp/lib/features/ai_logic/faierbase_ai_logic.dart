@@ -2,7 +2,6 @@ import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
-
 class LogicAi extends StatefulWidget {
   const LogicAi({super.key});
 
@@ -11,11 +10,11 @@ class LogicAi extends StatefulWidget {
 }
 
 class _LogicAiState extends State<LogicAi> {
-
   // 1. تعريف جميع متغيرات الحالة
   final ImagePicker _picker = ImagePicker();
-  final GenerativeModel _geminiModel =
-  FirebaseAI.googleAI().generativeModel(model: 'gemini-2.5-flash');
+  final GenerativeModel _geminiModel = FirebaseAI.googleAI().generativeModel(
+    model: 'gemini-2.5-flash',
+  );
 
   List<XFile>? _mediaFileList;
   dynamic _pickImageError;
@@ -32,7 +31,7 @@ class _LogicAiState extends State<LogicAi> {
     }
 
     final selectedImage = _mediaFileList!.first;
-    const myPrompt ='';
+    const myPrompt = '';
     setState(() {
       _isLoading = true;
       _generatedTextResult = 'جاري تحليل الصورة...';
@@ -49,7 +48,6 @@ class _LogicAiState extends State<LogicAi> {
       _generatedTextResult = generatedText;
     });
   }
-
 
   // 3. دالة build (نظيفة ومرتبة)
   @override
@@ -81,7 +79,9 @@ class _LogicAiState extends State<LogicAi> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                _generatedTextResult.isEmpty ? 'النتيجة ستظهر هنا.' : _generatedTextResult,
+                _generatedTextResult.isEmpty
+                    ? 'النتيجة ستظهر هنا.'
+                    : _generatedTextResult,
                 style: const TextStyle(fontSize: 18),
               ),
             ),
@@ -93,5 +93,9 @@ class _LogicAiState extends State<LogicAi> {
     );
   }
 
-  Future generateContentFromImage({required XFile imageFile, required String textPrompt, required GenerativeModel model}) async {}
+  Future generateContentFromImage({
+    required XFile imageFile,
+    required String textPrompt,
+    required GenerativeModel model,
+  }) async {}
 }

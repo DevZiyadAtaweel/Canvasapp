@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/constants/navigation.dart';
+import 'package:moftahak/core/widgets/cancel_button.dart';
 import 'package:moftahak/core/widgets/custem_elevatedButton_widgets.dart';
 import 'package:moftahak/features/add%20child/cubit/add_child_cubit.dart';
 import 'package:moftahak/features/add%20child/widgets/add_date.dart';
@@ -254,26 +255,7 @@ class _AddChildViewState extends State<AddChildView> {
                         ),
 
                         SizedBox(width: 46),
-                        SizedBox(
-                          width: 150,
-                          height: 55,
-                          child: OutlinedButton(
-                            onPressed: () => customNavigatePop(context),
-                            style: OutlinedButton.styleFrom(
-                              side: const BorderSide(
-                                color: Colors.grey,
-                                width: 2,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                            ),
-                            child: Text(
-                              "إلغاء",
-                              style: AppTextStyles.almarai700style20,
-                            ),
-                          ),
-                        ),
+                        CancelButton(),
                       ],
                     ),
                     SizedBox(height: 100),

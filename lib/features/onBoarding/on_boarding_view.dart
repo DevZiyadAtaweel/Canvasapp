@@ -111,7 +111,6 @@ class _OnBoardingViewState extends State<OnBoardingView> {
 
                 effect: WormEffect(
                   dotColor: Colors.white.withOpacity(0.6),
-                  activeDotColor: AppColors.green,
                   dotHeight: 12,
                   dotWidth: 12,
                 ),
@@ -137,8 +136,8 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                     height: 48,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: AppColors.green,
                       borderRadius: BorderRadius.circular(12),
+                      color: AppColors.kPrimaryPurple,
                     ),
                     child: Text(
                       currentPage == images.length - 1 ? "ابدأ" : "التالي",

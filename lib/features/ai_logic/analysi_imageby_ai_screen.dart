@@ -3,9 +3,11 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:typed_data';
 import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:moftahak/core/constants/navigation.dart';
 import 'package:moftahak/features/child_details/cubit/child_details_cubit.dart';
 import 'dart:convert';
 
@@ -61,13 +63,16 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
     // 🔥 تحسين: استخدام final أو const بدلاً من التكرار
     final apiKey = dotenv.env['API_KEY'] ?? '';
     final model = GenerativeModel(model: "gemini-2.5-flash", apiKey: apiKey);
-    //TODO: child."""'"
     final child = widget.child;
+<<<<<<< HEAD
     final String childName = child.name;
     final DateTime childbirthDate = child.birthDate;
     final String childhealthStatus = child.healthStatus;
     final String childgender = child.gender;
     final age = context.read<ChildDetailsCubit>().calculateAge(child.birthDate);
+=======
+    context.read<ChildDetailsCubit>().calculateAge(child.birthDate);
+>>>>>>> e8e794064bc9b3533a5e9471ab05b09de30962fa
     // Prompt المُحسَّن الذي يطلب إخراج JSON باللغة العربية
     final promptText =
         ("""
@@ -114,6 +119,11 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
 
 """);
 
+<<<<<<< HEAD
+=======
+    final prompt = TextPart(promptText);
+
+>>>>>>> e8e794064bc9b3533a5e9471ab05b09de30962fa
     try {
       final response = await model.generateContent(
         [
@@ -196,9 +206,15 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
               title: const Text("تحليل الصورة"),
               centerTitle: true,
               elevation: 0,
+              automaticallyImplyLeading: false,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () {
+                  navigateToDrawingWithNavBar(context);
+                },
+              ),
             ),
 
-            // 👈 هنا ربطنا الشاشة مع AddDrawingCubit
             body: BlocConsumer<AddDrawingCubit, AddDrawingState>(
               listener: (context, state) {
                 if (state is AddDrawingSuccess) {
@@ -311,7 +327,7 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.kPrimaryPurple,
+        color: AppColors.textField,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -344,7 +360,6 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
   }
 }
 
-// 🔥 تحسين: تبسيط الدالة لتكون أكثر نظافة
 Future<Uint8List?> pickImage({required ImageSource source}) async {
   final picker = ImagePicker();
   final XFile? file = await picker.pickImage(source: source);

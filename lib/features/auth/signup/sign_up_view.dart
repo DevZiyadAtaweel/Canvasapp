@@ -217,7 +217,7 @@ class SignUpView extends StatelessWidget {
                                               .copyWith(
                                                 fontSize: 13,
                                                 fontWeight: FontWeight.w700,
-                                                color: AppColors.green,
+                                                color: AppColors.primaryColor,
                                               ),
                                         ),
                                       ),
@@ -311,7 +311,7 @@ class SignUpView extends StatelessWidget {
                 );
               },
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.green,
+          backgroundColor: AppColors.primaryColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),

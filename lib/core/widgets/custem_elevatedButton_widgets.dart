@@ -45,7 +45,8 @@ class CustemElevatedbuttonWidgets extends StatefulWidget {
     required this.width,
     required this.onPressed,
     this.icon,
-     bool? isLoading, this.styly,
+    bool? isLoading,
+    this.styly,
     // <<<<< HEAD:lib/view/widgets/custem_elevatedButton_widgets.dart
     // =======
     // >>>>>>> 8c98d7b106ddb0927500bed0785b77d66099d337:lib/core/widgets/custem_elevatedButton_widgets.dart
@@ -72,7 +73,7 @@ class _CustemElevatedbuttonWidgetsState
       child: ElevatedButton(
         onPressed: widget.onPressed,
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.kPrimaryPurple,
           foregroundColor: Colors.white,
           elevation: 5,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
@@ -83,7 +84,7 @@ class _CustemElevatedbuttonWidgetsState
             ? Text(
                 widget.textButton,
                 style: AppTextStyles.almarai700style20.copyWith(
-                  fontSize: 20,
+                  fontSize: 19,
                   color: Colors.white,
                 ),
               )
@@ -91,9 +92,12 @@ class _CustemElevatedbuttonWidgetsState
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   widget.icon!,
+                  const SizedBox(width: 8),
                   Text(
                     widget.textButton,
-                    style: AppTextStyles.almarai700style20.copyWith(color: Colors.white),
+                    style: AppTextStyles.almarai700style20.copyWith(
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               ),

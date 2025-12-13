@@ -57,40 +57,29 @@ class HomeCubit extends Cubit<HomeState> {
         .collection('children')
         .orderBy('name')
         .snapshots()
-        .listen(
-          (snapshot) {
-            _children = snapshot.docs
-                .map((doc) => ChildModel.fromMap(doc.id, doc.data()))
-                .toList();
-            if (_children.isNotEmpty && _selectedChildId == null) {
-              _selectedChildId = _children.first.id;
-            } else if (_children.isEmpty) {
-              _selectedChildId = null;
-              _lastDrawings = [];
-            }
-            _emitSuccess();
-            if (_selectedChildId != null) {
-              _loadLastDrawingsForSelectedChild();
-            }
-          },
-          onError: (error) {
-            print("فشل في جلب بيانات الأطفال: $error");
+        .listen((snapshot) async {
+          _children = snapshot.docs
+              .map((doc) => ChildModel.fromMap(doc.id, doc.data()))
+              .toList();
 
-            if (_currentUser != null) {
-              emit(
-                HomeSuccess(
-                  user: _currentUser!,
-                  children: _children,
-                  selectedChildId: _selectedChildId,
-                  lastDrawings: _lastDrawings,
-                ),
-              );
-            }
-          },
-        );
+          if (_children.isNotEmpty && _selectedChildId == null) {
+            _selectedChildId = _children.first.id;
+          } else if (_children.isEmpty) {
+            _selectedChildId = null;
+            _lastDrawings = [];
+            _emitSuccess(isDrawingsLoading: false);
+            return;
+          }
+
+          // ✅ اعرض الهوم مباشرة مع الأطفال + (رسومات قيد التحميل)
+          _emitSuccess(isDrawingsLoading: true);
+
+          // ✅ بعدها حمّل الرسومات
+          await _loadLastDrawingsForSelectedChild();
+        });
   }
 
-  void _emitSuccess() {
+  void _emitSuccess({bool? isDrawingsLoading}) {
     if (_currentUser == null) return;
     emit(
       HomeSuccess(
@@ -98,13 +87,13 @@ class HomeCubit extends Cubit<HomeState> {
         children: _children,
         selectedChildId: _selectedChildId,
         lastDrawings: _lastDrawings,
+        isDrawingsLoading: isDrawingsLoading ?? false,
       ),
     );
   }
 
   Future<void> selectChild(String childId) async {
     _selectedChildId = childId;
-    _emitSuccess();
     await _loadLastDrawingsForSelectedChild();
   }
 
@@ -129,9 +118,12 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> _loadLastDrawingsForSelectedChild() async {
     if (_auth.currentUser == null || _selectedChildId == null) {
       _lastDrawings = [];
-      _emitSuccess();
+      _emitSuccess(isDrawingsLoading: false);
       return;
     }
+
+    // ✅ أول ما نبدأ تحميل الرسومات
+    _emitSuccess(isDrawingsLoading: true);
 
     try {
       final uid = _auth.currentUser!.uid;
@@ -150,10 +142,12 @@ class HomeCubit extends Cubit<HomeState> {
           .map((doc) => AllDrawingsModel.fromDoc(doc.id, doc.data()))
           .toList();
 
-      _emitSuccess();
+      // ✅ خلّصنا تحميل
+      _emitSuccess(isDrawingsLoading: false);
     } catch (e) {
       print('Error loading last drawings: $e');
-      // هنا ممكن تتركها بدون emit Error حتى ما تكسر الهوم
+      // حتى لو صار خطأ، اعتبر التحميل انتهى
+      _emitSuccess(isDrawingsLoading: false);
     }
   }
 

@@ -15,66 +15,78 @@ class ChildAnalysisDetails extends StatelessWidget {
         appBar: AppBar(title: const Text('تفاصيل الرسمة')),
         body: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-          child: Card(
-            //TODO change the color
-            //  color: Color(0xFFe6dcf5),
-            color: Colors.transparent,
-            shadowColor: Colors.transparent,
-            elevation: 0,
-            margin: const EdgeInsets.only(bottom: 30),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: Image.network(
-                      drawing.drawingUrl,
-                      height: 290,
-                      width: double.infinity,
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-
-                  Text(
-                    'التقييم الأولي:',
-                    style: AppTextStyles.almarai700style20.copyWith(
-                      color: AppColors.primaryColor,
-                      fontSize: 22,
-                    ),
-                  ),
-                  Text(
-                    drawing.emotion ?? 'غير متوفر',
-                    style: AppTextStyles.almarai700style20.copyWith(
-                      height: 1.4,
-                      fontSize: 16,
-                    ),
-                  ),
-
-                  const SizedBox(height: 8),
-                  Text(
-                    'تقرير مفصّل:',
-                    style: AppTextStyles.almarai700style20.copyWith(
-                      color: AppColors.primaryColor,
-                      fontSize: 22,
-                    ),
-                  ),
-                  Text(
-                    drawing.description ?? 'غير متوفر',
-                    style: AppTextStyles.almarai700style20.copyWith(
-                      height: 1.4,
-                      fontSize: 16,
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                ],
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Image.network(
+                drawing.drawingUrl,
+                height: 290,
+                width: double.infinity,
+                fit: BoxFit.contain,
               ),
-            ),
+
+              const SizedBox(height: 16),
+
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: AppColors.textField,
+                ),
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'التقييم الأولي:',
+                      style: AppTextStyles.almarai700style20.copyWith(
+                        color: AppColors.primaryColor,
+                        fontSize: 22,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      drawing.emotion ?? 'غير متوفر',
+                      style: AppTextStyles.almarai700style20.copyWith(
+                        height: 1.4,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                  color: AppColors.textField,
+                ),
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'تقرير مفصّل:',
+                      style: AppTextStyles.almarai700style20.copyWith(
+                        color: AppColors.primaryColor,
+                        fontSize: 22,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    Text(
+                      drawing.description ?? 'غير متوفر',
+                      style: AppTextStyles.almarai700style20.copyWith(
+                        height: 1.4,
+                        fontSize: 16,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 24),
+            ],
           ),
         ),
       ),

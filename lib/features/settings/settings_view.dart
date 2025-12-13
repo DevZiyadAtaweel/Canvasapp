@@ -265,7 +265,6 @@ class _SettingsCard extends StatelessWidget {
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
-            //TODO change the color
             color: AppColors.textField,
             borderRadius: BorderRadius.circular(16),
           ),

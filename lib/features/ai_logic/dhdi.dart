@@ -162,7 +162,8 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
     return Directionality(
       textDirection: TextDirection.ltr,
       child: Stack(
-          children:[ Scaffold(
+        children: [
+          Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
               title: const Text("تحليل الصورة"),
@@ -187,86 +188,85 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
                 final isSaving = state is AddDrawingLoading;
 
                 return SingleChildScrollView(
-                    padding: const EdgeInsets.all(16),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 7),
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 7),
 
-                          // عرض الصورة
-                          ClipRRect(
-                            borderRadius: BorderRadius.circular(14),
-                            child: Image.memory(
-                              widget.imageBytes,
-                              height: 320,
-                              width: double.infinity,
-                              fit: BoxFit.contain,
-                            ),
+                      // عرض الصورة
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(14),
+                        child: Image.memory(
+                          widget.imageBytes,
+                          height: 320,
+                          width: double.infinity,
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+
+                      // زر "بدء التحليل" (AI فقط)
+                      const SizedBox(height: 12),
+
+                      // 🔥 زر حفظ الرسمة في Supabase + Firestore عبر الكيوبت
+                      if (_analysis != null) // الشرط الجديد هنا
+                        SizedBox(
+                          width: double.infinity,
+                          // استخدام الكلاس المخصص بدلاً من ElevatedButton
+                          child: CustemElevatedbuttonWidgets(
+                            textButton: "حفظ الرسمة", // النص المطلوب عرضه
+                            width: double
+                                .infinity, // لنقل قيمة العرض إلى الـ Widget المخصص
+                            isLoading: isSaving, // تمرير حالة التحميل isSaving
+                            onPressed: isSaving
+                                ? null
+                                : () {
+                                    context.read<AddDrawingCubit>().addDrawing(
+                                      drawingFile: drawingFile,
+                                      childId: widget.childId,
+                                      analysis: _analysis,
+                                    );
+
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text('جارٍ حفظ الرسمة...'),
+                                      ),
+                                    );
+                                  },
+                            // تم إزالة خصائص style و child المكررة لأنها أصبحت داخل الكلاس المخصص
                           ),
+                        ),
 
+                      const SizedBox(height: 20),
 
-                          // زر "بدء التحليل" (AI فقط)
+                      // عرض النتائج المُنظمة من الـ AI
+                      if (_analysis != null) ...[
+                        _buildResultCard(
+                          "التقييم الأولي المهني",
+                          _analysis!["emotion"],
+                          maxLines: 5,
+                        ),
+                        _buildResultCard(
+                          "تقرير التحليل المفصّل",
+                          _analysis!["description"],
+                          maxLines: 50,
+                        ),
+                      ],
 
-                          const SizedBox(height: 12),
-
-                          // 🔥 زر حفظ الرسمة في Supabase + Firestore عبر الكيوبت
-                          if (_analysis != null) // الشرط الجديد هنا
-                            SizedBox(
-                              width: double.infinity,
-                              // استخدام الكلاس المخصص بدلاً من ElevatedButton
-                              child: CustemElevatedbuttonWidgets(
-                                textButton: "حفظ الرسمة", // النص المطلوب عرضه
-                                width: double.infinity, // لنقل قيمة العرض إلى الـ Widget المخصص
-                                isLoading: isSaving,    // تمرير حالة التحميل isSaving
-                                onPressed: isSaving
-                                    ? null
-                                    : () {
-                                  context.read<AddDrawingCubit>().addDrawing(
-                                    drawingFile: drawingFile,
-                                    childId: widget.childId,
-                                    analysis: _analysis,
-                                  );
-
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content: Text('جارٍ حفظ الرسمة...'),
-                                    ),
-                                  );
-                                },
-                                // تم إزالة خصائص style و child المكررة لأنها أصبحت داخل الكلاس المخصص
-                              ),
-                            ),
-
-                          const SizedBox(height: 20),
-
-                          // عرض النتائج المُنظمة من الـ AI
-                          if (_analysis != null) ...[
-                            _buildResultCard(
-                              "التقييم الأولي المهني",
-                              _analysis!["emotion"],
-                              maxLines: 5,
-                            ),
-                            _buildResultCard(
-                              "تقرير التحليل المفصّل",
-                              _analysis!["description"],
-                              maxLines: 50,
-                            ),
-                          ],
-
-                          // عرض النص الخام عند الخطأ
-                          if (!_isLoading && _analysis == null && _rawText != null)
-                            Text(
-                              "حدث خطأ في قراءة JSON أو API. النص الخام:\n$_rawText",
-                              style: const TextStyle(color: Colors.redAccent),
-                              textDirection: TextDirection.rtl,
-                            ),
-                        ]
-                    )
+                      // عرض النص الخام عند الخطأ
+                      if (!_isLoading && _analysis == null && _rawText != null)
+                        Text(
+                          "حدث خطأ في قراءة JSON أو API. النص الخام:\n$_rawText",
+                          style: const TextStyle(color: Colors.redAccent),
+                          textDirection: TextDirection.rtl,
+                        ),
+                    ],
+                  ),
                 );
               },
             ),
           ),
-          ]
+        ],
       ),
     );
   }
@@ -278,7 +278,7 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
       margin: const EdgeInsets.only(bottom: 14),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: AppColors.kPrimaryPurple,
+        color: AppColors.textField,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -317,4 +317,3 @@ Future<Uint8List?> pickImage({required ImageSource source}) async {
   final XFile? file = await await picker.pickImage(source: source);
   return file?.readAsBytes(); // استخدام Safe Call (?. )
 }
-

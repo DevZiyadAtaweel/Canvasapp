@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:moftahak/core/constants/app_colors.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
 
 class NavItem extends StatelessWidget {
@@ -17,9 +18,6 @@ class NavItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color activeColor = const Color(0xFF8A3FFC);
-    final Color inactiveColor = Colors.grey.shade500;
-
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(16),
@@ -31,7 +29,9 @@ class NavItem extends StatelessWidget {
             IconTheme(
               data: IconThemeData(
                 size: 26,
-                color: isActive ? activeColor : inactiveColor,
+                color: isActive
+                    ? AppColors.kPrimaryPurple
+                    : AppColors.inactiveColor,
               ),
               child: icon,
             ),
@@ -41,7 +41,9 @@ class NavItem extends StatelessWidget {
             Text(
               label,
               style: AppTextStyles.almarai500style16.copyWith(
-                color: isActive ? activeColor : inactiveColor,
+                color: isActive
+                    ? AppColors.kPrimaryPurple
+                    : AppColors.inactiveColor,
                 fontSize: 10,
               ),
             ),

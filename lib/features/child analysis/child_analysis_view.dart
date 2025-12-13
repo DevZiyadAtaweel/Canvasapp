@@ -38,10 +38,7 @@ class _ChildAnalysisScreenState extends State<ChildAnalysisScreen> {
     return Directionality(
       textDirection: TextDirection.rtl,
       child: Scaffold(
-        appBar: AppBar(
-          title: const Text('تحليلات الرسومات'),
-          centerTitle: true,
-        ),
+        appBar: AppBar(title: const Text('تحليل الرسمات'), centerTitle: true),
         body: BlocConsumer<HomeCubit, HomeState>(
           listener: (context, homeState) {
             if (homeState is HomeSuccess && homeState.selectedChildId != null) {
@@ -122,7 +119,7 @@ class _ChildAnalysisScreenState extends State<ChildAnalysisScreen> {
                               final drawing = state.drawings[index];
 
                               return Card(
-                                color: const Color(0xFFe6dcf5),
+                                color: AppColors.textField,
                                 shadowColor: Colors.transparent,
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
@@ -167,7 +164,7 @@ class _ChildAnalysisScreenState extends State<ChildAnalysisScreen> {
                                         child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor:
-                                                AppColors.primaryColor,
+                                                AppColors.kPrimaryPurple,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(8),

@@ -15,7 +15,9 @@ class FirebaseStorageService {
   }) async {
     // 1. رفع الصورة إلى Storage
     String fileName = '${DateTime.now().millisecondsSinceEpoch}_drawing.jpg';
-    Reference storageRef = _storage.ref().child('child_drawings/$childId/$fileName');
+    Reference storageRef = _storage.ref().child(
+      'child_drawings/$childId/$fileName',
+    );
 
     UploadTask uploadTask = storageRef.putData(
       imageBytes,

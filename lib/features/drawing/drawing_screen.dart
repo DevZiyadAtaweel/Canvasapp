@@ -2,13 +2,14 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/widgets/children_dropdown.dart';
+import 'package:moftahak/features/ai_logic/analysis_arg.dart';
 
 import '../../core/constants/app_colors.dart';
 import '../../core/widgets/custem_elevatedButton_widgets.dart';
-import '../ai_logic/display_image.dart';
 import '../home/cubit/home_cubit.dart';
 
 class DrawingScreen extends StatefulWidget {
@@ -48,20 +49,18 @@ class _DrawingScreenState extends State<DrawingScreen> {
       final String childId = homeState.selectedChildId!;
 
       // 🆕 3.1 نجيب كائن الطفل نفسه من قائمة الأطفال
-      final selectedChild = (homeState as HomeSuccess).children.firstWhere(
+      final selectedChild = (homeState).children.firstWhere(
         (c) => c.id == childId,
       );
 
       // 4) ننتقل لصفحة عرض الصورة، ونمرر الصورة + childId + ملف الصورة + بيانات الطفل
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => DisplayImageScreen(
-            imageBytes: bytes,
-            imageFilePath: file.path, // 👈 مهم لرفعها لاحقًا كـ File
-            childId: childId,
-            child: selectedChild, // 🆕 تمرير بيانات الطفل
-          ),
+      context.push(
+        '/displayImage',
+        extra: AnalysisArgs(
+          imageBytes: bytes,
+          imageFilePath: file.path,
+          childId: childId,
+          child: selectedChild,
         ),
       );
     } catch (e) {
@@ -113,117 +112,116 @@ class _DrawingScreenState extends State<DrawingScreen> {
                 }
               }
 
-              return SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Center(
-                      child: SizedBox(width: 120, child: ChildrenDropdown()),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // عرض اسم المستخدم
-                    if (firstName.isNotEmpty)
-                      Text(
-                        'أهلًا، $firstName 👋',
-                        style: AppTextStyles.almarai700style20,
-                        textAlign: TextAlign.right,
+              return Directionality(
+                textDirection: TextDirection.rtl,
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: SizedBox(width: 120, child: ChildrenDropdown()),
                       ),
+                      const SizedBox(height: 16),
 
-                    const SizedBox(height: 8),
-
-                    // عرض اسم الطفل المختار إن وجد
-                    if (selectedChildName != null)
-                      Text(
-                        'الفنان اليوم: $selectedChildName',
-                        style: AppTextStyles.almarai700style20,
-
-                        textAlign: TextAlign.right,
-                      )
-                    else
-                      Text(
-                        'الرجاء اختيار طفل لبدء الرسم',
-                        style: AppTextStyles.almarai500style16.copyWith(
-                          color: AppColors.primaryColor,
+                      // عرض اسم المستخدم
+                      if (firstName.isNotEmpty)
+                        Text(
+                          'أهلًا، $firstName 👋',
+                          style: AppTextStyles.almarai700style20,
+                          textAlign: TextAlign.right,
                         ),
-                        textAlign: TextAlign.right,
-                      ),
 
-                    const SizedBox(height: 50),
+                      const SizedBox(height: 8),
 
-                    // أزرار اختيار الصورة
+                      // عرض اسم الطفل المختار إن وجد
+                      if (selectedChildName != null)
+                        Text(
+                          'الفنان اليوم: $selectedChildName',
+                          style: AppTextStyles.almarai700style20,
 
-                    // صندوق التعليمات
-                    Container(
-                      padding: const EdgeInsets.all(20.0),
-                      decoration: BoxDecoration(
-                        color: Color(0xffe6dcf5),
-                        // لون البطاقة الأساسي أبيض (لكنها محاطة بظل بنفسجي)
-                        borderRadius: BorderRadius.circular(15),
-                        boxShadow: [
-                          BoxShadow(
-                            color: AppColors.kPrimaryPurple.withOpacity(0.22),
-                            blurRadius: 20,
-                            offset: const Offset(0, 1), // ظل سفلي
+                          textAlign: TextAlign.right,
+                        )
+                      else
+                        Text(
+                          'الرجاء اختيار طفل لبدء الرسم',
+                          style: AppTextStyles.almarai500style16.copyWith(
+                            color: AppColors.primaryColor,
                           ),
-                        ],
-                        border: Border.all(
-                          color: AppColors.kPrimaryPurple,
-                          width: 1,
+                          textAlign: TextAlign.right,
+                        ),
+
+                      const SizedBox(height: 50),
+
+                      // أزرار اختيار الصورة
+
+                      // صندوق التعليمات
+                      Container(
+                        padding: const EdgeInsets.all(20.0),
+                        decoration: BoxDecoration(
+                          color: Color(0xffe6dcf5),
+                          borderRadius: BorderRadius.circular(15),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.kPrimaryPurple.withOpacity(0.2),
+                              blurRadius: 20,
+                              offset: const Offset(0, 1), // ظل سفلي
+                            ),
+                          ],
+                          border: Border.all(
+                            color: AppColors.textField,
+                            width: 1,
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            // العنوان
+                            Text(
+                              'تأكد من الآتي قبل التقاط الصورة',
+                              textAlign: TextAlign.center,
+                              style: AppTextStyles.almarai700style20.copyWith(
+                                color: Colors.black,
+                              ),
+                            ),
+
+                            const SizedBox(height: 15),
+                            Divider(color: AppColors.kPrimaryPurple, height: 1),
+                            const SizedBox(height: 15),
+
+                            // قائمة الخيارات (List Tiles)
+                            TextContainer('تأكد من وضوح التصوير'),
+                            TextContainer('تأكد من عدم وجود ظلال'),
+                            TextContainer('تأكد من ثبات الكاميرا عند التصوير'),
+                            TextContainer('تأكد من وضوح التصوير'),
+                          ],
                         ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          // العنوان
-                          Text(
-                            'تأكد من الآتي قبل التقاط الصورة',
-                            textAlign: TextAlign.center,
-                            style: AppTextStyles.almarai700style20.copyWith(
-                              color: Colors.black,
+                      const SizedBox(height: 60),
+                      Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CustemElevatedbuttonWidgets(
+                              onPressed: () => pickImage(ImageSource.gallery),
+                              textButton: 'إرفاق صورة',
+                              width: double.infinity,
+                              icon: const Icon(Icons.upload, size: 22),
                             ),
-                          ),
-
-                          const SizedBox(height: 15),
-                          Divider(
-                            color: AppColors.kPrimaryDarkPurple,
-                            height: 1,
-                          ),
-                          const SizedBox(height: 15),
-
-                          // قائمة الخيارات (List Tiles)
-                          TextContainer('تأكد من وضوح التصوير'),
-                          TextContainer('تأكد من عدم وجود ظلال'),
-                          TextContainer('تأكد من ثبات الكاميرا عند التصوير'),
-                          TextContainer('تأكد من وضوح التصوير'),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 60),
-                    Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          CustemElevatedbuttonWidgets(
-                            onPressed: () => pickImage(ImageSource.gallery),
-                            textButton: 'إرفاق صورة',
-                            width: double.infinity,
-                            icon: const Icon(Icons.upload, size: 22),
-                          ),
-                          SizedBox(height: 24),
-                          CustemElevatedbuttonWidgets(
-                            onPressed: () => pickImage(ImageSource.camera),
-                            textButton: 'التقاط صورة',
-                            icon: const Icon(
-                              Icons.camera_alt_outlined,
-                              size: 22,
+                            SizedBox(height: 24),
+                            CustemElevatedbuttonWidgets(
+                              onPressed: () => pickImage(ImageSource.camera),
+                              textButton: 'التقاط صورة',
+                              icon: const Icon(
+                                Icons.camera_alt_outlined,
+                                size: 22,
+                              ),
+                              width: double.infinity,
                             ),
-                            width: double.infinity,
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
             }
@@ -240,12 +238,15 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
     return Row(
       // لجعل النص والأيقونة تبدأ من اليمين
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.start,
 
       // لضمان التعامل السليم مع النص العربي
-      textDirection: TextDirection.ltr,
+      textDirection: TextDirection.rtl,
 
       children: [
+        const Icon(Icons.check_circle, color: primaryPurple, size: 18),
+        const SizedBox(width: 5),
+
         // 1. النص (في البداية من اليمين)
         Text(
           text, // استخدام المتغير المُمرر للدالة
@@ -256,12 +257,6 @@ class _DrawingScreenState extends State<DrawingScreen> {
 
           textDirection: TextDirection.rtl,
         ),
-
-        // مسافة فاصلة صغيرة
-        const SizedBox(width: 5),
-
-        // 2. الأيقونة (تأتي بعد النص من اليمين)
-        const Icon(Icons.check_circle, color: primaryPurple, size: 18),
       ],
     );
   }

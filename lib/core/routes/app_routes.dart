@@ -5,6 +5,7 @@ import 'package:moftahak/features/add%20child/add_child_view.dart';
 import 'package:moftahak/features/add%20child/cubit/add_child_cubit.dart';
 import 'package:moftahak/features/ai_logic/analysi_imageby_ai_screen.dart';
 import 'package:moftahak/features/ai_logic/analysis_arg.dart';
+import 'package:moftahak/features/ai_logic/display_image.dart';
 import 'package:moftahak/features/auth/cubit/auth_cubit.dart';
 import 'package:moftahak/features/auth/login/login_view.dart';
 import 'package:moftahak/features/auth/signup/sign_up_view.dart';
@@ -85,6 +86,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/main',
       builder: (context, state) {
+        final index = state.extra as int? ?? 0;
+
         return MultiBlocProvider(
           providers: [
             BlocProvider<AuthCubit>(create: (_) => AuthCubit()),
@@ -96,7 +99,7 @@ final GoRouter appRouter = GoRouter(
               ),
             ),
           ],
-          child: const Main(),
+          child: Main(initialIndex: index),
         );
       },
     ),
@@ -121,6 +124,19 @@ final GoRouter appRouter = GoRouter(
             childId: args.childId,
             child: args.child, // 🆕 تمرير بيانات الطفل
           ),
+        );
+      },
+    ),
+    GoRoute(
+      path: '/displayImage',
+      builder: (context, state) {
+        final args = state.extra as AnalysisArgs;
+
+        return DisplayImageScreen(
+          imageBytes: args.imageBytes,
+          imageFilePath: args.imageFilePath,
+          childId: args.childId,
+          child: args.child,
         );
       },
     ),

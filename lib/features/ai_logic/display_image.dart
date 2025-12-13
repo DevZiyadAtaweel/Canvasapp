@@ -1,6 +1,9 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:moftahak/core/constants/app_text_styles.dart';
+import 'package:moftahak/core/constants/navigation.dart';
+import 'package:moftahak/core/widgets/cancel_button.dart';
 import 'package:moftahak/features/ai_logic/analysis_arg.dart';
 import 'package:moftahak/features/home/model/child_model.dart';
 import '../../core/widgets/custem_elevatedButton_widgets.dart';
@@ -44,22 +47,14 @@ class DisplayImageScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 
                 children: [
-                  CustemElevatedbuttonWidgets(
-                    onPressed: () {
-                      // بدل ما نفتح DrawingScreen من جديد، نرجع خطوة للخلف
-                      Navigator.pop(context);
-                    },
-                    textButton: 'الغاء',
-                    width: MediaQuery.of(context).size.width * 0.4,
-                  ),
+                  CancelButton(),
 
-                  // SizedBox(width: 20),
                   CustemElevatedbuttonWidgets(
                     textButton: 'تأكيد والمتابعة',
-                    width: MediaQuery.of(context).size.width * 0.4,
+                    width: 150,
                     onPressed: () {
                       // نجهز الـ args مع بيانات الطفل
                       final args = AnalysisArgs(
@@ -70,7 +65,7 @@ class DisplayImageScreen extends StatelessWidget {
                       );
 
                       // نستخدم GoRouter بدل Navigator
-                      context.push('/analysisDrawing', extra: args);
+                      context.pushReplacement('/analysisDrawing', extra: args);
                     },
                   ),
                 ],

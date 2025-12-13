@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 void customNavigatePush(context, String path) {
@@ -10,4 +11,8 @@ void customNavigatePushReplacement(context, String path) {
 
 void customNavigatePop(context) {
   GoRouter.of(context).pop();
+}
+
+void navigateToDrawingWithNavBar(BuildContext context) {
+  GoRouter.of(context).go('/main', extra: 2);
 }

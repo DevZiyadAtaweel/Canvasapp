@@ -141,7 +141,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                     ),
                     child: Text(
                       currentPage == images.length - 1 ? "ابدأ" : "التالي",
-                      style: AppTextStyles.lato600style20.copyWith(
+                      style: AppTextStyles.almarai600style20.copyWith(
                         color: Colors.white,
                       ),
                     ),
@@ -159,7 +159,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                   },
                   child: Text(
                     "تخطي",
-                    style: AppTextStyles.lato600style20.copyWith(
+                    style: AppTextStyles.almarai600style20.copyWith(
                       color: Colors.white,
                     ),
                   ),

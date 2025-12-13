@@ -37,7 +37,7 @@ class AuthTextFieldState extends State<AuthTextField> {
 
         // 👈 يفعّل إطار أحمر بدون نص
         filled: true,
-        fillColor: AppColors.lightGrey,
+        fillColor: AppColors.textField,
         hintText: widget.hint,
         hintStyle: const TextStyle(fontSize: 13, color: Colors.grey),
         contentPadding: const EdgeInsets.symmetric(

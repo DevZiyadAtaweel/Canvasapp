@@ -28,7 +28,7 @@ class SignUpView extends StatelessWidget {
       child: BlocProvider(
         create: (context) => AuthCubit(),
         child: Scaffold(
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: Colors.white,
           body: BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) {
               if (state is AuthSuccess) {
@@ -55,18 +55,18 @@ class SignUpView extends StatelessWidget {
                       children: [
                         Text(
                           'إنشاء حساب',
-                          style: AppTextStyles.lato600style20.copyWith(
+                          style: AppTextStyles.almarai600style20.copyWith(
                             fontSize: 32,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 12),
                         Text(
                           'سجل بياناتك للبدء باستخدام التطبيق',
                           textAlign: TextAlign.center,
-                          style: AppTextStyles.lato600style20.copyWith(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w400,
+                          style: AppTextStyles.almarai600style20.copyWith(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w100,
                           ),
                         ),
                       ],
@@ -200,7 +200,7 @@ class SignUpView extends StatelessWidget {
                                     children: [
                                       Text(
                                         "لديك حساب بالفعل؟ ",
-                                        style: AppTextStyles.lato600style20
+                                        style: AppTextStyles.almarai600style20
                                             .copyWith(
                                               fontSize: 13,
                                               fontWeight: FontWeight.w400,
@@ -213,7 +213,7 @@ class SignUpView extends StatelessWidget {
                                         ),
                                         child: Text(
                                           'تسجيل الدخول',
-                                          style: AppTextStyles.lato600style20
+                                          style: AppTextStyles.almarai600style20
                                               .copyWith(
                                                 fontSize: 13,
                                                 fontWeight: FontWeight.w700,
@@ -251,7 +251,7 @@ class SignUpView extends StatelessWidget {
       children: [
         Text(
           text,
-          style: AppTextStyles.lato600style20.copyWith(
+          style: AppTextStyles.almarai600style20.copyWith(
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
@@ -311,7 +311,7 @@ class SignUpView extends StatelessWidget {
                 );
               },
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.kPrimaryPurple,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -327,7 +327,7 @@ class SignUpView extends StatelessWidget {
               )
             : Text(
                 'إنشاء حساب',
-                style: AppTextStyles.lato600style20.copyWith(
+                style: AppTextStyles.almarai600style20.copyWith(
                   color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.w700,

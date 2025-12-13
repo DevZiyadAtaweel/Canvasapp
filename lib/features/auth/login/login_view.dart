@@ -26,7 +26,7 @@ class LoginView extends StatelessWidget {
       child: BlocProvider(
         create: (context) => AuthCubit(),
         child: Scaffold(
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: Colors.white,
           body: BlocConsumer<AuthCubit, AuthState>(
             listener: (context, state) {
               if (state is AuthSuccess) {
@@ -66,18 +66,18 @@ class LoginView extends StatelessWidget {
                       children: [
                         Text(
                           'تسجيل الدخول',
-                          style: AppTextStyles.lato600style20.copyWith(
+                          style: AppTextStyles.almarai600style20.copyWith(
                             fontSize: 32,
                             fontWeight: FontWeight.w700,
                           ),
                         ),
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 12),
                         Text(
                           'مرحبا بعودتك! يرجى تسجيل الدخول للمتابعة',
                           textAlign: TextAlign.center,
-                          style: AppTextStyles.lato600style20.copyWith(
-                            fontSize: 22,
-                            fontWeight: FontWeight.w400,
+                          style: AppTextStyles.almarai600style20.copyWith(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w100,
                           ),
                         ),
                       ],
@@ -156,7 +156,7 @@ class LoginView extends StatelessWidget {
                                     },
                                   ),
 
-                                  const SizedBox(height: 8),
+                                  const SizedBox(height: 5),
 
                                   // تذكّرني + نسيت كلمة المرور
                                   ValueListenableBuilder<bool>(
@@ -164,24 +164,6 @@ class LoginView extends StatelessWidget {
                                     builder: (context, isChecked, _) {
                                       return Row(
                                         children: [
-                                          Checkbox(
-                                            value: isChecked,
-                                            onChanged: (val) {
-                                              rememberMe.value = val ?? false;
-                                            },
-                                            activeColor: AppColors.primaryColor,
-                                            materialTapTargetSize:
-                                                MaterialTapTargetSize
-                                                    .shrinkWrap,
-                                          ),
-                                          Text(
-                                            'تذكّرني',
-                                            style: AppTextStyles.lato600style20
-                                                .copyWith(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                          ),
                                           const Spacer(),
                                           TextButton(
                                             onPressed: state is AuthLoading
@@ -221,7 +203,7 @@ class LoginView extends StatelessWidget {
                                             child: Text(
                                               'نسيت كلمة المرور؟',
                                               style: AppTextStyles
-                                                  .lato600style20
+                                                  .almarai600style20
                                                   .copyWith(
                                                     fontSize: 12,
                                                     color: Colors.redAccent,
@@ -233,7 +215,7 @@ class LoginView extends StatelessWidget {
                                     },
                                   ),
 
-                                  const SizedBox(height: 16),
+                                  const SizedBox(height: 5),
 
                                   // زر تسجيل الدخول
                                   _buildLoginButton(state, context),
@@ -246,7 +228,7 @@ class LoginView extends StatelessWidget {
                                     children: [
                                       Text(
                                         "ليس لديك حساب؟ ",
-                                        style: AppTextStyles.lato600style20
+                                        style: AppTextStyles.almarai600style20
                                             .copyWith(
                                               fontSize: 13,
                                               fontWeight: FontWeight.w400,
@@ -261,7 +243,7 @@ class LoginView extends StatelessWidget {
                                         },
                                         child: Text(
                                           'إنشاء حساب',
-                                          style: AppTextStyles.lato600style20
+                                          style: AppTextStyles.almarai600style20
                                               .copyWith(
                                                 fontSize: 13,
                                                 fontWeight: FontWeight.w700,
@@ -289,7 +271,7 @@ class LoginView extends StatelessWidget {
                                         ),
                                         child: Text(
                                           'أو',
-                                          style: AppTextStyles.lato600style20
+                                          style: AppTextStyles.almarai600style20
                                               .copyWith(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w400,
@@ -350,7 +332,7 @@ class LoginView extends StatelessWidget {
                                             Text(
                                               'تسجيل الدخول باستخدام جوجل',
                                               style: AppTextStyles
-                                                  .lato600style20
+                                                  .almarai600style20
                                                   .copyWith(
                                                     fontSize: 14,
                                                     fontWeight: FontWeight.w500,
@@ -387,7 +369,7 @@ class LoginView extends StatelessWidget {
       children: [
         Text(
           text,
-          style: AppTextStyles.lato600style20.copyWith(
+          style: AppTextStyles.almarai600style20.copyWith(
             fontSize: 14,
             fontWeight: FontWeight.w500,
           ),
@@ -435,7 +417,7 @@ class LoginView extends StatelessWidget {
                 );
               },
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primaryColor,
+          backgroundColor: AppColors.kPrimaryPurple,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(12),
           ),
@@ -451,7 +433,7 @@ class LoginView extends StatelessWidget {
               )
             : Text(
                 'تسجيل الدخول',
-                style: AppTextStyles.lato600style20.copyWith(
+                style: AppTextStyles.almarai600style20.copyWith(
                   color: Colors.white,
                   fontSize: 16,
                   fontWeight: FontWeight.w700,

@@ -53,6 +53,7 @@ dependencies:
   shared_preferences: ^2.5.3
   smooth_page_indicator: ^1.2.1
   supabase_flutter: ^2.10.3
+  flutter_markdown: ^0.7.1
 dev_dependencies:
   flutter_launcher_icons: ^0.14.4
   flutter_lints: ^5.0.0
@@ -112,10 +113,10 @@ flutter:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/icon_app_new.png"
+  image_path: "assets/images/iconapps.jpg"
   min_sdk_android: 21 # android min sdk min:16, default 21
   web:
     generate: true
-    image_path: "assets/images/icon_app_new.png"
+    image_path: "assets/images/iconapps.jpg"
     background_color: "#hexcode"
     theme_color: "#hexcode"

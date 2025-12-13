@@ -40,6 +40,8 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
   bool _isLoading = false;
   String? _rawText;
 
+  get prompt => null;
+
   // 🔥 تحسين: استخدام المتغيرات الخاصة (التي تبدأ بـ _)
   // لتمييزها كمتغيرات داخلية للحالة (State)
 
@@ -61,24 +63,35 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
     final model = GenerativeModel(model: "gemini-2.5-flash", apiKey: apiKey);
     //TODO: child."""'"
     final child = widget.child;
+    final String childName = child.name;
+    final DateTime childbirthDate = child.birthDate;
+    final String childhealthStatus = child.healthStatus;
+    final String childgender = child.gender;
     final age = context.read<ChildDetailsCubit>().calculateAge(child.birthDate);
     // Prompt المُحسَّن الذي يطلب إخراج JSON باللغة العربية
-    final promptText = ("""
+    final promptText =
+        ("""
     
     "أنت الآن خبير نفسي متخصص في تحليل رسومات الأطفال المتعرضين للصدمات والحروب
-     (مثل PTSD). سأزودك بصورة رسم طفل فلسطيني من غزة. مهمتك هي تحليل الرسم بناءً على (الألوان، التكوين، حجم الأشكال، تفاصيل الوجوه والأشخاص، وضعية الجسم)و ايضا سأزودك بـ المعلومات السياقية التالية عن الطفل وصورة رسمه.
-
+    
+   (مثل PTSD). سأزودك بصورة رسم طفل فلسطيني من غزة. مهمتك هي تحليل الرسم بناءً على 
+   **المعلومة الرئيسية للتحليل:**
+       1-  الطفل يعاني حاليًا من الحالة النفسية التالية: رجاءا بناءا على الحالة المقدمة للطفل او المستخدم اعطيني تحليل اكثر دقة و كفاءا ارجوك **$childhealthStatus**.
+       2-  الطفل يبلغ من العمر رجاءا دقق على العمر في التحليل و ركز كثير لجعل التحليل اكثر دقة و كفاءة **$childbirthDate سنة/سنوات**.
+       3-   جنس الطفل هو وبناءا على الجنس اعطينيي تحليل اكثر كفاءا و تركيز **$childgender**.
+     (الألوان، التكوين، حجم الأشكال، تفاصيل الوجوه والأشخاص، وضعية الجسم)و ايضا سأزودك بـ المعلومات السياقية التالية عن الطفل وصورة رسمه.
+"التقييم_الأولي_المهني"childName": "ابدأ التقييم بتحية للطفل باسمه (مثال: 'أهلاً 
+ رسمك يظهر...'). ثم قدم ملخصًا شاملًا ومحددًا للحالة النفسية للطفل في جملة واحدة."
 المعلومات السياقية:
 
-اسم الطفل : [_nameController]
+اسم الطفل :$childName ,
 
-عمر الطفل: [selectedBirthDate]
+عمر الطفل: $childbirthDate;
 
-جنس الطفل: [selectedBirthDate]
+جنس الطفل: $childgender;
+ 
 
-اليد التي يرسم بها: [selectedHand]
-
-الحالة والظروف:[_healthDescController]
+الحالة والظروف:$childhealthStatus
  [وصف مختصر لظروف تعرضه (مثل طفل فلسطيني من غزة متأثر بالصراع)]. 
      الرجاء إرجاع النتائج التالية حصراً بتنسيق JSON، مع الالتزام بالمفاتيح أدناه:"
 
@@ -87,6 +100,9 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
     قم بتحليل الرسم المرفق. يجب أن يُركز تقييمك النفسي الفني على استخلاص الدلالات المتعلقة بالصدمة، القلق، ومشاعر الفقد أو التهديد بناءً على المؤشرات الفنية (كالألوان الداكنة، ضغط القلم، وحجم العناصر).
 
     المخرجات المطلوبة (بصيغة JSON حصراً وباللغة العربية الفصحى):
+    **3. المخرجات المطلوبة (تنسيق JSON الصارم):**
+
+يجب أن يكون الإخراج في قالب JSON التالي تماماً، **باللغة العربية الفصحى**، **لا تضف أي نص قبل أو بعد الأقواس `{}`**، ولا تدرج أي من المعلومات السياقية (العمر، الجنس، الظروف) في الإخراج، بل استخدمها فقط للتحليل الداخلي.
     يجب أن يكون الإخراج في قالب JSON التالي تماماً، لا تضف أي نص قبل أو بعد الأقواس {}.
 
     {
@@ -98,17 +114,18 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
 
 """);
 
-
-
-    final prompt = TextPart(promptText);
-
     try {
-      final response = await model.generateContent([
-        Content.multi([
-          prompt,
-          DataPart("image/jpeg", widget.imageBytes ?? Uint8List(0)),
-        ]),
-      ]);
+      final response = await model.generateContent(
+        [
+          Content.multi([
+            prompt,
+            DataPart("image/jpeg", widget.imageBytes ?? Uint8List(0)),
+          ]),
+        ],
+
+        // ✅ الكود المُصحح بعد تحديث الحزمة
+      );
+      // هذا يضمن الاتساق
 
       _rawText = response.text;
       _analysis = _extractJson(_rawText!);
@@ -139,6 +156,7 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
       final List Indicators = (data["المؤشرات_الفنية_المرصودة"] as List?) ?? [];
       final List Disturbances = (data["الاضطرابات_المحتملة"] as List?) ?? [];
       final String alert = data["تنبيه_الحاجة_للتدخل_العاجل"] ?? "غير متوفر";
+      // final String childName = data["childName"] ?? " ";
 
       // دمج المؤشرات والاضطرابات في نص واحد منظم لعرضه في خانة "وصف الحالة"
       String descriptionReport =
@@ -223,10 +241,12 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
                           width: double.infinity,
                           // استخدام الكلاس المخصص بدلاً من ElevatedButton
                           child: CustemElevatedbuttonWidgets(
-                            textButton: "حفظ الرسمة", // النص المطلوب عرضه
-                            width: double
-                                .infinity, // لنقل قيمة العرض إلى الـ Widget المخصص
-                            isLoading: isSaving, // تمرير حالة التحميل isSaving
+                            textButton: "حفظ الرسمة",
+                            // النص المطلوب عرضه
+                            width: double.infinity,
+                            // لنقل قيمة العرض إلى الـ Widget المخصص
+                            isLoading: isSaving,
+                            // تمرير حالة التحميل isSaving
                             onPressed: isSaving
                                 ? null
                                 : () {

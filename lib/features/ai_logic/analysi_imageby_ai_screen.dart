@@ -64,15 +64,11 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
     final apiKey = dotenv.env['API_KEY'] ?? '';
     final model = GenerativeModel(model: "gemini-2.5-flash", apiKey: apiKey);
     final child = widget.child;
-<<<<<<< HEAD
     final String childName = child.name;
     final DateTime childbirthDate = child.birthDate;
     final String childhealthStatus = child.healthStatus;
     final String childgender = child.gender;
     final age = context.read<ChildDetailsCubit>().calculateAge(child.birthDate);
-=======
-    context.read<ChildDetailsCubit>().calculateAge(child.birthDate);
->>>>>>> e8e794064bc9b3533a5e9471ab05b09de30962fa
     // Prompt المُحسَّن الذي يطلب إخراج JSON باللغة العربية
     final promptText =
         ("""
@@ -119,11 +115,6 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
 
 """);
 
-<<<<<<< HEAD
-=======
-    final prompt = TextPart(promptText);
-
->>>>>>> e8e794064bc9b3533a5e9471ab05b09de30962fa
     try {
       final response = await model.generateContent(
         [

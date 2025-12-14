@@ -1,8 +1,7 @@
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:moftahak/core/constants/app_text_styles.dart';
-import 'package:moftahak/core/constants/navigation.dart';
+
 import 'package:moftahak/core/widgets/cancel_button.dart';
 import 'package:moftahak/features/ai_logic/analysis_arg.dart';
 import 'package:moftahak/features/home/model/child_model.dart';
@@ -53,13 +52,8 @@ class DisplayImageScreen extends StatelessWidget {
                   CancelButton(),
 
                   CustemElevatedbuttonWidgets(
-<<<<<<< HEAD
-                    textButton: 'متابعة',
-                    width: MediaQuery.of(context).size.width * 0.4,
-=======
                     textButton: 'تأكيد والمتابعة',
                     width: 150,
->>>>>>> e8e794064bc9b3533a5e9471ab05b09de30962fa
                     onPressed: () {
                       // نجهز الـ args مع بيانات الطفل
                       final args = AnalysisArgs(

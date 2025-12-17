@@ -52,14 +52,10 @@ class DisplayImageScreen extends StatelessWidget {
                 children: [
                   CancelButton(),
 
+
                   CustemElevatedbuttonWidgets(
-<<<<<<< HEAD
                     textButton: 'متابعة',
                     width: MediaQuery.of(context).size.width * 0.4,
-=======
-                    textButton: 'تأكيد والمتابعة',
-                    width: 150,
->>>>>>> e8e794064bc9b3533a5e9471ab05b09de30962fa
                     onPressed: () {
                       // نجهز الـ args مع بيانات الطفل
                       final args = AnalysisArgs(

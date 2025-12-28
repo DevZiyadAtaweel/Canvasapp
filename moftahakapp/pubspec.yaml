@@ -112,10 +112,10 @@ flutter:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "assets/images/icon_app_new.png"
+  image_path: "assets/images/iconcanvaapp.png"
   min_sdk_android: 21 # android min sdk min:16, default 21
   web:
     generate: true
-    image_path: "assets/images/icon_app_new.png"
+    image_path: "assets/images/iconcanvaapp.png"
     background_color: "#hexcode"
     theme_color: "#hexcode"

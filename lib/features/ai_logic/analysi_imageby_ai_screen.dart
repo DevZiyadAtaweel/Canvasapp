@@ -66,10 +66,14 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
     final child = widget.child;
     final String childName = child.name;
     final DateTime childbirthDate = child.birthDate;
-    final String childhealthStatus = child.healthStatus;
+    // final String childhealthStatus = child.healthStatus;
     final String childgender = child.gender;
     final age = context.read<ChildDetailsCubit>().calculateAge(child.birthDate);
+    context.read<ChildDetailsCubit>().calculateAge(child.birthDate);
     // Prompt المُحسَّن الذي يطلب إخراج JSON باللغة العربية
+    //1-  الطفل يعاني حاليًا من الحالة النفسية التالية: رجاءا بناءا على الحالة المقدمة للطفل او المستخدم اعطيني تحليل اكثر دقة و كفاءا ارجوك **$childhealthStatus**.
+   // الحالة والظروف:$childhealthStatus
+
     final promptText =
         ("""
     
@@ -77,7 +81,6 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
     
    (مثل PTSD). سأزودك بصورة رسم طفل فلسطيني من غزة. مهمتك هي تحليل الرسم بناءً على 
    **المعلومة الرئيسية للتحليل:**
-       1-  الطفل يعاني حاليًا من الحالة النفسية التالية: رجاءا بناءا على الحالة المقدمة للطفل او المستخدم اعطيني تحليل اكثر دقة و كفاءا ارجوك **$childhealthStatus**.
        2-  الطفل يبلغ من العمر رجاءا دقق على العمر في التحليل و ركز كثير لجعل التحليل اكثر دقة و كفاءة **$childbirthDate سنة/سنوات**.
        3-   جنس الطفل هو وبناءا على الجنس اعطينيي تحليل اكثر كفاءا و تركيز **$childgender**.
      (الألوان، التكوين، حجم الأشكال، تفاصيل الوجوه والأشخاص، وضعية الجسم)و ايضا سأزودك بـ المعلومات السياقية التالية عن الطفل وصورة رسمه.
@@ -92,7 +95,6 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
 جنس الطفل: $childgender;
  
 
-الحالة والظروف:$childhealthStatus
  [وصف مختصر لظروف تعرضه (مثل طفل فلسطيني من غزة متأثر بالصراع)]. 
      الرجاء إرجاع النتائج التالية حصراً بتنسيق JSON، مع الالتزام بالمفاتيح أدناه:"
 
@@ -114,6 +116,8 @@ class _AnalysiImagebyAiScreenState extends State<AnalysiImagebyAiScreen> {
     }
 
 """);
+
+        final prompt = TextPart(promptText);
 
     try {
       final response = await model.generateContent(

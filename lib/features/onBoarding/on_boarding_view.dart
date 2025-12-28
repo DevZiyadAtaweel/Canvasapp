@@ -56,7 +56,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
           ),
 
           // طبقة شفافة فوق الصورة (اختياري عشان النص يبان أوضح)
-          Container(color: Colors.black.withOpacity(0.1)),
+          Container(color: Colors.black.withOpacity(0.3)),
 
           // المحتوى
           Column(
@@ -68,17 +68,19 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                   itemBuilder: (context, index) => Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Spacer(flex: currentPage == 2 ? 1 : 3),
+                      Spacer(flex: 4),
 
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 30),
                         child: Text(
                           descriptions[index],
                           textAlign: TextAlign.center,
-                          style: AppTextStyles.almarai700style28,
+                          style: AppTextStyles.almarai700style28.copyWith(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                      Spacer(flex: 3),
+                      Spacer(flex: 2),
 
                       // (currentPage == 2)
                       //      Padding(
@@ -141,7 +143,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                     ),
                     child: Text(
                       currentPage == images.length - 1 ? "ابدأ" : "التالي",
-                      style: AppTextStyles.lato600style20.copyWith(
+                      style: AppTextStyles.almarai600style20.copyWith(
                         color: Colors.white,
                       ),
                     ),
@@ -159,7 +161,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                   },
                   child: Text(
                     "تخطي",
-                    style: AppTextStyles.lato600style20.copyWith(
+                    style: AppTextStyles.almarai600style20.copyWith(
                       color: Colors.white,
                     ),
                   ),

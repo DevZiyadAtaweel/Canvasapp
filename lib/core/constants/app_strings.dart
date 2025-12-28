@@ -1,10 +1,14 @@
 class AppStrings {
-  static const String appName = "Moftahak";
-  static const String welcomeMessage = "!يعيد الأمل";
-  static const String onBoarding1 = " مفتاحك لمعرفة صحة\n طفلك النفسية";
+  static const String appName = "Canvas";
+  static const String welcomeMessage =
+      "لأن كل رسمة تحكي قصة \n ونحن هنا لنساعدك تفهمها ";
+
+  static const String onBoarding1 =
+      "رسومات طفلك \n ليست مجرد ألوان \n بل نافذة لمشاعره وأفكاره";
   static const String onBoarding2 =
-      "دع طفلك يرسم !\nو اكتشف ما بداخله\nمن خلال رسماته";
-  static const String onBoarding3 = "مدعوم بالذكاء الاصطناعي\n بطريقة إنسانية";
+      "نتائج تحليلية \n  تساعد الأهل على الفهم \n  وليس التشخيص ";
+  static const String onBoarding3 =
+      "مع Canvas\n تكون أقرب لطفلك \n وتفهمه أكثر ";
   static const String supportTitle =
       "في حال واجهت مشاكل اثناء استخدام التطبيق زودنا بها عن طريق مراسلتنا على البريد الالكتروني التالي";
 

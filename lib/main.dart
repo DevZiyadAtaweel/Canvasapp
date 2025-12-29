@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,6 +7,9 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:moftahak/core/constants/app_colors.dart';
 import 'package:moftahak/core/constants/app_text_styles.dart';
 import 'package:moftahak/core/routes/app_routes.dart';
+import 'package:moftahak/features/add%20child/cubit/add_child_cubit.dart';
+import 'package:moftahak/features/auth/cubit/auth_cubit.dart';
+import 'package:moftahak/features/child%20analysis/cubit/all_drawings_cubit.dart';
 import 'package:moftahak/features/home/cubit/home_cubit.dart';
 import 'package:moftahak/firebase_options.dart';
 
@@ -12,24 +17,34 @@ import 'package:moftahak/firebase_options.dart';
 // افتراض مسار الشاشة الرئيسية
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import 'features/drawing/cubit/add_drawing_cubit.dart';
-
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   await dotenv.load(fileName: ".env");
 
-  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   await Supabase.initialize(
     url: 'https://sroqjsnknejpmddoblfj.supabase.co',
     anonKey: dotenv.env['SUPABASE_ANNON_KEY'] ?? '',
   );
   runApp(
-    BlocProvider<HomeCubit>(
-      create: (_) => HomeCubit()..startUserListener(),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<HomeCubit>(
+          create: (_) => HomeCubit()..startUserListener(),
+        ),
+        BlocProvider<AuthCubit>(create: (_) => AuthCubit()),
+        BlocProvider<AddChildCubit>(create: (_) => AddChildCubit()),
+        BlocProvider<AllDrawingsCubit>(
+          create: (_) => AllDrawingsCubit(
+            FirebaseFirestore.instance,
+            FirebaseAuth.instance,
+          ),
+        ),
+      ],
       child: const MyApp(),
     ),
   );
-
 }
 
 class MyApp extends StatelessWidget {
